@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "ic_logout_side_menu.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "custom_thumb.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

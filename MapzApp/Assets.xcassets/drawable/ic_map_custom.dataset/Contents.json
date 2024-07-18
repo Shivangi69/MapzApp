@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "ic_map_custom.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

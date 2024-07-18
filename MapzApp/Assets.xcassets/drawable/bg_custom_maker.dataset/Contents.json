@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "bg_custom_maker.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "custom_seekbar.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

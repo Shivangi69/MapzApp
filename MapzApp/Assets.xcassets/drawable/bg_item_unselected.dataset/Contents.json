@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "bg_item_unselected.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

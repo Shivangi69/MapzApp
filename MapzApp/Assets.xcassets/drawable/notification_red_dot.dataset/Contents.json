@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "notification_red_dot.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

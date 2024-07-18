@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "ic_baseline_mic.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

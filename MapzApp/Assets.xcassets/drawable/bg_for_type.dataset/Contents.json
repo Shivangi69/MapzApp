@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "bg_for_type.xml",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

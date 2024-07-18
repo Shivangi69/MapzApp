@@ -1,0 +1,6 @@
+framework module Pods_MapzApp {
+  umbrella header "Pods-MapzApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
