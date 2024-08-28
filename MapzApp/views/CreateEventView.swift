@@ -15,7 +15,7 @@ import SimpleToast
 
 struct CreateEventView: View {
    //
-    @ObservedObject var events = UserEvents()
+    @State var events = UserEvents()
     @Environment(\.presentationMode) var presentationMode
     @State var showupdateview = false
     @State private var timer = 5
@@ -49,56 +49,10 @@ struct CreateEventView: View {
         alignment: .bottom, hideAfter: 5, showBackdrop: false
         
     )
-//    func startTimers(){
-//        if shakeCountDown == nil {
-//
-//            shakeCountDown = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak let] (timer) in
-//                self.onTimerFires()
-//            }
-//        }
-//    }
-//    func onTimerFires(){
-//        secondsToReachGoal -= 1
-//        recorded += 1
-//        print(recorded)
-//
-//    }
-//    var captureButton: some View {
-//        Button(action: {
-//            if(recordingView.videoFileOutput.isRecording){
-//                print("Stop::::::;")
-////                self.onComplete = false
-////
-////                self.recording = true
-//                recordingView.stopReco()
-//
-//            }else{
-//                print("Start::::::;")
-////                self.recording = false
-////                self.onComplete = true
-//                recordingView.startRecording()
-//
-//            }
-//          //  recordingView.stopReco()
-//
-//        }, label: {
-//
-//            Circle()
-//                .foregroundColor(.white)
-//                .frame(width: 60, height: 60, alignment: .center)
-//                .overlay(
-//                    Circle()
-//                        .stroke(Color.black.opacity(0.8), lineWidth: 2)
-//                        .frame(width: 45, height: 45, alignment: .center)
-//                )
-//        })
-//    }
-    
-    
-    var body: some View {
+ var body: some View {
         ZStack{
             VStack(spacing: 0.0) {
-                
+
                 HStack(spacing: 20.0) {
                     Button(action: {
                         if (eventNOE == "New"){
@@ -107,28 +61,21 @@ struct CreateEventView: View {
                             // self.deleteevent()
                         }else{
                             showMaimPopUp = true
-                            
                         }
-                        
-                        //
                     }) {
                         Image("icons8-back-24")
                             .resizable()
-                        
-                            .aspectRatio(contentMode: .fit)
-                        
+                        .aspectRatio(contentMode: .fit)
                         
                     }
                     .frame(width: 40.0, height: 40.0)
                     .fullScreenCover(isPresented: $showMaimPopUp, content: MainView.init)
                     
                     VStack(alignment: .leading){
-                        // "latitude": Double(UserDefaults.standard.string(forKey: "lat")!)!,
-                        //   "longitude":  Double(UserDefaults.standard.string(forKey: "long")!)!
+                       
                         Text((UserDefaults.standard.string(forKey: "Address") ?? ""))
                             .foregroundColor(Color.white)
                             .font(.custom("Inter-Regular", size: 15))
-                        
                         
                         Text(UserDefaults.standard.string(forKey: "datestr") ?? "")
                             .foregroundColor(Color.white)
@@ -136,7 +83,6 @@ struct CreateEventView: View {
                         
                     }
                     Spacer()
-                    // HStack(spacing: 20.0) {
                     Button(action: {
                         showupdateview.toggle()
                     }) {
@@ -155,14 +101,11 @@ struct CreateEventView: View {
                     
                     .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
                     
-                    // }
+                
                 }
                 
                 .frame(height: 60.0)
                 .background(Color("themecolor"))
-                
-                
-                
                 
                 if $showCameraPopUp.wrappedValue {
                     CameraViewa()
@@ -181,8 +124,7 @@ struct CreateEventView: View {
                     VStack{
                         
                         Spacer()
-                        
-                        // if vm.isRecording {
+                       
                         
                         VStack(alignment : .leading , spacing : -5){
                             HStack (spacing : 3) {
@@ -211,8 +153,7 @@ struct CreateEventView: View {
                     
                 }
                 HStack{
-                    // Spacer()
-                    
+                   
                     Button(action: {
                         showVideoPopUp = false
                         showrecdPopUp = false
@@ -222,10 +163,8 @@ struct CreateEventView: View {
                     }, label: {
                         HStack {
                             Text("Camera")
-                            //.fontWeight(.bold)
                                 .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
                         }
-                        
                         
                     })
                     Spacer()
@@ -258,10 +197,8 @@ struct CreateEventView: View {
                     Spacer()
                     
                     Button(action: {
-                        //                        showVideoPopUp = false
-                        //                        showrecdPopUp = false
+                        
                         showdocPopUp = true
-                        //  showCameraPopUp = false
                         yoff = 0
                     }, label: {
                         HStack {
@@ -276,21 +213,22 @@ struct CreateEventView: View {
                 .background(Color("themecolor"))
                 .frame(height: 20)
                 .offset(y : CGFloat(yoff))
-                //                .fullScreenCover(isPresented: $showdocPopUp, content: createNotes.init())
                 .fullScreenCover(isPresented: $showdocPopUp, content: {
                     createNotes()
                 })
-                //                if $showCameraPopUp.wrappedValue {
-                //
-                //
-                //                }
-                
+              
                 if $showVideoPopUp.wrappedValue {
                     HStack {
                         Spacer()
                         
                         CameraInterfaceView(events: events)
-                        
+                            .onAppear {
+                                           // Initialize the video view or camera session
+                                       }
+                                       .onDisappear {
+                                           // Release resources to avoid memory leaks
+                                       }
+//
                         Spacer()
                     } .frame(width: UIScreen.main.bounds.width, height: 70, alignment: .center)
                     
@@ -317,10 +255,7 @@ struct CreateEventView: View {
                     .background(Color("themecolor"))
                     
                 }
-               
-                
             }
-            
             .simpleToast(isPresented: $service.shouldShowtoastView, options: toastOptions) {
                 HStack {
                     
@@ -343,7 +278,7 @@ struct CreateEventView: View {
                 .cornerRadius(10)
             }
         }
-        
+        .edgesIgnoringSafeArea(.bottom)
         .alert(isPresented:$showingAlert) {
             Alert(
                 title: Text("Do you want to Exit?"),
@@ -578,15 +513,7 @@ struct CameraViewa: View {
                 Color.black.edgesIgnoringSafeArea(.all)
 
                 VStack {
-//                    Button(action: {
-//                        model.switchFlash()
-//                    }, label: {
-//                        Image(systemName: model.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
-//                            .font(.system(size: 20, weight: .medium, design: .default))
-//                    })
-//                    .accentColor(model.isFlashOn ? .yellow : .white)
-//
-                    CameraPreview(session: model.session)
+                  CameraPreview(session: model.session)
                         .padding(.all, 0.0)
                         .gesture(
                             DragGesture().onChanged({ (val) in
@@ -649,288 +576,6 @@ struct CameraViewa: View {
     }
 }
 
-//struct VideoRecordingView: UIViewRepresentable {
-//
-//    @Binding var timeLeft: Int
-//    @Binding var onComplete: Bool
-//    @Binding var recording: Bool
-//    func makeUIView(context: UIViewRepresentableContext<VideoRecordingView>) -> PreviewView {
-//        let recordingView = PreviewView()
-//        recordingView.onComplete = {
-//            self.onComplete = true
-//        }
-//
-//        recordingView.onRecord = { timeLeft, totalShakes in
-//            self.timeLeft = timeLeft
-//            self.recording = true
-//        }
-//
-//        recordingView.onReset = {
-//            self.recording = false
-//            self.timeLeft = 15
-//        }
-//        return recordingView
-//    }
-//
-//    func updateUIView(_ uiViewController: PreviewView, context: UIViewRepresentableContext<VideoRecordingView>) {
-//
-//    }
-//}
-
-//extension PreviewView: AVCaptureFileOutputRecordingDelegate{
-//    public func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-//        print(outputFileURL.absoluteString)
-//    }
-//}
-
-
-//class PreviewView: UIView {
-//
-//       var captureSession: AVCaptureSession?
-//       var videoFileOutput = AVCaptureMovieFileOutput()
-//       var recordingDelegate:AVCaptureFileOutputRecordingDelegate!
-//       var shakeCountDown: Timer?
-//       var recorded = 0
-//       var secondsToReachGoal = 15
-//       var onRecord: ((Int, Int)->())?
-//       var onReset: (() -> ())?
-//       var onComplete: (() -> ())?
-//    var session = AVCaptureSession()
-//
-//    init() {
-//        super.init(frame: .zero)
-//
-//        var allowedAccess = false
-//        let blocker = DispatchGroup()
-//        blocker.enter()
-//        AVCaptureDevice.requestAccess(for: .video) { flag in
-//            allowedAccess = flag
-//            blocker.leave()
-//        }
-//        blocker.wait()
-//
-//        if !allowedAccess {
-//            print("!!! NO ACCESS TO CAMERA")
-//            return
-//        }
-//
-//        // setup session
-//        session.beginConfiguration()
-//
-//        let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
-//                                                  for: .video, position: .back)
-//        guard videoDevice != nil, let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice!), session.canAddInput(videoDeviceInput) else {
-//            print("!!! NO CAMERA DETECTED")
-//            return
-//        }
-//        session.addInput(videoDeviceInput)
-//        session.commitConfiguration()
-//        self.captureSession = session
-//    }
-//
-//    open override class var layerClass: AnyClass {
-//        AVCaptureVideoPreviewLayer.self
-//    }
-//
-//    required public init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
-//        return layer as! AVCaptureVideoPreviewLayer
-//    }
-//
-//    open override func didMoveToSuperview() {
-//        super.didMoveToSuperview()
-//        recordingDelegate = self
-//     //   startTimers()
-//        if nil != self.superview {
-//            self.videoPreviewLayer.session = self.captureSession
-//            self.videoPreviewLayer.videoGravity = .resizeAspectFill
-//            self.captureSession?.startRunning()
-//           // self.startRecording()
-//        } else {
-//            self.captureSession?.stopRunning()
-//        }
-//    }
-//
-//
-//    func onTimerFires(){
-//        print("🟢 RECORDING \(videoFileOutput.isRecording)")
-//        secondsToReachGoal -= 1
-//        recorded += 1
-//        onRecord?(secondsToReachGoal, recorded)
-//        print(recorded)
-//        if(secondsToReachGoal == 0){
-//            stopRecording()
-//            shakeCountDown?.invalidate()
-//            shakeCountDown = nil
-//            onComplete?()
-//            videoFileOutput.stopRecording()
-//        }
-//    }
-//
-//    func startTimers(){
-//        if shakeCountDown == nil {
-//            shakeCountDown = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (timer) in
-//                self?.onTimerFires()
-//            }
-//        }
-//    }
-//
-//    func startRecording(){
-//        recorded = 0
-//        secondsToReachGoal = 15
-//        startTimers()
-//        recordingDelegate = self
-//        self.captureSession?.removeOutput(videoFileOutput)
-//
-//     print(self.captureSession?.isRunning as Any)
-//        print(self.captureSession?.isRunning as Any)
-//
-//
-////        if ((self.captureSession?.isRunning) != nil) {
-////               DispatchQueue.global().async {
-////                self.captureSession?.stopRunning()
-////               }
-////           }
-////
-//
-//
-////        self.captureSession!.stopRunning()
-////
-////        self.videoPreviewLayer.removeFromSuperlayer()
-////        //self.videoPreviewLayer = nil
-////        self.videoPreviewLayer.session?.removeOutput(videoFileOutput)
-////
-////        self.videoPreviewLayer.session = self.captureSession
-////        self.videoPreviewLayer.videoGravity = .resizeAspectFill
-//
-////        self.captureSession = nil
-////        self.captureSession = session
-//        self.captureSession?.startRunning()
-//        print(captureSession as Any)
-//        captureSession?.addOutput(videoFileOutput)
-//        print(videoFileOutput as Any)
-//
-//        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//        let filePath = documentsURL.appendingPathComponent("tempPZDC")
-//
-//        videoFileOutput.startRecording(to: filePath, recordingDelegate: recordingDelegate)
-//    }
-//
-//    func stopReco(){
-//        stopRecording()
-//        shakeCountDown?.invalidate()
-//        shakeCountDown = nil
-//
-//        onComplete?()
-//        videoFileOutput.stopRecording()
-//
-//    }
-//    func stopRecording(){
-//        videoFileOutput.stopRecording()
-//        print("🔴 RECORDING \(videoFileOutput.isRecording)")
-//        print(videoFileOutput.outputFileURL!)
-//        recorded = 0
-//        secondsToReachGoal = 15
-//        self.saveVideoToAlbum(videoFileOutput.outputFileURL!) { (error) in
-//
-//        }
-//        self.uploadInBackground(fileInData: videoFileOutput.outputFileURL!)
-//    }
-    func requestAuthorization(completion: @escaping ()->Void) {
-            if PHPhotoLibrary.authorizationStatus() == .notDetermined {
-                PHPhotoLibrary.requestAuthorization { (status) in
-                    DispatchQueue.main.async {
-                        completion()
-                    }
-                }
-            } else if PHPhotoLibrary.authorizationStatus() == .authorized{
-                completion()
-            }
-        }
-//
-    func saveVideoToAlbum(_ outputURL: URL, _ completion: ((Error?) -> Void)?) {
-            requestAuthorization {
-                PHPhotoLibrary.shared().performChanges({
-                    let request = PHAssetCreationRequest.forAsset()
-                    request.addResource(with: .video, fileURL: outputURL, options: nil)
-                }) { (result, error) in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            print(error.localizedDescription)
-                        } else {
-                            print("Saved successfully")
-                        }
-                        completion?(error)
-                    }
-                }
-            }
-        }
-
-//
-//    func uploadInBackground(fileInData: URL) {
-//
-//
-//        let evntId = UserDefaults.standard.string(forKey: "eventID") ?? ""
-//        let parameters = [
-//              "EventId": evntId,
-//            "UserId": UserDefaults.standard.string(forKey: "id") ?? ""
-//
-//            ]
-//    print(parameters)
-//        let headers: HTTPHeaders
-//            headers = ["Content-type": "multipart/form-data",
-//                       "Content-Disposition" : "form-data"]
-//
-////            let headers: [String : String] = [ "Authorization": "key"]
-//        let baseURL = URL(string: "http://167.86.105.98:7723/api/Upload/uploadeventdiary")
-//        print(baseURL!)
-//
-//            Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartFormData) in
-//
-////
-//
-//
-//                let myId = UserDefaults.standard.string(forKey: "pov") ?? ""
-//
-//                    multipartFormData.append(fileInData, withName: "file", fileName: "mp4", mimeType: "video/mp4")
-//
-//                for (key, value) in parameters {
-//                    multipartFormData.append((value.data(using: .utf8))!, withName: key)
-//                       }
-//            }, usingThreshold: UInt64.init(), to: baseURL!, method: .post, headers: headers)
-//
-//            { (result) in
-//                switch result {
-//                case .success(let upload, _, _):
-//                    ///api/Upload/upload
-//                    upload.uploadProgress(closure: { (progress) in
-//                        //Print progress
-//                        let value =  Int(progress.fractionCompleted * 100)
-//                        print("\(value) %")
-//                    })
-//
-//                    upload.responseJSON { response in
-//                        //print response.result
-//                        print(response.description)
-//                        let res = response.response?.statusCode
-//                        print(res!)
-//                     //
-//                        Toast(text: "Upload Successfully").show()
-//
-//                       // self.obs.fetch()
-//                    }
-//
-//                case .failure(let encodingError):
-//                    //print encodingError.description
-//                    print(encodingError.localizedDescription)
-//                }
-//            }
-//        }
-//
-//}
 
 import SwiftUI
 import AVFoundation
@@ -1084,7 +729,6 @@ extension CustomCameraRepresentable {
                 guard let newImage = UIImage(data: imageData) else { return }
                 parent.imageCompletion(newImage)
             }
-//            parent.presentationMode.wrappedValue.dismiss()
         }
     }
 }
