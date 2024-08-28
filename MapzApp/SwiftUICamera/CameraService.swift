@@ -114,16 +114,7 @@ public class CameraService {
     
     
     public func configure() {
-        /*
-         Setup the capture session.
-         In general, it's not safe to mutate an AVCaptureSession or any of its
-         inputs, outputs, or connections from multiple threads at the same time.
-         
-         Don't perform these tasks on the main queue because
-         AVCaptureSession.startRunning() is a blocking call, which can
-         take a long time. Dispatch session setup to the sessionQueue, so
-         that the main queue isn't blocked, which keeps the UI responsive.
-         */
+ 
         sessionQueue.async {
             self.configureSession()
         }
@@ -137,11 +128,7 @@ public class CameraService {
             // The user has previously granted access to the camera.
             break
         case .notDetermined:
-            /*
-             The user has not yet been presented with the option to grant
-             video access. Suspend the session queue to delay session
-             setup until the access request has completed.
-             */
+          
             sessionQueue.suspend()
             AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
                 if !granted {
@@ -243,7 +230,9 @@ public class CameraService {
     
     /// - Tag: ChangeCamera
     public func changeCamera() {
-        //        MARK: Here disable all camera operation related buttons due to configuration is due upon and must not be interrupted
+        //   MARK: Here disable all camera operation related buttons due to configuration is due upon and must not be interrupted
+        
+        
         DispatchQueue.main.async {
             //self.isCameraButtonDisabled = true
         }
@@ -407,10 +396,95 @@ public class CameraService {
     //    MARK: Capture Photo
     
     /// - Tag: CapturePhoto
+//    public func capturePhoto() {
+//        if self.setupResult != .configurationFailed {
+//            //self.isCameraButtonDisabled = true
+//            
+//            sessionQueue.async {
+//                if let photoOutputConnection = self.photoOutput.connection(with: .video) {
+//                    photoOutputConnection.videoOrientation = .portrait
+//                }
+//                var photoSettings = AVCapturePhotoSettings()
+//                
+//                // Capture HEIF photos when supported. Enable according to user settings and high-resolution photos.
+//                if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
+//                    photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+//                }
+//                
+//                // Sets the flash option for this capture.
+//                if self.videoDeviceInput?.device.isFlashAvailable {
+//                    photoSettings.flashMode = self.flashMode
+//                }
+//                
+//                photoSettings.isHighResolutionPhotoEnabled = true
+//                
+//                // Sets the preview thumbnail pixel format
+//                if !photoSettings.__availablePreviewPhotoPixelFormatTypes.isEmpty {
+//                    photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoSettings.__availablePreviewPhotoPixelFormatTypes.first!]
+//                }
+//                
+//                photoSettings.photoQualityPrioritization = .quality
+//                
+//                let photoCaptureProcessor = PhotoCaptureProcessor(with: photoSettings, willCapturePhotoAnimation: { [weak self] in
+//                    // Tells the UI to flash the screen to signal that SwiftCamera took a photo.
+//                    DispatchQueue.main.async {
+//                        self?.willCapturePhoto = true
+//                    }
+//                    
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+//                        self?.willCapturePhoto = false
+//                    }
+//                    
+//                }, completionHandler: { [weak self] (photoCaptureProcessor) in
+//                    // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
+//                    if let data = photoCaptureProcessor.photoData {
+//                        let img: UIImage = UIImage(data: data)!
+//                        let imgdata = img.jpegData(compressionQuality: 0.5)
+//
+//                        self?.photo = Photo(originalData: data)
+//                        
+//                        print("passing photo")
+//                       // let filename = self.p
+//
+//                        self!.uploadInBackground(fileInData: photoCaptureProcessor.photoUrl!)
+//                    } else {
+//                        print("No photo data")
+//                    }
+//                    
+//                   // self?.isCameraButtonDisabled = false
+//                    
+//                    self?.sessionQueue.async {
+//                        self?.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
+//                    }
+//                }, photoProcessingHandler: { [weak self] animate in
+//                    // Animates a spinner while photo is processing
+//                    if animate {
+//                        self?.shouldShowSpinner = true
+//                    } else {
+//                        self?.shouldShowSpinner = false
+//                    }
+//                })
+//                
+//                // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
+//                self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
+//                self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
+//            }
+//        }
+//    }
+    
+    
+    
+//    import AVFoundation
+
     public func capturePhoto() {
+        // Check camera authorization status
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        guard status == .authorized else {
+            print("Camera access denied")
+            return
+        }
+        
         if self.setupResult != .configurationFailed {
-            //self.isCameraButtonDisabled = true
-            
             sessionQueue.async {
                 if let photoOutputConnection = self.photoOutput.connection(with: .video) {
                     photoOutputConnection.videoOrientation = .portrait
@@ -418,12 +492,12 @@ public class CameraService {
                 var photoSettings = AVCapturePhotoSettings()
                 
                 // Capture HEIF photos when supported. Enable according to user settings and high-resolution photos.
-                if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
+                if self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
                     photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
                 }
                 
-                // Sets the flash option for this capture.
-                if self.videoDeviceInput.device.isFlashAvailable {
+                // Check if flash is available before setting the flash mode
+                if let device = self.videoDeviceInput?.device, device.isFlashAvailable {
                     photoSettings.flashMode = self.flashMode
                 }
                 
@@ -455,14 +529,10 @@ public class CameraService {
                         self?.photo = Photo(originalData: data)
                         
                         print("passing photo")
-                       // let filename = self.p
-
-                        self!.uploadInBackground(fileInData: photoCaptureProcessor.photoUrl!)
+                        self?.uploadInBackground(fileInData: photoCaptureProcessor.photoUrl!)
                     } else {
                         print("No photo data")
                     }
-                    
-                   // self?.isCameraButtonDisabled = false
                     
                     self?.sessionQueue.async {
                         self?.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
@@ -482,6 +552,7 @@ public class CameraService {
             }
         }
     }
+
     
 //    func Uploadphoto(){
 //        Alamofire.upload(multipartFormData: { multipart in
@@ -575,7 +646,7 @@ public class CameraService {
                        "Content-Disposition" : "form-data"]
             
 //            let headers: [String : String] = [ "Authorization": "key"]
-        let baseURL = URL(string: "http://167.86.105.98:7723/api/Upload/uploadeventdiary")
+        let baseURL = URL(string: "http://mapzapp.com/api/Upload/uploadeventdiary")
         print(baseURL!)
 
             Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartFormData) in

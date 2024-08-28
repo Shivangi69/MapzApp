@@ -98,147 +98,142 @@ struct CreateEventView: View {
     var body: some View {
         ZStack{
             VStack(spacing: 0.0) {
-                     
-                     HStack(spacing: 20.0) {
-                         Button(action: {
-                            if (eventNOE == "New"){
-                                message = "If you go back to home screen current event will will be discard. You Want to Processed?"
-                                showingAlert = true
-                               // self.deleteevent()
-                            }else{
-                                showMaimPopUp = true
-                               
-                            }
+                
+                HStack(spacing: 20.0) {
+                    Button(action: {
+                        if (eventNOE == "New"){
+                            message = "If you go back to home screen current event will will be discard. You Want to Processed?"
+                            showingAlert = true
+                            // self.deleteevent()
+                        }else{
+                            showMaimPopUp = true
                             
-                            //
-                         }) {
-                            Image("icons8-back-24")
-                                 .resizable()
-                                 
-                                 .aspectRatio(contentMode: .fit)
-                            
-                             
-                         }
-                         .frame(width: 40.0, height: 40.0)
-                         .fullScreenCover(isPresented: $showMaimPopUp, content: MainView.init)
-
-                        VStack(alignment: .leading){
-                         // "latitude": Double(UserDefaults.standard.string(forKey: "lat")!)!,
-                         //   "longitude":  Double(UserDefaults.standard.string(forKey: "long")!)!
-                            Text((UserDefaults.standard.string(forKey: "Address") ?? ""))
+                        }
+                        
+                        //
+                    }) {
+                        Image("icons8-back-24")
+                            .resizable()
+                        
+                            .aspectRatio(contentMode: .fit)
+                        
+                        
+                    }
+                    .frame(width: 40.0, height: 40.0)
+                    .fullScreenCover(isPresented: $showMaimPopUp, content: MainView.init)
+                    
+                    VStack(alignment: .leading){
+                        // "latitude": Double(UserDefaults.standard.string(forKey: "lat")!)!,
+                        //   "longitude":  Double(UserDefaults.standard.string(forKey: "long")!)!
+                        Text((UserDefaults.standard.string(forKey: "Address") ?? ""))
                             .foregroundColor(Color.white)
                             .font(.custom("Inter-Regular", size: 15))
-                           
-                            
-                            Text(UserDefaults.standard.string(forKey: "datestr") ?? "")
-                                .foregroundColor(Color.white)
-                                .font(.custom("Inter-Regular", size: 15))
-                                
-                        }
-                        Spacer()
-                       // HStack(spacing: 20.0) {
-                            Button(action: {
-                                showupdateview.toggle()
-                            }) {
-                                Text("Save")
-                                    .foregroundColor(Color.white)
-                                    .font(.custom("Inter-Regular", size: 15))
-                                    
-                               Image("icons8-plus-+-24 (1)")
-                                    .resizable()
-                                    
-                                    .aspectRatio(contentMode: .fit)
-                               
-                                
-                            }
-                            .frame(height: 30)
-                           
-                            .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
-
-                       // }
-                     }
+                        
+                        
+                        Text(UserDefaults.standard.string(forKey: "datestr") ?? "")
+                            .foregroundColor(Color.white)
+                            .font(.custom("Inter-Regular", size: 15))
+                        
+                    }
+                    Spacer()
+                    // HStack(spacing: 20.0) {
+                    Button(action: {
+                        showupdateview.toggle()
+                    }) {
+                        Text("Save")
+                            .foregroundColor(Color.white)
+                            .font(.custom("Inter-Regular", size: 15))
+                        
+                        Image("icons8-plus-+-24 (1)")
+                            .resizable()
+                        
+                            .aspectRatio(contentMode: .fit)
+                        
+                        
+                    }
+                    .frame(height: 30)
                     
-                     .frame(height: 60.0)
-                     .background(Color("themecolor"))
-                     
-                     
+                    .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
+                    
+                    // }
+                }
+                
+                .frame(height: 60.0)
+                .background(Color("themecolor"))
+                
+                
                 
                 
                 if $showCameraPopUp.wrappedValue {
-                CameraViewa()
-                    .frame(width: UIScreen.main.bounds.width)
+                    CameraViewa()
+                        .frame(width: UIScreen.main.bounds.width)
                     
                 }
                 
                 if $showVideoPopUp.wrappedValue {
                     ZStack{
                         CameraView(events: events, applicationName: "SwiftUICam")
-                                  
-            
                     }
-                        
-                    
-                   
                     
                 }
                 if $showrecdPopUp.wrappedValue {
                     
                     VStack{
-
+                        
                         Spacer()
-
-                       // if vm.isRecording {
-
-                            VStack(alignment : .leading , spacing : -5){
-                                HStack (spacing : 3) {
-                                    Image(systemName: vm.isRecording && vm.toggleColor ? "circle.fill" : "circle")
-                                        .font(.system(size:10))
-                                        .foregroundColor(.red)
-                                    Text("Rec")
-                                        .font(.system(size:20))
-                                        .foregroundColor(.red)
-                                }
-                                Text(vm.timer)
-                                    .font(.system(size:60))
-                                    .foregroundColor(.white)
-                            }.frame(width: UIScreen.main.bounds.width)
-
-
+                        
+                        // if vm.isRecording {
+                        
+                        VStack(alignment : .leading , spacing : -5){
+                            HStack (spacing : 3) {
+                                Image(systemName: vm.isRecording && vm.toggleColor ? "circle.fill" : "circle")
+                                    .font(.system(size:10))
+                                    .foregroundColor(.red)
+                                Text("Rec")
+                                    .font(.system(size:20))
+                                    .foregroundColor(.red)
+                            }
+                            Text(vm.timer)
+                                .font(.system(size:60))
+                                .foregroundColor(.white)
+                        }.frame(width: UIScreen.main.bounds.width)
+                        
+                        
                         Spacer()
-
-                      
+                        
+                        
                     }
                     .padding(.all)
-                   
+                    
                     .background(Color.black)
                     .frame(width: UIScreen.main.bounds.width)
-
+                    
                     
                 }
                 HStack{
-                   // Spacer()
-
+                    // Spacer()
+                    
                     Button(action: {
                         showVideoPopUp = false
                         showrecdPopUp = false
                         showdocPopUp = false
-                         showCameraPopUp = true
+                        showCameraPopUp = true
                         yoff = -70
                     }, label: {
                         HStack {
                             Text("Camera")
-                                //.fontWeight(.bold)
+                            //.fontWeight(.bold)
                                 .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
                         }
-                
-
+                        
+                        
                     })
                     Spacer()
                     Button(action: {
                         showVideoPopUp = true
                         showrecdPopUp = false
                         showdocPopUp = false
-                         showCameraPopUp = false
+                        showCameraPopUp = false
                         yoff = 0
                     }, label: {
                         HStack {
@@ -247,12 +242,12 @@ struct CreateEventView: View {
                         }
                     })
                     Spacer()
-
+                    
                     Button(action: {
                         showVideoPopUp = false
                         showrecdPopUp = true
                         showdocPopUp = false
-                         showCameraPopUp = false
+                        showCameraPopUp = false
                         yoff = 0
                     }, label: {
                         HStack {
@@ -261,36 +256,34 @@ struct CreateEventView: View {
                         }
                     })
                     Spacer()
-
+                    
                     Button(action: {
-//                        showVideoPopUp = false
-//                        showrecdPopUp = false
+                        //                        showVideoPopUp = false
+                        //                        showrecdPopUp = false
                         showdocPopUp = true
-                       //  showCameraPopUp = false
+                        //  showCameraPopUp = false
                         yoff = 0
                     }, label: {
                         HStack {
                             Text("Notes")
                                 .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
                         }
-                     
-
+                        
                     })
-                  //  Spacer()
-
+               
                 }
                 .padding(.horizontal)
                 .background(Color("themecolor"))
                 .frame(height: 20)
                 .offset(y : CGFloat(yoff))
-//                .fullScreenCover(isPresented: $showdocPopUp, content: createNotes.init())
+                //                .fullScreenCover(isPresented: $showdocPopUp, content: createNotes.init())
                 .fullScreenCover(isPresented: $showdocPopUp, content: {
                     createNotes()
-                           })
-//                if $showCameraPopUp.wrappedValue {
-//
-//
-//                }
+                })
+                //                if $showCameraPopUp.wrappedValue {
+                //
+                //
+                //                }
                 
                 if $showVideoPopUp.wrappedValue {
                     HStack {
@@ -300,15 +293,13 @@ struct CreateEventView: View {
                         
                         Spacer()
                     } .frame(width: UIScreen.main.bounds.width, height: 70, alignment: .center)
-
-                    .background(Color("themecolor"))
+                    
+                        .background(Color("themecolor"))
                     
                 }
                 if $showrecdPopUp.wrappedValue {
                     HStack {
-
-
-
+                      
                         Image(systemName: vm.isRecording ? "stop.circle.fill" : "mic.circle.fill")
                             .foregroundColor(.white)
                             .font(.system(size: 45))
@@ -317,63 +308,55 @@ struct CreateEventView: View {
                                     vm.stopRecording()
                                 } else {
                                     vm.startRecording()
-
+                                    
                                 }
                             }
-
+                        
                     }
                     .frame(width: UIScreen.main.bounds.width, height: 70, alignment: .center)
                     .background(Color("themecolor"))
                     
                 }
+               
                 
-         
-                
-                
-                
-                  //
-                   // CameraView(events: events, applicationName: "MAPZAPP")
-                              
-                        //CameraInterfaceView(events: events)
+            }
             
+            .simpleToast(isPresented: $service.shouldShowtoastView, options: toastOptions) {
+                HStack {
+                    
+                    Text("Upload Successfully")
                 }
-          
-            .simpleToast(isPresented: $service.shouldShowtoastView, options: toastOptions) {
-                   HStack {
-                       
-                       Text("Upload Successfully")
-                   }
-                   .padding()
-                   .background(Color.red.opacity(0.8))
-                   .foregroundColor(Color.white)
-                   .cornerRadius(10)
-               }
+                .padding()
+                .background(Color.red.opacity(0.8))
+                .foregroundColor(Color.white)
+                .cornerRadius(10)
+            }
             
             .simpleToast(isPresented: $service.shouldShowtoastView, options: toastOptions) {
-                   HStack {
-                       
-                       Text("Upload Successfully")
-                   }
-                   .padding()
-                   .background(Color.red.opacity(0.8))
-                   .foregroundColor(Color.white)
-                   .cornerRadius(10)
-               }
+                HStack {
+                    
+                    Text("Upload Successfully")
+                }
+                .padding()
+                .background(Color.red.opacity(0.8))
+                .foregroundColor(Color.white)
+                .cornerRadius(10)
+            }
         }
         
         .alert(isPresented:$showingAlert) {
-                    Alert(
-                        title: Text("Do you want to Exit?"),
-                        message: Text(message),
-                        primaryButton: .destructive(Text("Ok")) {
-                            print("Deleting...")
-                           
-                            deleteevent()
-
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
+            Alert(
+                title: Text("Do you want to Exit?"),
+                message: Text(message),
+                primaryButton: .destructive(Text("Ok")) {
+                    print("Deleting...")
+                    
+                    deleteevent()
+                    
+                },
+                secondaryButton: .cancel()
+            )
+        }
         
         .onAppear(){
             
@@ -396,7 +379,7 @@ struct CreateEventView: View {
                 yoff = -70
                 
                 showCameraPopUp = true
-               
+                
             }
         }
     }
@@ -404,27 +387,27 @@ struct CreateEventView: View {
     
     func deleteevent(){
         let str = UserDefaults.standard.string(forKey: "eventID") ?? ""
-
+        
         var checData: Parameters {
             [
                 "id": str,
-
-                  ]
-
+                
+            ]
+            
         }
-print(checData)
+        print(checData)
         AccountAPI.signin(servciename: "EventDiary/DeleteEventDiary", checData) { res in
-        switch res {
-        case .success:
-            print("resulllll",res)
-            if let json = res.value{
-
+            switch res {
+            case .success:
+                print("resulllll",res)
+                if let json = res.value{
+                    
+                }
+                presentationMode.wrappedValue.dismiss()
+            case let .failure(error):
+                print(error)
             }
-            presentationMode.wrappedValue.dismiss()
-        case let .failure(error):
-          print(error)
         }
-      }
     }
 }
 
@@ -446,8 +429,6 @@ struct CameraInterfaceView: View, CameraActions {
                     )
             })
         }
-    
-    
     
     
     var body: some View {

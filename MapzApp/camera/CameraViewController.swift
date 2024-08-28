@@ -621,9 +621,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             //2 options to save
             //First is to use UIImageWriteToSavedPhotosAlbum
             savePhoto(image)
-            //Second is adapting Apple documentation with data of the modified image
-            //savePhoto(image.jpegData(compressionQuality: 1)!)
-            
+          
             
             DispatchQueue.main.async {
                 self.delegate?.didFinishProcessingPhoto(image)
@@ -681,29 +679,7 @@ extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
            
                    }
             self.uploadInBackground(fileInData: outputFileURL)
-            
-            
-//            PHPhotoLibrary.requestAuthorization { status in
-//                if status == .authorized {
-//                    // Save the movie file to the photo library and cleanup.
-//                    PHPhotoLibrary.shared().performChanges({
-//                        let options = PHAssetResourceCreationOptions()
-//                        options.shouldMoveFile = true
-//                        let creationRequest = PHAssetCreationRequest.forAsset()
-//                        creationRequest.addResource(with: .video, fileURL: outputFileURL, options: options)
-//                    }, completionHandler: { success, error in
-//                        if !success {
-//                            print("\(self.applicationName!) couldn't save the movie to your photo library: \(String(describing: error))")
-//                        }
-//                        print(outputFileURL)
-//                       // self.uploadInBackground(fileInData: outputFileURL)
-//                        //cleanup()
-//                    }
-//                    )
-//                } else {
-//                   // cleanup()
-//                }
-//            }
+
         } else {
            // cleanup()
         }
@@ -721,7 +697,8 @@ extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
                 completion()
             }
         }
-//
+    
+    
     func saveVideoToAlbum(_ outputURL: URL, _ completion: ((Error?) -> Void)?) {
             requestAuthorization {
                 PHPhotoLibrary.shared().performChanges({
@@ -739,12 +716,13 @@ extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
                 }
             }
         }
+    
+    
     func uploadInBackground(fileInData: URL) {
 
         var groupid = String()
         var isgroupid = String()
-//
-        let ISfromGroup =            UserDefaults.standard.string(forKey: "isGroup")
+        let ISfromGroup = UserDefaults.standard.string(forKey: "isGroup")
 //        UserDefaults.standard.set("yes", forKey: "isGroup")
 
         if ISfromGroup == "yes"{
@@ -768,7 +746,7 @@ extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
                        "Content-Disposition" : "form-data"]
 //"http://167.86.105.98:7723/api/
 //            let headers: [String : String] = [ "Authorization": "key"]
-        let baseURL = URL(string: "http://167.86.105.98:7723/api/Upload/uploadeventdiary")
+        let baseURL = URL(string: "http://mapzapp.com/api/Upload/uploadeventdiary")
         print(baseURL!)
 
             Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartFormData) in

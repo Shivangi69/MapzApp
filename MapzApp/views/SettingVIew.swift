@@ -147,7 +147,6 @@ struct SettingVIew: View {
                     }
                     .onTapGesture {
                         showtermandconditions.toggle()
-                        
                     }
                     
                     .fullScreenCover(isPresented: $showtermandconditions, content: {

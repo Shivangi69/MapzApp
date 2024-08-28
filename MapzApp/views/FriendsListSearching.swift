@@ -59,7 +59,6 @@ import Alamofire
                                     .foregroundColor(Color.black)
                                     .font(.custom("Inter-Bold", size: 18
                                                  ))
-                                
                                 Spacer()
                                 
                                 HStack {

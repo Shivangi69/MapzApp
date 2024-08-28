@@ -50,7 +50,7 @@ struct PrivacyPloicy: View {
                     
                     Divider()
                 
-                    WebView(url: URL(string: "http://122.176.104.29:55020/privacy-policy")!)
+                    WebView(url: URL(string: "http://mapzapp.com/privacy-policy.html")!)
                 }
                 .onAppear(){
                     

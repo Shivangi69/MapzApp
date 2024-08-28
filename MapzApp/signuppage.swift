@@ -19,7 +19,7 @@ import SimpleToast
 import FirebaseAuth
 struct signuppage: View {
     @State var showImagePicker: Bool = false
-    @State var image = UIImage(named: "male-user")
+    @State var image = UIImage(named: "icons8-male-user-72")
     @State private var showingActionSheet = false
     @State var cmrstr = String()
     @State private var showSheet = false
@@ -617,7 +617,7 @@ struct signuppage: View {
                                             
                                         }
                                         .alert(isPresented: $showingAlert) {
-                                            Alert(title: Text("Warning"), message: Text(message), dismissButton: .default(Text("Ok!")))
+                                            Alert(title: Text("Alert"), message: Text(message), dismissButton: .default(Text("Ok!")))
                                         }
                                         .alert(isPresented:$showingAlert1) {
                                             Alert(

@@ -114,7 +114,7 @@ struct Aboutus: View {
                     
                     Divider()
                 
-                    WebView(url: URL(string: "http://122.176.104.29:55020/aboutus")!)
+                    WebView(url: URL(string: "http://mapzapp.com/about-us.html")!)
                 }
                 .onAppear(){
                     

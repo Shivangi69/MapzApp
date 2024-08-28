@@ -307,14 +307,16 @@ struct GroupsEventView: View {
                                 Image("loctio")
                                     .resizable()
                                 
-                                    .frame(width: 20, height: 32.0)
+                                    .frame(width: 15, height: 32.0)
                                 Text(Addressstr)
                                     .font(.custom("Inter-SemiBold", size: 12))
                                     .foregroundColor(Color.white)
                                 Spacer()
                                 
                             }
-                            .padding(.horizontal , 10)
+//                            .padding(.horizontal , 10)
+                            .padding()
+
                             .frame(height: 40.0)
                             //.background(Color("themecolor"))
                             .background(RoundedCorners(color: Color("themecolor"), tl: 0, tr: 0, bl: 0, br: 0))
@@ -1246,12 +1248,6 @@ class EventprofileinfoObserver: ObservableObject {
     var totalPages : Int = 0
        var page : Int = 0
       
-    
-    
-//    init() {
-//        fetchEvent()
-//    }
-    
     func loadMoreContent(currentItem item: groupeventmodalclasssss){
             let thresholdIndex = self.eventlist.index(self.eventlist.endIndex, offsetBy: -1)
         print(thresholdIndex)
@@ -1862,27 +1858,25 @@ class GMSMapViewDelegateWrapperG: NSObject, GMSMapViewDelegate {
 }
 struct groupeventmodalclasssss : Hashable{
     var  Id : Int
-
     var  eventId : String
-   
-         var  userId : String
-    var    longitude : String
-    var    latitude : String
-    var    diaryName : String
-    var    diaryDescription  : String
-    var    date : String
-    var Files : NSArray
-    var Notes : NSArray
-    var    audioCount : String
-    var    vedioCount : String
-    var    picCount : String
-    var imageArray : [String]
-    var    Addrs : String
-    var    username : String
-    var    profilePictureURL : String
-    var    dob : String
-    var    pcode : String
-    var    imgStr : String
+    var  userId : String
+    var  longitude : String
+    var  latitude : String
+    var  diaryName : String
+    var  diaryDescription  : String
+    var  date : String
+    var  Files : NSArray
+    var  Notes : NSArray
+    var  audioCount : String
+    var  vedioCount : String
+    var  picCount : String
+    var  imageArray : [String]
+    var  Addrs : String
+    var  username : String
+    var  profilePictureURL : String
+    var  dob : String
+    var  pcode : String
+    var  imgStr : String
 
     init(_ Id:Int,_ eventId:String,_ userId:String,_ longitude:String,_ latitude:String,_ diaryName:String,_ diaryDescription:String,_ date:String,_ Files:NSArray,_ Notes:NSArray,_ audioCount:String,_ vedioCount:String,_ picCount:String,_ imageArray:[String],_ Addrs:String,_ username:String,_ profilePictureURL:String,_ dob:String,_ pcode:String,_ imgStr:String){
        self.eventId  = eventId

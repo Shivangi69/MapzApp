@@ -23,6 +23,10 @@ import Stripe
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate,MessagingDelegate ,UNUserNotificationCenterDelegate{
+    @Published var permissionDenied = false
+    var permissionCheckTimer: Timer?
+    var statuscheck = profileinfoObserver()
+    var timer2: Timer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         GMSPlacesClient.provideAPIKey("AIzaSyBQ4-P2_4_-Ku6T85fNORYCfmnAm9NWxgY")
@@ -64,15 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,MessagingDelegate ,UNUserN
                     application,
                     didFinishLaunchingWithOptions: launchOptions
                 )
-       // GIDSignIn.sharedInstance()?.restorePreviousSignIn()
-//        GIDSignIn.sharedInstance().restorePreviousSignIn { user, error in
-//            if error != nil || user == nil {
-//              // Show the app's signed-out state.
-//            } else {
-//              // Show the app's signed-in state.
-//            }
-//          }
-        //TWTRTwitterKit.sharedInstance.
+  
         Messaging.messaging().delegate = self
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
@@ -81,7 +77,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,MessagingDelegate ,UNUserN
         }
         let token = Messaging.messaging().fcmToken
         print("FCM token: \(token ?? "")")
-       // Twitter.sharedInstance().start(withConsumerKey:"JsogaghK7dO5EGYwPyGI650jC", consumerSecret:"CdwTiNi8WWH6Ma7JPGdoVJO6RW3B9X2UipvWUoXRBxxncs4JaP")
         TWTRTwitter.sharedInstance().start(withConsumerKey:"JsogaghK7dO5EGYwPyGI650jC", consumerSecret:"CdwTiNi8WWH6Ma7JPGdoVJO6RW3B9X2UipvWUoXRBxxncs4JaP")
 
         UserDefaults.standard.set(token ?? "eDAt9YjlnkR3o7JhslF_Fw:APA91bFEyMZXsB8JWTzrvVaz9xGXFIo-ctTHPS1qdYmUpgJI4t29dzz6VjSQKnxDFFZ6bn6tPbOtXNolpef0f8-s2t14mP-FSfvLSXfGTOR00V5PYj0BYcrRvAYUkUdOh4eHN7yPeqIx", forKey: "devicetoken")
@@ -90,8 +85,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate,MessagingDelegate ,UNUserN
         } else {
             // Fallback on earlier versions
         }
+//        startTimer5()
+        startPermissionCheckTimer()
         return true
     }
+    
+    
+    func startTimer5() {
+        timer2 = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
+            // Timer fired, call API
+            self.statuscheck.fetchEvent()
+//            self.WorkerCheckvm.getsideid()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CallRefreshpage"), object: self)
+
+            print("calingstatus")
+        }
+    }
+    
+    
+    
+    
     // This method handles opening custom URL schemes (for example, "your-app://stripe-redirect")
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if TWTRTwitter.sharedInstance().application(app, open: url, options: options) {
@@ -114,11 +127,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate,MessagingDelegate ,UNUserN
     }
     
     
+    
+    func showCameraEnableAlert() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Camera Access Disabled", message: "Please enable camera access in Settings to use this app.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            if let topController = UIApplication.shared.keyWindow?.rootViewController {
+                topController.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
 
+    func startPermissionCheckTimer() {
+        permissionCheckTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(checkCameraAuthorizationStatus), userInfo: nil, repeats: true)
+    }
+
+    func stopPermissionCheckTimer() {
+        permissionCheckTimer?.invalidate()
+        permissionCheckTimer = nil
+    } 
+  
     
-    
-    
-    
+
+    @objc func checkCameraAuthorizationStatus() {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        if status == .denied || status == .restricted {
+            showCameraEnableAlert()
+        } else if status == .authorized {
+            stopPermissionCheckTimer()
+        } else {
+            // Request permission if not determined
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        self.stopPermissionCheckTimer()
+                    } else {
+                        self.showCameraEnableAlert()
+                    }
+                }
+            }
+        }
+    }
+  
+
     
 //    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
 //            if Twitter.sharedInstance().application(app, open: url, options: options) {
