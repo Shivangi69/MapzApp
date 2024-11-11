@@ -12,12 +12,19 @@ struct EditProfileView: View {
     
     @State  var name: String = UserDefaults.standard.string(forKey: "name") ?? ""
     @State  var comment = UserDefaults.standard.string(forKey: "tagLine") ??  "Comment"
-
     @State  var email = UserDefaults.standard.string(forKey: "email") ??  ""
-
+    @State private var image: UIImage? = {
+        if let imageUrlString = UserDefaults.standard.string(forKey: "profilePictureURL"),
+           let imageUrl = URL(string: imageUrlString),
+           let imageData = try? Data(contentsOf: imageUrl) {
+            return UIImage(data: imageData)
+        }
+        return nil
+    }()
     
     
     @Environment(\.presentationMode) var presentationMode
+    
     let minHeight: CGFloat = 100
     @State private var height: CGFloat?
     @State private var showingActionSheet = false
@@ -29,7 +36,7 @@ struct EditProfileView: View {
     var offset: CGFloat {
         sqrt(radius * radius / 2)
     }//icons8-male-user-72
-    @State var image = UIImage(named: "icons8-male-user-72")
+//    @State var image = UIImage(named: "icons8-male-user-72")
     
     @State var showNextView = false
     @State private var signedIn = false
@@ -68,12 +75,12 @@ struct EditProfileView: View {
                
                 
                 HStack{
-
+                    
                 }
                 .frame(width: UIScreen.main.bounds.width-20, height: 1.0)
                 .border(Color.black, width: 1)
-                .padding(.bottom,
-                         3.0)
+                .padding(.bottom,3.0)
+                         
 
                 
                 HStack{
@@ -87,15 +94,15 @@ struct EditProfileView: View {
                       VStack  {
                           
                             
-                          Image(uiImage: image!)
-                              .resizable()
-                              .frame(width: 100.0, height: 100.0)
-                              .cornerRadius(50.0)
-                              .overlay(
-                                  Circle()
-                                      .stroke(Color.black, lineWidth: 2) // You can customize the color and lineWidth
-                              )
-                              .clipShape(Circle())
+//                          Image(uiImage: image!)
+//                              .resizable()
+//                              .frame(width: 100.0, height: 100.0)
+//                              .cornerRadius(50.0)
+//                              .overlay(
+//                                  Circle()
+//                                      .stroke(Color.black, lineWidth: 2) // You can customize the color and lineWidth
+//                              )
+//                              .clipShape(Circle())
 
 
 //                                .overlay(
@@ -125,8 +132,27 @@ struct EditProfileView: View {
 //                                )
                                 
                           
-                                .actionSheet(isPresented: $showingActionSheet) {
-                                    ActionSheet(title: Text("Choose"), message: Text(""), buttons: [
+                          if let image = image {
+                         
+                              Image(uiImage: image)
+                                  .resizable()
+                                  .frame(width: 100.0, height: 100.0)
+                                  .cornerRadius(50.0)
+                                  .overlay(
+                                    Circle()
+                                    .stroke(Color.black, lineWidth: 2) // You can customize the color and lineWidth
+                                  )
+                                  .clipShape(Circle())
+                              
+                              
+//                                  .overlay(
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .inset(by: 0.5)
+//                                        .stroke(Color.black.opacity(0.15), lineWidth: 1)
+//                                  )
+                              
+                                  .actionSheet(isPresented: $showingActionSheet) {
+                                      ActionSheet(title: Text("Choose"), message: Text(""), buttons: [
                                         .default(Text("Camera")) {
                                             self.showImagePicker .toggle()
                                             cmrstr = "Camera"  },
@@ -134,24 +160,25 @@ struct EditProfileView: View {
                                             self.showImagePicker.toggle()
                                             cmrstr = "Gallery" },
                                         
-                                        .cancel()
-                                    ])
+                                            .cancel()
+                                      ])
+                                  }
+                                  .sheet(isPresented: $showImagePicker) {
+                                      
+                                      if (cmrstr == "Camera"){
+                                          ImagePickerView(sourceType: .camera) { image in
+                                              self.image = image
+                                          }
+                                      }
+                                      else  if (cmrstr == "Gallery"){
+                                          ImagePickerView(sourceType: .photoLibrary) { image in
+                                              self.image = image
+                                              
+                                              //  self.uploadInBackground()
+                                   }
                                 }
-                                .sheet(isPresented: $showImagePicker) {
-                                    
-                                    if (cmrstr == "Camera"){
-                                        ImagePickerView(sourceType: .camera) { image in
-                                            self.image = image
-                                        }
-                                    }
-                                    else  if (cmrstr == "Gallery"){
-                                        ImagePickerView(sourceType: .photoLibrary) { image in
-                                            self.image = image
-                                            
-                                            //  self.uploadInBackground()
-                                        }
-                                    }
-                                }
+                            }
+                          }
                         }
                     
                     
@@ -186,25 +213,20 @@ struct EditProfileView: View {
                     .overlay(RoundedRectangle(cornerRadius: (6.0)).stroke(lineWidth: 1))
                     
                     HStack{
-                        
                         Text (email)
                             .font(.custom("Inter-Regular", size: 14))
                             .placeholder(when: name.isEmpty) {
                                 Text("Name").foregroundColor(.systemGray)
                                     .font(.custom("Inter-Regular", size: 14))
-                                
                             }
                         Spacer()
                     }
                     .padding(.horizontal, 8.0)
                     .frame(width: UIScreen.main.bounds.width-30, height: 45.0)
                     .overlay(RoundedRectangle(cornerRadius: (6.0)).stroke(lineWidth: 1))
-//  .border(Color .black, width: 1)
-
+                    //  .border(Color .black, width: 1)
                     //  .cornerRadius(6)
                     
-                
-                        
 //                    HStack(alignment: .top, spacing: 14.33){
 //
 //
@@ -271,8 +293,6 @@ struct EditProfileView: View {
                                         }
                                     }
                     }
-
-                     
                     .frame(width: UIScreen.main.bounds.width-30)
                     .overlay(RoundedRectangle(cornerRadius: (6.0)).stroke(lineWidth: 1))
                    
@@ -284,21 +304,16 @@ struct EditProfileView: View {
                 
                 Button("Save"){
                   //  obs.ForgotPwd()
-//
-
-                    if (name == "")
-                    {
+                    if (name == ""){
                         message = "Please Enter Name!"
-
                         showingAlert.toggle()
-
                         return
-
+                        
                     }
-
                     signup()
 
-                }  .font(.custom("Inter-Bold", size: 20))
+                }
+                .font(.custom("Inter-Bold", size: 20))
                     .foregroundColor(.white)
                     .font(.custom("Inter-Medium", size: 20))
                     .frame(width:
@@ -340,6 +355,8 @@ struct EditProfileView: View {
            
         }
     }
+    
+    
     private func textDidChange(_ textView: UITextView) {
                 if textView.contentSize.height >= 150
                 {
@@ -369,11 +386,8 @@ struct EditProfileView: View {
                 "email": UserDefaults.standard.string(forKey: "email") ?? "",
                 "dateOfBirth": UserDefaults.standard.string(forKey: "DateOfBirth") ?? "",
                 "tagLine" : comment
-            
-                  ]
-        
-        }
-
+                ]
+            }
             
                     AccountAPI.signin(servciename: "Profile/UpdateUserprofile", logInFormData) { res in
                     switch res {
@@ -429,14 +443,11 @@ struct EditProfileView: View {
                      //        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
 
                             }
-                        
-                            
                         }
                     case let .failure(error):
                       print(error)
                     }
-                  }
-                
+               }
         }
     
 
@@ -480,19 +491,11 @@ struct EditProfileView: View {
                        "Content-Disposition" : "form-data"]
             
 //            let headers: [String : String] = [ "Authorization": "key"]
-        let baseURL = URL(string: "http://167.86.105.98:7723/api/Upload/uploadeventdiary")
+        let baseURL = URL(string: "http://mapzapp.com/api/Upload/uploadeventdiary")
         print(baseURL!)
 
             Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartFormData) in
-               //
-               // multipartFormData.append(fileInData, withName: "file", mimeType: "image/jpg")
-                
-               //
-                //multipartFormData.append(fileInData, withName: "jpg", fileName: "file", mimeType: "image/jpg")
-               //
-              //  multipartFormData.append(fileInData, withName: "file", fileName: "file", mimeType: "image/jpeg")
-                //
-              
+          
                 multipartFormData.append(fileInData, withName: "file", mimeType: "image/jpeg")
                // multipartFormData.append(fileInData, withName: "file")
                 for (key, value) in parameters {

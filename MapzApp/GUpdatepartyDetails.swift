@@ -148,7 +148,7 @@ struct GUpdatepartyDetails: View {
                                 HStack(alignment: .top, spacing: 5.0){//mappin
                                     Image("loctio")
                                         .resizable()
-                                        .frame(width: 20, height: 32.0)
+                                        .frame(width: 15, height: 32.0)
                                     VStack(alignment: .leading, spacing: 0.0){
                                        
                                         

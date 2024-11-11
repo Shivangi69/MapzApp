@@ -456,7 +456,7 @@ class MyBackendModel: ObservableObject
 //}
 
 {
-    let backendCheckoutUrl = URL(string: "http://167.86.105.98:7723/api/PaymentCheckOut/PaymentToken")!  // An example backend endpoint
+    let backendCheckoutUrl = URL(string: "http://mapzapp.com/api/PaymentCheckOut/PaymentToken")!  // An example backend endpoint
     @Published var paymentSheet: PaymentSheet?
     @Published var paymentResult: PaymentSheetResult?
     @Published var amount =  Double()

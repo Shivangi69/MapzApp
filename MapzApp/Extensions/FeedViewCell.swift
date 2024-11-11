@@ -18,24 +18,17 @@ struct FeedViewCell: View {
                             
                             url: NSURL(string: feedList.fileName)! as URL,
                             placeholder: {  Image(feedList.fileName)
-                                    .frame(width: 50.0, height: 60.0)
+                                       .frame(width: 60, height: 70.0)
                                     .aspectRatio(contentMode: .fit)
-                                
                             },
                             image: { 
                                 Image(uiImage: $0).resizable()
                                 
                             }
                         )
-                        .frame(width: 80.0, height: 80.0)
-                        .aspectRatio(contentMode: .fill)
-                    
-                   // .frame(width: 80.0, height:80.0)
-                       // .cornerRadius(50.0)
-                        
-//           .resizable()
-//           .frame(width: 100, height: 100)
-                    
+                        .frame(width: 60, height: 70.0)
+                        .aspectRatio(contentMode: .fit)
+                  
                     VStack(alignment: .leading, spacing : 5.0) {
                         Text(feedList.createdByName)
                             .font(.custom("Inter-Bold", size: 14))

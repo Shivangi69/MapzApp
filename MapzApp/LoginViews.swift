@@ -7,7 +7,6 @@
 
 
 import SwiftUI
-//
 import Alamofire
 import SwiftyJSON
 import FBSDKLoginKit
@@ -15,6 +14,7 @@ import Firebase
 import GoogleSignIn
 import SimpleToast
 import FirebaseAuth
+
 struct LoginViews: View {
     //
     @StateObject var twitterAPI = TwitterAPI() //1
@@ -105,10 +105,8 @@ struct LoginViews: View {
                             
                             HStack {
                                 
-                                SecureField("Temp$123", text: $obs.password)
-                                
+                                SecureField("", text: $obs.password)
                                     .foregroundColor(.white)
-                                
                                     .font(.custom("Inter-Regular", size: 17))
                                     .placeholder(when: obs.password.isEmpty) {
                                         Text("Password").foregroundColor(.white)
@@ -202,17 +200,7 @@ struct LoginViews: View {
                             obs.login()
                         }
                         .fullScreenCover(isPresented: $obs.showNextView, content: MainView.init)
-                        //                .alert(isPresented: $obs.showingAlert, content: {
-                        //                        var alert: Alert {
-                        //
-                        //                            Alert(title: Text("Warning"), message: Text(obs.message), dismissButton: .default(Text("Ok")))
-                        //
-                        //                }
-                        //                    return alert
-                        //                })
-                        
-                        
-                        
+    
                         Spacer()
                         
                         Text("Or Login With")
@@ -223,12 +211,7 @@ struct LoginViews: View {
                         
                         HStack{
                             Button(action: {
-                                //                        self.googleSignIn?.signOut()
-                                //                        self.signedIn = true
-                                //                    self.googleSignIn?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
-                                //                     self.googleSignIn?.clientID = FirebaseApp.app()?.options.clientID
-                                //                        self.googleSignIn?.delegate = self.myGoogle
-                                //                        self.googleSignIn?.signIn()
+                              
                                 UIApplication.dismissKeyboard()
                                 viewModel.signOut()
                             //    viewModel.signIn()
@@ -252,7 +235,6 @@ struct LoginViews: View {
                                         MainView()
                                     }
                                     
-                                    //
                                 })
                             Button(action: {
                                 UIApplication.dismissKeyboard()
@@ -280,24 +262,6 @@ struct LoginViews: View {
                                 }
                                 
                             })
-
-                            
-                            //
-                            //                    VStack {
-                            //                        if let screenName = twitterAPI.user?.screenName { // 2
-                            //                                       Text("Welcome").font(.largeTitle)
-                            //                                       Text(screenName).font(.largeTitle)
-                            //                                   } else { // 3
-                            //                                       Button("Signin with Twitter", action: {
-                            //                                           twitterAPI.authorize()
-                            //                                       })
-                            //                                   }
-                            //                               }
-                            //                               .sheet(isPresented: $twitterAPI.authorizationSheetIsPresented) { // 4
-                            //                                   SafariView(url: $twitterAPI.authorizationURL) // 5
-                            //                               }
-                            
-                            
                             Button(action: {
                                 UIApplication.dismissKeyboard()
                                 twitterAPI.authorize()
@@ -321,26 +285,6 @@ struct LoginViews: View {
                                 .foregroundColor(.white)
                                 .font(.custom("Inter-Regular", size: 17))
                                 .frame(height: 35, alignment: .trailing)
-                            //                    VStack{
-                            //                    Button("Create new now!"){
-                            //                        showsignupView.toggle()
-                            //                            }
-                            //                    .font(.custom("Inter-Bold", size: 20))
-                            //                    .foregroundColor(.white)
-                            //                    .frame( height: 45)
-                            //                    .cornerRadius(15)
-                            //
-                            //                    .fullScreenCover(isPresented: $showsignupView, content: signuppage.init)
-                            //
-                            //                    HStack{
-                            //
-                            //                    }
-                            //                    .frame(height: 1)
-                            //                    .background(Color.white)
-                            //
-                            //                    }
-                            
-                            
                             
                             Button(action: {
                                 UIApplication.dismissKeyboard()
@@ -352,10 +296,8 @@ struct LoginViews: View {
                             }
                             .fullScreenCover(isPresented: $showsignupView, content: signuppage.init)
                             
-                            //}
-                            
-                            
-                        }//.hiddenNavigationBarStyle()
+                       
+                        }
                         .padding(.horizontal, 5.0)
                         .onAppear(){
                             UserDefaults.standard.set("done", forKey: "launchfirst")
@@ -369,7 +311,6 @@ struct LoginViews: View {
                 .background(Color("themecolor") .ignoresSafeArea(.all, edges: .all))
                 .simpleToast(isPresented: $obs.showingAlert, options: toastOptions) {
                     HStack {
-                        
                         Text(obs.message)
                     }
                     .padding()
@@ -379,7 +320,6 @@ struct LoginViews: View {
                 }
                 
             }
-            //        }
             if $showdocPopUp.wrappedValue {
                 ZStack {
                     //
@@ -480,7 +420,6 @@ struct LoginViews: View {
             }
         }
     }
-  //  }
     
     func forgotPwd() {
         
@@ -508,12 +447,7 @@ struct LoginViews: View {
                         UserDefaults.standard.set(forgtmail, forKey: "emailf")
                         
                         self.showverifyScreen.toggle()
-                        //                                self.showingAlert1.toggle()
-                        //                                self.showdocPopUp.toggle()
-                        //                                self.message = json["message"].stringValue
-                        //           self.logindetails.append(acc)
-                        //           print(self.logindetails)
-                        
+                       
                         
                     }
                     else{
@@ -521,10 +455,7 @@ struct LoginViews: View {
                         
                         self.message = json["message"].stringValue
                         self.showingAlert = true
-                        //        @Published  var showingAlert = false
-                        //        AlertToast(displayMode: .alert, type: .regular, title: json["ResponseMsg"].stringValue )
-                        //        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
-                        
+                   
                     }
                     
                     
@@ -636,9 +567,8 @@ struct LoginViews: View {
                             if let dict = result as? [String : AnyObject]{
                                 if(dict["email"] as? String == nil || dict["id"] as? String == nil || dict["email"] as? String == "" || dict["id"] as? String == "" ){
                                     
-                                    
-                                    
-                                }else{
+                                }
+                                else{
                                     
                                 }
                             }
@@ -723,11 +653,11 @@ struct LoginViews: View {
             [
                 "userName": "self.googleFirstName",
                 "email": "",
-                  "password": "123456",
-                  "dateOfBirth": "",
+                "password": "123456",
+                "dateOfBirth": "",
                 "profilePictureURL": "",
                 "deviceToken":UserDefaults.standard.string(forKey: "devicetoken")!,
-                  "deviceType": "I",
+                "deviceType": "I",
                 "flag" : "F"
                   ]
         
@@ -821,11 +751,15 @@ class loginObserver: ObservableObject {
     
     @Published  var logindetails = [Account]()
   //  @Published  var email =  String()
+ //    @Published  var password =  String()
+//    @Published  var password =  String()
+    
+//    @Published  var password = "Temp$123"
     @Published  var email =  "mipl.student@yopmail.com"
- //   @Published  var password =  String()
 
-
-    @Published  var password = "Temp$123"
+//    @Published  var email =  ""
+    @Published  var password = ""
+//  
     @Published var shouldRedirectToMAINView = false
     @Environment(\.presentationMode) private var presentationmode
     @Published var showNextView = false
@@ -834,7 +768,8 @@ class loginObserver: ObservableObject {
     @Published  var showingAlert = false
     @Published  var message = String()
     var isLoggedin = false
-   
+
+    
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         

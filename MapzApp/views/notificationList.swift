@@ -127,7 +127,11 @@ struct notificationList: View {
                                 .frame(width: 60, height: 60)
                                 .cornerRadius(30)
                                 .aspectRatio(contentMode: .fit)
-                                
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.black, lineWidth: 2) // You can customize the color and lineWidth
+                                )
+                                .clipShape(Circle())
                                 
                                 VStack(alignment: .leading, spacing: 5.0){
                                     
@@ -143,7 +147,7 @@ struct notificationList: View {
                                     HStack{
                                         Image("icons8-done-100")
                                             .resizable()
-                                            .frame(width: 30.0, height: 30.0)
+                                            .frame(width: 25, height: 25)
                                             .onTapGesture(){
                                                 /// toemailStr = pokemon.emailstr
                                                 showingAlert = true
@@ -225,7 +229,8 @@ struct notificationList: View {
                     
                 }
         
-            }.frame(height: UIScreen.main.bounds.height-60)
+            }
+            .frame(width: UIScreen.main.bounds.width)
     
         }.onAppear(){
             

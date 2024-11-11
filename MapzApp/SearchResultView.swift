@@ -11,7 +11,7 @@ struct SearchResultView: View {
     @Environment(\.presentationMode) var presentationMode
     //  @State  var searchText = ""
     @State var searchText =  String()
-    
+
     @State private var showCancelButton: Bool = false
     var onCommit: () ->Void = {
         print("onCommit")
@@ -59,43 +59,99 @@ struct SearchResultView: View {
                             .frame(width: 20.0, height: 20.0)
                         
                         HStack(spacing : 10.0) {
-                            
-                           //
-                            Text("Search")
-                                .foregroundColor(Color.black)
-                                .font(.custom("Inter-Bold", size: 18 ))
-                                            
-                            
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                
-                                // Search text field
-                                TextField("Search", text: $searchText,
-                                          onCommit: {
-                                            print("Search = \(searchText)")
-                                          //  self.amount = Double(searchText)!
-                                            }
-                                )
-                                    .onChange(of: searchText, perform: { value in
-                                        print(value)
-     //                                       if someText != oldText {
-     //                                           someText = editInputNumber(textIn: someText)
-     //                                           oldText = someText
-     //                                       }
-                                        obs.searchText = value
-                                        obs.fetch()
-                                        }
-                                    
-                                    )
+                           
+                            HStack(spacing : 10.0) {
+                                Text("Search")
                                     .foregroundColor(Color.black)
-                                    .font(.custom("Inter-Regular", size: 20))
-                             
-                            }
-                            .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
-                            .foregroundColor(.secondary) // For magnifying glass and placeholder test
-                            .background(Color(.white))
-                            .overlay(RoundedRectangle(cornerRadius: (16)).stroke(lineWidth: 1.0))
-                            
+                                    .font(.custom("Inter-Bold", size: 18 ))
+                               
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                    
+                                    // Search text field
+                                ZStack(alignment: .leading) {
+                                    if obs.searchText.isEmpty { // Separate text for placeholder to give it the proper color
+                                        Text("")
+                                    }
+                                        
+                                        TextField("", text: $obs.searchText)
+                                            .onChange(of: obs.searchText) { _ in
+                                                obs.fetch()
+                                            }
+                                            .foregroundColor(.primary)
+                                        
+                                    }
+                                    
+                                    // Clear button
+                                    Button(action: {
+                                        self.obs.searchText = ""
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill").opacity(obs.searchText == "" ? 0 : 1)
+                                    }
+                                }
+
+                                .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
+                                .foregroundColor(.secondary) // For magnifying glass and placeholder text
+                                .background(Color(.white))
+                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1.0))
+
+//
+//                                HStack {
+//                                    Image(systemName: "magnifyingglass")
+//                                    
+//                                    // Search text field
+//                                    ZStack (alignment: .leading) {
+//                                        if obs.searchText.isEmpty { // Separate text for placeholder to give it the proper color
+//                                            Text("")
+//                                        }
+//                                        TextField("", text: $obs.searchText, onEditingChanged: { isEditing in
+//                                            self.showCancelButton = true
+//                                            obs.fetch()
+//                                        }, onCommit: onCommit).foregroundColor(.primary)
+//                                    }
+//                                    // Clear button
+//                                    Button(action: {
+//                                        self.obs.searchText = ""
+//                                    }) {
+//                                        Image(systemName: "xmark.circle.fill").opacity(obs.searchText == "" ? 0 : 1)
+//                                    }
+//                                }
+//                                
+//                                .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
+//                                .foregroundColor(.secondary) // For magnifying glass and placeholder test
+//                                .background(Color(.white))
+//                                .overlay(RoundedRectangle(cornerRadius: (16)).stroke(lineWidth: 1.0))
+                                
+                            }.frame(width: UIScreen.main.bounds.width-30 )
+//                                       .padding()
+//                            HStack {
+//                                Image(systemName: "magnifyingglass")
+//                                
+//                                // Search text field
+//                                TextField("Search", text: $searchText,
+//                                          onCommit: {
+//                                            print("Search = \(searchText)")
+//                                          //  self.amount = Double(searchText)!
+//                                            }
+//                                )
+//                                
+//                                    .onChange(of: searchText, perform: { value in
+//                                        print(value)
+//     //                                       if someText != oldText {
+//     //                                           someText = editInputNumber(textIn: someText)
+//     //                                           oldText = someText
+//     //                                       }
+//                                        obs.searchText = value
+//                                        obs.fetch()
+//                                        }
+//                                    
+//                                    )
+//                                
+//                                    .foregroundColor(Color.black)
+//                                    .font(.custom("Inter-Regular", size: 20))
+//                             
+//                            }
+                       
                             
                         }.frame(width: UIScreen.main.bounds.width-30)
                             
@@ -115,11 +171,14 @@ struct SearchResultView: View {
                     VStack{
                         //                            ForEach(0..<dataTypesArray.count) { each in
                         //
-                        ForEach(obs.eventlist, id: \.self) { pokemon in
+//                        ForEach(obs.eventlist, id: \.self) { pokemon in
                             
-                            // ForEach((obs.eventlist).filter{$0.address.contains(searchText) || searchText == ""}, id:\.self) { pokemon in
+                            ForEach((obs.eventlist).filter{$0.userName.contains(searchText) || searchText == ""}, id:\.self) { pokemon in
+                          
                             
-                            //  searchResultViewCell(eventlistu: pokemon)
+            //  ForEach((obs.eventlist).filter{$0.address.contains(searchText) || searchText == ""}, id:\.self) { pokemon in
+            //  searchResultViewCell(eventlistu: pokemon)
+                                
                             HStack{
                                 VStack(alignment: .leading, spacing: 2){
                                     
@@ -212,8 +271,8 @@ class SearchListObserver: ObservableObject {
     func fetch() {
         
         let str = UserDefaults.standard.string(forKey: "id") ?? ""
-        let str1  = "EventDiary/SearchFriend_EventDairy?Id=" + "1084" +  "&msg=" + searchText
-        AccountAPI.getsignin(servciename: str1, nil) { res in
+        let str1  = "EventDiary/SearchFriend_EventDairy?Id=" + str +  "&msg=" + searchText
+        AccountAPI.getsigninwitoutloader(servciename: str1, nil) { res in
             switch res {
             case .success:
                 print("resulllll",res)
@@ -343,6 +402,54 @@ extension String {
 //        self.init(attributedString) /// initialize a `Text`
 //    }
 //}
+
+
+import SwiftUI
+import UIKit
+
+struct SearchTextField: UIViewRepresentable {
+    class Coordinator: NSObject, UITextFieldDelegate {
+        var parent: SearchTextField
+
+        init(parent: SearchTextField) {
+            self.parent = parent
+        }
+
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            DispatchQueue.main.async {
+                self.parent.text = textField.text ?? ""
+                self.parent.onTextChange?(self.parent.text)
+            }
+        }
+
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            parent.onCommit?()
+            return true
+        }
+    }
+
+    @Binding var text: String
+    var onCommit: (() -> Void)?
+    var onTextChange: ((String) -> Void)?
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(parent: self)
+    }
+
+    func makeUIView(context: Context) -> UITextField {
+        let textField = UITextField(frame: .zero)
+        textField.delegate = context.coordinator
+//        textField.borderStyle = .roundedRect
+        textField.placeholder = "Search"
+        return textField
+    }
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
+        uiView.text = text
+    }
+}
+
 struct UIKLabel: UIViewRepresentable {
 
     typealias TheUIView = UILabel

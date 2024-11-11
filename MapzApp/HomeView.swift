@@ -309,7 +309,7 @@ struct HomeView: View {
                                      }, label: {
                                          Image(systemName: "camera")
                                              .resizable()
-                                             .frame(width:24, height: 24)
+                                             .frame(width:40, height: 30)
                                      })//buttoncolor
                                      .frame(width:60, height: 60)
                                      .background((Color("themecolor")))
@@ -329,7 +329,7 @@ struct HomeView: View {
                                      }, label: {
                                          Image(systemName: "mic")
                                              .resizable()
-                                             .frame(width:24, height: 24)
+                                             .frame(width:30, height: 30)
                                      })
                                      .frame(width:60, height: 60)
                                      .background((Color("themecolor")))
@@ -347,9 +347,9 @@ struct HomeView: View {
                                         // self.showVideoPopUp = true
                                          self.createEvent()
                                      }, label: {
-                                         Image(systemName: "video")
+                                         Image("videonew")
                                              .resizable()
-                                             .frame(width:24, height: 24)
+                                             .frame(width:35, height: 35)
                                      })
                                      .frame(width:60, height: 60)
                                      .background((Color("themecolor")))
@@ -367,7 +367,7 @@ struct HomeView: View {
 
                                          self.createEvent()
                                      }, label: {
-                                         Image(systemName: "doc")
+                                         Image("Vectortoo")
                                              .resizable()
                                              .frame(width:24, height: 24)
                                      })

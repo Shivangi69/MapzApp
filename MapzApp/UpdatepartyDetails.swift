@@ -61,222 +61,189 @@ struct UpdatepartyDetails: View {
         
     )
     @State var  eventNOE =  UserDefaults.standard.string(forKey: "eventNOE")
-//       @State var image: Image? = nil
     let minHeight: CGFloat = 60
     @State private var height: CGFloat?
     
-  //  @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ZStack{
             VStack(spacing: 0.0) {
                 Spacer()
-                      .frame(height :heightplus)
-             HStack(spacing: 20.0) {
-                
-                 Button(action: {
+                    .frame(height :heightplus)
+                HStack(spacing: 20.0) {
                     
-                    if (eventNOE == "New"){
+                    Button(action: {
                         
-                        showupdateview = true
-                    }else{
-                        presentationMode.wrappedValue.dismiss()
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshGroupD"), object: self)
-
+                        if (eventNOE == "New"){
+                            
+                            showupdateview = true
+                        }else{
+                            presentationMode.wrappedValue.dismiss()
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshGroupD"), object: self)
+                            
+                        }
+                    }) {
+                        
+                        Image("back")
+                            .resizable()
+                            .frame(width: 24.0, height: 24.0)
+                        
                     }
-                 }) {
-                   
-                     Image("back")
-                         .resizable()
-                         .frame(width: 24.0, height: 24.0)
-
-                 }
-                 .fullScreenCover(isPresented: $showupdateview, content: MainView.init)
-                 
-               Spacer()
-             }
-            
-             .frame(height: 32.0)
-             .padding(.horizontal, 10.0)
+                    .fullScreenCover(isPresented: $showupdateview, content: MainView.init)
+                    
+                    Spacer()
+                }
+                
+                .frame(height: 32.0)
                 if (obs.showview){
-             //   ScrollView{
-                    
-                    
-//                VStack{
-//                    GoogleMapAdapterView1()
-//                        
-//
-//                }
-//                .frame(height: 300.0)
                     
                     ForEach(obs.eventlist, id: \.self) { person in
-
+                        
                         VStack(spacing: 0.0){
                             
-                        HStack(alignment: .center, spacing: 10.0){
-                            
-                            VStack{
-                                AsyncImage(
-                                    url: NSURL(string: UserDefaults.standard.string(forKey: "profilePictureURL")!)! as URL ,
-                                    placeholder: { Image("icons8-male-user-72")
+                            HStack(alignment: .center, spacing: 10.0){
+                                
+                                VStack{
+                                    AsyncImage(
+                                        url: NSURL(string: UserDefaults.standard.string(forKey: "profilePictureURL")!)! as URL ,
+                                        placeholder: { Image("icons8-male-user-72")
+                                            
+                                                .resizable()
+                                                .foregroundColor(colorGrey1)
+                                                .aspectRatio(contentMode: .fill)
+                                        },
+                                        image: { Image(uiImage: $0).resizable()
+                                            
+                                        }
+                                    )
+                                    
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(30)
+                                    .aspectRatio(contentMode: .fit)
+                                    
+                                }
+                                VStack(alignment: .leading, spacing: 5.0){
+                                    HStack(alignment: .center, spacing: 5.0){
+                                        Text(UserDefaults.standard.string(forKey: "name") ?? "")
+                                            .font(.custom("Inter-Bold", size: 15))
                                         
+                                    }
+                                    
+                                    
+                                    
+                                    HStack(alignment: .top, spacing: 5.0){//mappin
+                                        Image("loctio")
                                             .resizable()
-                                            .foregroundColor(colorGrey1)
-                                            .aspectRatio(contentMode: .fill)
-                                    },
-                                    image: { Image(uiImage: $0).resizable()
+                                            .frame(width: 15, height: 32.0)
                                         
-                                    }
-                                )
-                                
-                                .frame(width: 60, height: 60)
-                                .cornerRadius(30)
-                                .aspectRatio(contentMode: .fit)
-                                
-                            }
-                            VStack(alignment: .leading, spacing: 5.0){
-                                HStack(alignment: .center, spacing: 5.0){
-                                    Text(UserDefaults.standard.string(forKey: "name") ?? "")
-                                        .font(.custom("Inter-Bold", size: 15))
-                                    
-                                    
-                                    //
-                                    //                                    Spacer()
-                                    //                                    Image("share")
-                                    //                                        .resizable()
-                                    //                                        .frame(width: 20.0, height: 20.0)
-                                    //                                        .foregroundColor(.blue)
-                                    //                                        .onTapGesture(){
-                                    //                                            showshareview.toggle()
-                                    //                                        }
-                                    
-                                    
-                                }
-                                
-                                //                                .fullScreenCover(isPresented: $showshareview, content: {
-                                //                                    ShareEvent()
-                                //                                })
-                                //
-                                
-                                
-                                HStack(alignment: .top, spacing: 5.0){//mappin
-                                    Image("loctio")
-                                        .resizable()
-                                        .frame(width: 20, height: 32.0)
-
-                                    VStack(alignment: .leading, spacing: 0.0){
-                                        HStack{
-                                            // Spacer()
-                                            Text(person.date)
-                                                .font(.custom("Inter-Regular", size: 13))
+                                        VStack(alignment: .leading, spacing: 0.0){
+                                            HStack{
+                                                // Spacer()
+                                                Text(person.date)
+                                                    .font(.custom("Inter-Regular", size: 13))
+                                                    .foregroundColor(Color.black)
+                                                    .multilineTextAlignment(.leading)
+                                                
+                                                Text(person.diaryName)
+                                                    .font(.custom("Inter-Regular", size: 15))
+                                                    .foregroundColor(Color.black)
+                                                    .multilineTextAlignment(.leading)
+                                                
+                                                
+                                            }
+                                            
+                                            Text(person.Addrs)
+                                                .font(.custom("Inter-Regular", size: 14))
                                                 .foregroundColor(Color.black)
-                                                .multilineTextAlignment(.leading)
-                                            //                                            Text(" ")
-                                            //                                                .font(.custom("Inter-Regular", size: 13))
-                                            //                                            .foregroundColor(Color.black)
-                                            //                                            .multilineTextAlignment(.leading)
-                                            
-                                            
-                                            Text(person.diaryName)
-                                                .font(.custom("Inter-Regular", size: 15))
-                                                .foregroundColor(Color.black)
-                                                .multilineTextAlignment(.leading)
-                                            
                                             
                                         }
+                                        Spacer()
                                         
-                                        Text(person.Addrs)
-                                            .font(.custom("Inter-Regular", size: 14))
-                                            .foregroundColor(Color.black)
-                                        
+                                        Image("Artboard 37")
+                                            .resizable()
+                                            .frame(width: 20.0, height: 20.0)
+                                        //  .foregroundColor(.blue)
+                                            .onTapGesture(){
+                                                showDairy.toggle()
+                                            }
                                     }
-                                    Spacer()
-                                    
-                                    Image("Artboard 37")
-                                        .resizable()
-                                        .frame(width: 20.0, height: 20.0)
-                                      //  .foregroundColor(.blue)
-                                        .onTapGesture(){
-                                            showDairy.toggle()
-                                        }
                                 }
+                                
+                                Spacer()
                             }
-                            
                             Spacer()
-                        }
-                            Spacer()
-                            .frame(height: 7.0)
-                                HStack(spacing: 20.0) {
-
+                                .frame(height: 7.0)
+                            HStack(spacing: 20.0) {
+                                
                             }
                             .frame(width :UIScreen.main.bounds.width-20 , height: 1.0)
                             .background(Color.black)
-
+                            
                             HStack(spacing: 0.0){
-                           // Spacer()
-                           HStack(alignment: .center){
-                               Text("Diary")
-                                   .font(.custom("Inter-Regular", size: 14))
-                                Text(String(UserDefaults.standard.integer(forKey: "totalEvent")))
-                                    .font(.custom("Inter-Bold", size: 14))
-                                   // .foregroundColor(Color("yellowColor"))
-                                   // .foregroundColor(Color.white)
-                            }
-                           //.padding(.horizontal, 15.0)
-
-                           .frame(width : UIScreen.main.bounds.width/3-10,height: 40)
-                           .onTapGesture{
-
-                              // showcollc = false
-                           }
+                                // Spacer()
                                 HStack(alignment: .center){
-
+                                    Text("Diary")
+                                        .font(.custom("Inter-Regular", size: 14))
+                                    Text(String(UserDefaults.standard.integer(forKey: "totalEvent")))
+                                        .font(.custom("Inter-Bold", size: 14))
+                                    // .foregroundColor(Color("yellowColor"))
+                                    // .foregroundColor(Color.white)
                                 }
-                                 
+                                //.padding(.horizontal, 15.0)
+                                
+                                .frame(width : UIScreen.main.bounds.width/3-10,height: 40)
+                                .onTapGesture{
+                                    
+                                    // showcollc = false
+                                }
+                                HStack(alignment: .center){
+                                    
+                                }
+                                
                                 
                                 .frame(width : 2,height: 20)
                                 .background(Color.black)
-
+                                
                                 HStack(alignment: .center){
                                     Text("Friends")
                                         .font(.custom("Inter-Regular", size: 14))
-
-                                    Text(String(UserDefaults.standard.integer(forKey: "totalFriend")))
-                                         .font(.custom("Inter-Bold", size: 14))
-                                        // .foregroundColor(Color("yellowColor"))
-                                        // .foregroundColor(Color.white)
                                     
-                                 }.frame(width : UIScreen.main.bounds.width/3-10,height: 40)
-
-                                .onTapGesture {
-                                    showfriendlist.toggle()
-                                }
-                                .fullScreenCover(isPresented: $showfriendlist, content: {
-                                    FriendsListSearching()
-                                })
-
+                                    Text(String(UserDefaults.standard.integer(forKey: "totalFriend")))
+                                        .font(.custom("Inter-Bold", size: 14))
+                                    // .foregroundColor(Color("yellowColor"))
+                                    // .foregroundColor(Color.white)
+                                    
+                                }.frame(width : UIScreen.main.bounds.width/3-10,height: 40)
+                                
+                                    .onTapGesture {
+                                        showfriendlist.toggle()
+                                    }
+                                    .fullScreenCover(isPresented: $showfriendlist, content: {
+                                        FriendsListSearching()
+                                    })
+                                
                                 HStack(alignment: .center){
-
+                                    
                                 }
-                                   
+                                
                                 .frame(width : 2,height: 20)
                                 .background(Color.black)
-
+                                
                                 HStack(alignment: .center){
                                     Text("Share")
                                         .font(.custom("Inter-Bold", size: 14))
                                         .foregroundColor(Color.orange)
                                         .onTapGesture(){
                                             showshareview.toggle()
-                                    }
+                                        }
                                     
-                                 }
-
+                                }
+                                
                                 .fullScreenCover(isPresented: $showshareview, content: {
                                     ShareEvent()
                                 })
                                 //.padding(.horizontal, 15.0)
-
+                                
                                 
                                 .frame(width : UIScreen.main.bounds.width/3 - 10,height: 40)
                             }
@@ -294,375 +261,381 @@ struct UpdatepartyDetails: View {
                             
                         }
                         GeometryReader { geometry in
-                          ZStack {
-
-                            VStack {
-
-                                self.gridViewall(geometry)
-                                    .onTapGesture {
-                                     
-                                        shownextr = true
-                                    }
-                                    .fullScreenCover(isPresented: $shownextr, content: {
-                                        //ImageViewer(imgstr : person.file)
-                                        EventDetail(filelist : obs.filelistall , addrs : person.Addrs)
-                                    })
+                            ZStack {
+                                
+                                VStack {
+                                    
+                                    self.gridViewall(geometry)
+                                        .onTapGesture {
+                                            
+                                            shownextr = true
+                                        }
+                                        .fullScreenCover(isPresented: $shownextr, content: {
+                                            //ImageViewer(imgstr : person.file)
+                                            EventDetail(filelist : obs.filelistall , addrs : person.Addrs)
+                                        })
+                                }
+                                //                                .padding(.horizontal, 10.0)
+                                
+                                
                             }
-//                                .padding(.horizontal, 10.0)
-
-
-                          }
-
+                            
                         }
-               
-                VStack(spacing: 20.0){
-                   
-                    Spacer()
-                    if(person.userId == myId)
-
-                    {
-                        HStack(spacing : 10){
+                        
+                        VStack(spacing: 20.0){
+                            
                             Spacer()
-                            HStack{
+                            if(person.userId == myId)
                                 
-                                    Image("icons8-camera-96")
-                                    .resizable()
-                                    .frame(width: 36, height: 36)
-                                  
-                                    .aspectRatio(contentMode: .fit)
-                                    .onTapGesture {
-                                        obs.showvideopopup1 = false
-                                        showVideoPopUp = false
-                                        showrecdPopUp = false
-                                        showdocPopUp = false
-                                        showCameraPopUp = true
-                                    }
-                                
-                            }
-                            .frame(width: 60, height: 60)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true)
-                            )
-                            HStack{
-                                Image("icons8-circled-play-100")
-                                
-                                    .resizable()
-                                    .frame(width: 36, height: 36)
-                                    .aspectRatio(contentMode: .fit)
-                                    .onTapGesture {
-                                        
-                                        showCameraPopUp = false
-                                        //       showVideoPopUp = false
-                                        showrecdPopUp = false
-                                        showdocPopUp = false
-                                        self.showVideoPopUp = true
-                                        
-                                        obs.showvideopopup1 = true
-                                        
-                                    }
-                            }.frame(width: 60, height: 60)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true))
-                            HStack{
-                                Image("icons8-microphone-100")
-                                    .resizable()
-                                    .frame(width: 36, height: 36)
-                                    .aspectRatio(contentMode: .fit)
-                                    .onTapGesture {
-                                        obs.showvideopopup1 = false
-                                        
-                                        showCameraPopUp = false
-                                        showVideoPopUp = false
-                                        //      showrecdPopUp = false
-                                        showdocPopUp = false
-                                        showrecdPopUp = true
-                                    }
-                            } .frame(width: 60, height: 60)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                    .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true)
-                                )
+                            {
+                                HStack(spacing : 10){
+                                    Spacer()
                                     HStack{
-                                        Image("icons8-menu-50")
-                                                  .resizable()
-                                                  .frame(width: 36, height: 36)
-                                                  .aspectRatio(contentMode: .fit)
-                                                   .onTapGesture {
-                                                       obs.showvideopopup1 = false
-
-                                                       showCameraPopUp = false
-                                                          showVideoPopUp = false
-                                                          showrecdPopUp = false
-                                                   showdocPopUp = true
-                                                       }
-                                                 
-                                    } .frame(width: 60, height: 60)
+                                        
+                                        Image("icons8-camera-96")
+                                            .resizable()
+                                            .frame(width: 36, height: 36)
+                                        
+                                            .aspectRatio(contentMode: .fit)
+                                            .onTapGesture {
+                                                obs.showvideopopup1 = false
+                                                showVideoPopUp = false
+                                                showrecdPopUp = false
+                                                showdocPopUp = false
+                                                showCameraPopUp = true
+                                            }
+                                        
+                                    }
+                                    .frame(width: 60, height: 60)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 5)
                                             .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true)
-                                )
-                        Spacer()
-                                            
-                        }.frame(width: UIScreen.main.bounds.width , height: 80, alignment: .center)
+                                    )
+                                    HStack{
+                                        Image("icons8-circled-play-100")
+                                        
+                                            .resizable()
+                                            .frame(width: 36, height: 36)
+                                            .aspectRatio(contentMode: .fit)
+                                            .onTapGesture {
+                                                
+                                                showCameraPopUp = false
+                                                //       showVideoPopUp = false
+                                                showrecdPopUp = false
+                                                showdocPopUp = false
+                                                self.showVideoPopUp = true
+                                                
+                                                obs.showvideopopup1 = true
+                                                
+                                            }
+                                    }.frame(width: 60, height: 60)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true))
+                                    HStack{
+                                        Image("icons8-microphone-100")
+                                            .resizable()
+                                            .frame(width: 36, height: 36)
+                                            .aspectRatio(contentMode: .fit)
+                                            .onTapGesture {
+                                                obs.showvideopopup1 = false
+                                                
+                                                showCameraPopUp = false
+                                                showVideoPopUp = false
+                                                //      showrecdPopUp = false
+                                                showdocPopUp = false
+                                                showrecdPopUp = true
+                                            }
+                                    } .frame(width: 60, height: 60)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true)
+                                        )
+                                    HStack{
+                                        Image("icons8-menu-50")
+                                            .resizable()
+                                            .frame(width: 36, height: 36)
+                                            .aspectRatio(contentMode: .fit)
+                                            .onTapGesture {
+                                                obs.showvideopopup1 = false
+                                                
+                                                showCameraPopUp = false
+                                                showVideoPopUp = false
+                                                showrecdPopUp = false
+                                                showdocPopUp = true
+                                            }
+                                        
+                                    } .frame(width: 60, height: 60)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .strokeBorder(Color("gryColor"), lineWidth: 1, antialiased: true)
+                                        )
+                                    Spacer()
+                                    
+                                }.frame(width: UIScreen.main.bounds.width , height: 80, alignment: .center)
+                                    .background(Color.white)
+                            }
+                            
+                        }
+                        //                .padding(.horizontal, 10.0)
+                        .padding([.bottom],70.0)
+                        .frame(width: UIScreen.main.bounds.width , height: 30, alignment: .center)
+                        
+                        
+                        
                     }
+                    
+                    //                    VStack{
+                    //                    HStack{
+                    //                        //Spacer()
+                    //
+                    //                        Text("Photos")
+                    //                                .font(.custom("Inter-Bold", size: 25))
+                    //                            .foregroundColor(Color("themecolor"))
+                    //                        Spacer()
+                    //
+                    //
+                    //                    }
+                    //                    .padding(.all, 30.0)
+                    //
+                    //
+                    //                        if (obs.showpiclist){
+                    //                         ScrollView(.horizontal, showsIndicators: false) {
+                    //                             HStack(spacing: 10.0){
+                    //                                ForEach(obs.piclist){i in
+                    //
+                    //                            // ForEach(0..<Databoarding.count){_ in
+                    //                                 //gr(productitem: i)
+                    //                                    GridCell(person : i)
+                    //
+                    //                             }
+                    //                             }
+                    //                             .padding(.all, 5)
+                    //                         }.frame(height: 280)
+                    //
+                    //
+                    //
+                    //                    GeometryReader { geometry in
+                    //                      ZStack {
+                    //
+                    //                        VStack {
+                    //
+                    //                            self.gridView(geometry)
+                    //
+                    //                        }
+                    //                        .padding(.horizontal, 10.0)
+                    //
+                    //
+                    //                      }
+                    //
+                    //                    }
+                    //                 //   .frame(height: 550.0)
+                    //                        }
+                    //                        else{
+                    //                            HStack{
+                    //                                //Spacer()
+                    //
+                    //                                Text("No Items Found")
+                    //                                        .font(.custom("Inter-Bold", size: 20))
+                    //
+                    //                            }
+                    //        //
+                    //                        }
+                    //
+                    //                    }
+                    
+                    
+                    
+                    //                    HStack{
+                    //                        //Spacer()
+                    //
+                    //                        Text("Videos")
+                    //                                .font(.custom("Inter-Bold", size: 25))
+                    //                            .foregroundColor(Color("themecolor"))
+                    //                        Spacer()
+                    //
+                    //
+                    //                    }
+                    ////
+                    //                    .padding(.all, 30.0)
+                    //
+                    //                    GeometryReader { geometry in
+                    //                      ZStack {
+                    //
+                    //                        VStack {
+                    //
+                    //                            self.gridView1(geometry)
+                    //
+                    //                        }
+                    //                        .padding(.horizontal, 10.0)
+                    //
+                    //
+                    //                      }
+                    //
+                    //                      }                    .frame(height: 550.0)
+                    //                    if (obs.showvidlist){
+                    //                    ScrollView(.horizontal, showsIndicators: false) {
+                    //                        HStack(spacing: 10.0){
+                    //                           ForEach(obs.vidlist){i in
+                    //
+                    //                       // ForEach(0..<Databoarding.count){_ in
+                    //                            //gr(productitem: i)
+                    //
+                    //                            GridCell1(person : i)
+                    //
+                    //                        }
+                    //                        }
+                    //                        .padding(.all, 5)
+                    //                    }.frame(height: 280)
+                    //                    }
+                    //                    else{
+                    //                        HStack{
+                    //                            //Spacer()
+                    //
+                    //                            Text("No Items Found")
+                    //                                    .font(.custom("Inter-Bold", size: 20))
+                    //
+                    //                        }
+                    //    //
+                    //                    }
+                    
+                    //                    HStack{
+                    //                        //Spacer()
+                    //
+                    //                        Text("Voices")
+                    //                                .font(.custom("Inter-Bold", size: 25))
+                    //                            .foregroundColor(Color("themecolor"))
+                    //                        Spacer()
+                    //
+                    //
+                    //                    }
+                    //
+                    //  .padding(.all, 30.0)
+                    //
+                    //                    if (obs.showaudiolist){
+                    //                    GeometryReader { geometry in
+                    //                      ZStack {
+                    //
+                    //                        VStack {
+                    //
+                    //                            self.gridView2(geometry)
+                    //
+                    //                        }
+                    //                        .padding(.horizontal, 10.0)
+                    //
+                    //
+                    //                      }
+                    //
+                    //                      }
+                    //                    .frame(height: CGFloat(obs.mp3list.count)/2 * 90)
+                    //                    } else{
+                    //                        HStack{
+                    //                            //Spacer()
+                    //
+                    //                            Text("No Items Found")
+                    //                                    .font(.custom("Inter-Bold", size: 20))
+                    //
+                    //                        }
+                    //    //
+                    //                    }
+                    
+                    //                    VStack{
+                    //                    HStack{
+                    //                        //Spacer()
+                    //
+                    //                        Text("Notes")
+                    //                                .font(.custom("Inter-Bold", size: 25))
+                    //                            .foregroundColor(Color("themecolor"))
+                    //                        Spacer()
+                    //
+                    //
+                    //                    }
+                    //                    .padding(.all, 30.0)
+                    //
+                    //                        if (obs.showlist){
+                    //              //   List{
+                    //                        ForEach(obs.notlist, id: \.self) { person in
+                    //                           // ForEach(0..<obs.notlist.count){_ in
+                    //                        HStack(alignment: .center, spacing: 10.0){
+                    //                            Image("icons8-sticky-notes-24")
+                    //                                .resizable()
+                    //
+                    //                                .aspectRatio(contentMode: .fill)
+                    //                                .frame(width: 60.0, height: 60.0)
+                    //
+                    //
+                    //                            Text(person.noteText)
+                    //                                    .font(.custom("Inter-Bold", size: 22))
+                    //                                    .foregroundColor(Color("themecolor"))
+                    //
+                    //                            Spacer()
+                    //                            Button(action: {
+                    //
+                    //                                var checData: Parameters {
+                    //                                    [
+                    //                                        "id": person.Id,
+                    //
+                    //                                          ]
+                    //
+                    //                                }
+                    //                        print(checData)
+                    //                                AccountAPI.signin(servciename: "EventDiaryNote/DeleteEventDiaryNote", checData) { res in
+                    //                                switch res {
+                    //                                case .success:
+                    //                                    print("resulllll",res)
+                    //                        //            if let json = res.value{
+                    //                        //
+                    //                        //            }
+                    //
+                    //
+                    //                                    obs.showlist = true
+                    //                                    obs.showpiclist = true
+                    //                                    obs.showvidlist = true
+                    //                                    obs.showaudiolist = true
+                    //
+                    //                                    obs.fetch()
+                    //                                case let .failure(error):
+                    //                                  print(error)
+                    //                                }
+                    //                              }
+                    //                               }) {
+                    //                               Image("icons8-macos-close-24 (1)")
+                    //                                    .resizable()
+                    //
+                    //                                    .aspectRatio(contentMode: .fit)
+                    //
+                    //
+                    //                            } .frame(width: 40.0, height: 40.0)
+                    //
+                    //
+                    //                        }
+                    //
+                    //                        //.padding(.vertical, 4.0)
+                    //                        .background(Color.white)
+                    //                        .cornerRadius(15.0)
+                    //
+                    //                        //.shadow(color: .gray, radius: 5, x: 1, y: 1)
+                    //                    }
+                    //
+                    //                        } else{
+                    //                            HStack{
+                    //                                //Spacer()
+                    //
+                    //                                Text("No Items Found")
+                    //                                        .font(.custom("Inter-Bold", size: 20))
+                    //
+                    //                            }
+                    //        //
+                    //                        }
+                    //                    }
+                    
+                    
+                    
+                    // Spacer()
+                    // }
+                    
                 }
-                .padding(.horizontal, 10.0)
-                .padding([.top], 20.0)
-                    }
-                  
-//                    VStack{
-//                    HStack{
-//                        //Spacer()
-//
-//                        Text("Photos")
-//                                .font(.custom("Inter-Bold", size: 25))
-//                            .foregroundColor(Color("themecolor"))
-//                        Spacer()
-//
-//
-//                    }
-//                    .padding(.all, 30.0)
-//
-//
-//                        if (obs.showpiclist){
-//                         ScrollView(.horizontal, showsIndicators: false) {
-//                             HStack(spacing: 10.0){
-//                                ForEach(obs.piclist){i in
-//
-//                            // ForEach(0..<Databoarding.count){_ in
-//                                 //gr(productitem: i)
-//                                    GridCell(person : i)
-//
-//                             }
-//                             }
-//                             .padding(.all, 5)
-//                         }.frame(height: 280)
-//
-//
-//
-//                    GeometryReader { geometry in
-//                      ZStack {
-//
-//                        VStack {
-//
-//                            self.gridView(geometry)
-//
-//                        }
-//                        .padding(.horizontal, 10.0)
-//
-//
-//                      }
-//
-//                    }
-//                 //   .frame(height: 550.0)
-//                        }
-//                        else{
-//                            HStack{
-//                                //Spacer()
-//
-//                                Text("No Items Found")
-//                                        .font(.custom("Inter-Bold", size: 20))
-//
-//                            }
-//        //
-//                        }
-//
-//                    }
-                    
-                  
-
-//                    HStack{
-//                        //Spacer()
-//
-//                        Text("Videos")
-//                                .font(.custom("Inter-Bold", size: 25))
-//                            .foregroundColor(Color("themecolor"))
-//                        Spacer()
-//
-//
-//                    }
-////
-//                    .padding(.all, 30.0)
-//
-//                    GeometryReader { geometry in
-//                      ZStack {
-//
-//                        VStack {
-//
-//                            self.gridView1(geometry)
-//
-//                        }
-//                        .padding(.horizontal, 10.0)
-//
-//
-//                      }
-//
-//                      }                    .frame(height: 550.0)
-//                    if (obs.showvidlist){
-//                    ScrollView(.horizontal, showsIndicators: false) {
-//                        HStack(spacing: 10.0){
-//                           ForEach(obs.vidlist){i in
-//
-//                       // ForEach(0..<Databoarding.count){_ in
-//                            //gr(productitem: i)
-//
-//                            GridCell1(person : i)
-//
-//                        }
-//                        }
-//                        .padding(.all, 5)
-//                    }.frame(height: 280)
-//                    }
-//                    else{
-//                        HStack{
-//                            //Spacer()
-//
-//                            Text("No Items Found")
-//                                    .font(.custom("Inter-Bold", size: 20))
-//
-//                        }
-//    //
-//                    }
-
-//                    HStack{
-//                        //Spacer()
-//
-//                        Text("Voices")
-//                                .font(.custom("Inter-Bold", size: 25))
-//                            .foregroundColor(Color("themecolor"))
-//                        Spacer()
-//
-//
-//                    }
-//
-                  //  .padding(.all, 30.0)
-//
-//                    if (obs.showaudiolist){
-//                    GeometryReader { geometry in
-//                      ZStack {
-//
-//                        VStack {
-//
-//                            self.gridView2(geometry)
-//
-//                        }
-//                        .padding(.horizontal, 10.0)
-//
-//
-//                      }
-//
-//                      }
-//                    .frame(height: CGFloat(obs.mp3list.count)/2 * 90)
-//                    } else{
-//                        HStack{
-//                            //Spacer()
-//
-//                            Text("No Items Found")
-//                                    .font(.custom("Inter-Bold", size: 20))
-//
-//                        }
-//    //
-//                    }
-                   
-//                    VStack{
-//                    HStack{
-//                        //Spacer()
-//
-//                        Text("Notes")
-//                                .font(.custom("Inter-Bold", size: 25))
-//                            .foregroundColor(Color("themecolor"))
-//                        Spacer()
-//
-//
-//                    }
-//                    .padding(.all, 30.0)
-//
-//                        if (obs.showlist){
-//              //   List{
-//                        ForEach(obs.notlist, id: \.self) { person in
-//                           // ForEach(0..<obs.notlist.count){_ in
-//                        HStack(alignment: .center, spacing: 10.0){
-//                            Image("icons8-sticky-notes-24")
-//                                .resizable()
-//
-//                                .aspectRatio(contentMode: .fill)
-//                                .frame(width: 60.0, height: 60.0)
-//
-//
-//                            Text(person.noteText)
-//                                    .font(.custom("Inter-Bold", size: 22))
-//                                    .foregroundColor(Color("themecolor"))
-//
-//                            Spacer()
-//                            Button(action: {
-//
-//                                var checData: Parameters {
-//                                    [
-//                                        "id": person.Id,
-//
-//                                          ]
-//
-//                                }
-//                        print(checData)
-//                                AccountAPI.signin(servciename: "EventDiaryNote/DeleteEventDiaryNote", checData) { res in
-//                                switch res {
-//                                case .success:
-//                                    print("resulllll",res)
-//                        //            if let json = res.value{
-//                        //
-//                        //            }
-//
-//
-//                                    obs.showlist = true
-//                                    obs.showpiclist = true
-//                                    obs.showvidlist = true
-//                                    obs.showaudiolist = true
-//
-//                                    obs.fetch()
-//                                case let .failure(error):
-//                                  print(error)
-//                                }
-//                              }
-//                               }) {
-//                               Image("icons8-macos-close-24 (1)")
-//                                    .resizable()
-//
-//                                    .aspectRatio(contentMode: .fit)
-//
-//
-//                            } .frame(width: 40.0, height: 40.0)
-//
-//
-//                        }
-//
-//                        //.padding(.vertical, 4.0)
-//                        .background(Color.white)
-//                        .cornerRadius(15.0)
-//
-//                        //.shadow(color: .gray, radius: 5, x: 1, y: 1)
-//                    }
-//
-//                        } else{
-//                            HStack{
-//                                //Spacer()
-//
-//                                Text("No Items Found")
-//                                        .font(.custom("Inter-Bold", size: 20))
-//
-//                            }
-//        //
-//                        }
-//                    }
-                    
-                    
-                    
-       // Spacer()
-               // }
-                
             }
-            }.edgesIgnoringSafeArea(.all)
             // Spacer(minLength: 30)
                 
             
@@ -676,12 +649,13 @@ struct UpdatepartyDetails: View {
                   
                         HStack{
                             
+                            Text("Add New Photos")
+                                .font(.custom("Inter-Bold", size: 25))
+                            .foregroundColor(Color.black)
+                            Spacer()
                             Button(action: {
                                 self.showCameraPopUp = false
                                // self.obs.fetch()
-                                
-                                
-
                             }) {
                                Image("cross")
                                     .resizable()
@@ -689,16 +663,11 @@ struct UpdatepartyDetails: View {
                                     .aspectRatio(contentMode: .fit)
                                
                             }
-                            .frame(width: 32.0, height: 32.0)
-                            .offset(x: UIScreen.main.bounds.width/2 - 50)
-                                
-                
-                            Text("Add New Photos")
-                                .font(.custom("Inter-Bold", size: 27))
-                            .foregroundColor(Color.black)
-                             Spacer()
-                        }.padding(.horizontal)
-                      //  Spacer()
+                            .frame(width: 20, height: 20)
+//   .offset(x: UIScreen.main.bounds.width/2 - 50)
+                     
+                        }
+                     
                         HStack(spacing: 20){
                             VStack{
                                 Button(action: {
@@ -713,9 +682,6 @@ struct UpdatepartyDetails: View {
                                         .scaledToFill()
                                 }
                                 .frame(width: 70, height: 70)
-                                //                            .background((Color("themecolor 1")))
-                                //                            .foregroundColor(.white)
-                                //                            .cornerRadius(10)
                                 
                                 Text("Camera")
                                     .font(.custom("Inter-SemiBold", size: 18))
@@ -1218,7 +1184,7 @@ struct UpdatepartyDetails: View {
                     }.padding()
 
                 }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .frame(width: UIScreen.main.bounds.width)
 //                .cornerRadius(20)
 //                .shadow(color: .gray, radius: 3, x: 1, y: 1)
             }
@@ -1398,7 +1364,7 @@ struct UpdatepartyDetails: View {
                    
 
                 }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .frame(width: UIScreen.main.bounds.width)
                 .edgesIgnoringSafeArea(.all)
 //                .cornerRadius(20)
 //                .shadow(color: .gray, radius: 3, x: 1, y: 1)
@@ -1421,17 +1387,7 @@ struct UpdatepartyDetails: View {
             }
             obs.fetch()
         }
-//        .simpleToast(isPresented: $Coordinator.shouldShowtoastView, options: toastOptions) {
-//               HStack {
-//                   
-//                   Text("Upload Successfully")
-//               }
-//               .padding()
-//               .background(Color.red.opacity(0.8))
-//               .foregroundColor(Color.white)
-//               .cornerRadius(10)
-//           }
-        
+
     }
     
     
@@ -1571,7 +1527,6 @@ print(checData)
     }
     private func gridViewall(_ geometry: GeometryProxy) -> some View {
 
-
         QGrid(obs.filelistall,
             columns: Int(self.columns),
             columnsInLandscape: Int(self.columns),
@@ -1590,8 +1545,6 @@ print(checData)
       }
     }
     private func gridView1(_ geometry: GeometryProxy) -> some View {
-
-
         QGrid(obs.piclist,
             columns: Int(self.columns),
             columnsInLandscape: Int(self.columns),
@@ -1755,14 +1708,17 @@ struct GridCellview: View {
             .clipShape(Rectangle())
             //.padding([.top, .leading, .trailing], 10)
             .scaledToFill()
-        } else if person.fileType == "Notes"{
+        } 
+        else if person.fileType == "Notes"{
             VStack{
                 Image("icons8-notepad-100")
                     .resizable()
              .frame(width: 60, height: 60)
 
-            } .frame(width: UIScreen.main.bounds.width/3, height: 100)
+            }
+            .frame(width: UIScreen.main.bounds.width/3, height: 100)
                 .background(Color("themecolor"))
+            
         }
         else if person.fileType == "mp4" ||  person.fileType == "3gp"{
             ZStack{
@@ -2105,7 +2061,7 @@ class partyinfoObserver: ObservableObject {
 //                                i = 0
                 for i in filestinfor {
 
-                    let  acc  = FilesModal(i.1["fileId"].intValue,i.1["fileId"].stringValue, i.1["fileType"].stringValue, i.1["file"].stringValue, i.1["thumbnail"].stringValue)
+                let  acc  = FilesModal(i.1["fileId"].intValue,i.1["fileId"].stringValue, i.1["fileType"].stringValue, i.1["file"].stringValue, i.1["thumbnail"].stringValue)
                     self.filelist.append(acc)
                     let aca = AllFilesModal(i.1["fileId"].intValue,i.1["fileId"].stringValue, i.1["fileType"].stringValue, i.1["file"].stringValue, i.1["thumbnail"].stringValue,"")
                     self.filelistall.append(aca)
@@ -2196,9 +2152,7 @@ class partyinfoObserver: ObservableObject {
                
                 UserDefaults.standard.set(lat, forKey: "latE")
                 UserDefaults.standard.set(lon, forKey: "longE")
-                
-                
-                
+                                
                 let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
                         let date = dateFormatter.date(from: userdic["date"].stringValue)
@@ -2226,6 +2180,7 @@ class partyinfoObserver: ObservableObject {
                         self.eventlist.append(scc)
                         self.showview = true
                 }
+                 
                     else{
                     
                         let scc = eventmodalclassss(0,userdic["eventId"].stringValue, userdic["userId"].stringValue, userdic["longitude"].stringValue, userdic["latitude"].stringValue, userdic["diaryName"].stringValue, userdic["diaryDescription"].stringValue, dtstr, self.filelist as NSArray, self.notlist as NSArray,String(self.mp3list.count),String(self.vidlist.count),String(self.vidlist.count),self.imglist as [String],userdic["address"].stringValue, "",userdic["diary_Count"].intValue,userdic["friend_Count"].intValue)
@@ -2304,7 +2259,7 @@ struct imagesModal :Hashable {
 }
 struct NotesModal :Hashable {
     var  Id : String
-    var    noteText : String
+    var   noteText : String
     
     init(_ Id:String,_ noteText:String){
        self.Id  = Id
@@ -2314,26 +2269,24 @@ struct NotesModal :Hashable {
     
 }
 struct eventmodalclassss:Hashable {
-    var  Id : Int
-
-    var  eventId : String
-   
-         var  userId : String
+    var    Id : Int
+    var    eventId : String
+    var    userId : String
     var    longitude : String
     var    latitude : String
     var    diaryName : String
     var    diaryDescription  : String
     var    date : String
-    var Files : NSArray
-    var Notes : NSArray
+    var    Files : NSArray
+    var    Notes : NSArray
     var    audioCount : String
     var    vedioCount : String
     var    picCount : String
-    var imageArray : [String]
+    var    imageArray : [String]
     var    Addrs : String
     var    imgStr : String
-    var  diary_Count : Int
-    var  friend_Count : Int
+    var    diary_Count : Int
+    var    friend_Count : Int
 
     init(_ Id:Int,_ eventId:String,_ userId:String,_ longitude:String,_ latitude:String,_ diaryName:String,_ diaryDescription:String,_ date:String,_ Files:NSArray,_ Notes:NSArray,_ audioCount:String,_ vedioCount:String,_ picCount:String,_ imageArray:[String],_ Addrs:String,_ imgStr:String,_ diary_Count:Int,_ friend_Count:Int){
        self.eventId  = eventId
@@ -2481,7 +2434,7 @@ struct ImagePicker: UIViewControllerRepresentable {
                            "Content-Disposition" : "form-data"]
                 
     //            let headers: [String : String] = [ "Authorization": "key"]
-            let baseURL = URL(string: "http://167.86.105.98:7723/api/Upload/uploadeventdiary")
+            let baseURL = URL(string: "http://mapzapp.com/api/Upload/uploadeventdiary")
             print(baseURL!)
 
                 Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartFormData) in

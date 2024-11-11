@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
-   uuid = "FBAC91F3-9A3C-47B7-AE31-8ADCE67B6177"
+   uuid = "13E1B576-A944-4BF3-9C41-AEB5A3ED599F"
    type = "0"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C10A57A6-1481-4F55-B0FB-CC6DD183CF19"
+            uuid = "29289777-8389-4FDF-908D-A2B1C4F3B2E7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../Library/Developer/Xcode/DerivedData/MapzApp-bncpokmudachjkggonstbmhbvmoi/SourcePackages/checkouts/stripe-ios-spm/StripeCore/StripeCore/Source/Analytics/AnalyticLoggableError.swift"
+            filePath = "MapzApp/views/CreateEventView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "serializeForV1Analytics()"
-            landmarkType = "7">
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

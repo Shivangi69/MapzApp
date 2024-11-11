@@ -50,7 +50,7 @@ struct Termscondition: View {
                     
                     Divider()
                 
-                    WebView(url: URL(string: "http://122.176.104.29:55020/terms-conditions")!)
+                    WebView(url: URL(string: "http://mapzapp.com/terms-and-conditions.html")!)
                 }
                 .onAppear(){
                     

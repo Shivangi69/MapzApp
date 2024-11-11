@@ -8,7 +8,8 @@
 import SwiftUI
 import Alamofire
 struct createNotes: View {
-    @State private var Note = String()
+    @State private var Note: String = "Enter Note"
+
    // @State private var Note: String?
     let minHeight: CGFloat = 60
     @State private var height: CGFloat?
@@ -18,65 +19,63 @@ struct createNotes: View {
     @State  var showingAlert = false
     @State  var message = String()
     @State  var fromgroup = String()
+    @State private var textStyle = UIFont.TextStyle.body
 
     var body: some View {
        // Text("Hello, World!")
         ZStack{
 
             VStack(spacing: 20.0) {
-             
-             HStack(spacing: 20.0) {
-                 Button(action: {
-                    if (eventNOE == "New"){
-                        message = "If you go back to home screen current event will be discard. You Want to Processed?"
-                        showingAlert = true
-                        //presentationMode.wrappedValue.dismiss()
-
-
-                    } else{
-                        showupdateview.toggle()
+                
+                HStack(spacing: 20.0) {
+                    Button(action: {
+                        if (eventNOE == "New"){
+                            message = "If you go back to home screen current event will be discard. You Want to Processed?"
+                            showingAlert = true
+                            //presentationMode.wrappedValue.dismiss()
+                            
+                            
+                        } else{
+                            showupdateview.toggle()
+                        }
+                    })
+                    {
+                        Image("icons8-back-24")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
                     }
-                 })
-                 {
-                    Image("icons8-back-24")
-                         .resizable()
-                         .aspectRatio(contentMode: .fit)
-                         .frame(width: 30, height: 30)
-                 }
-                 .fullScreenCover(isPresented: $showupdateview, content: CreateEventView
-                                    .init)
-                Spacer()
-                Text("Create New Note")
-                     .foregroundColor(Color.white)
-                                    .font(.custom("Inter-Bold", size: 20))
-                 Spacer()
-                 
-                 Image("")
-                      .resizable()
-                      .aspectRatio(contentMode: .fit)
-                      .frame(width: 30, height: 30)
-
-             }
-             .padding()
-//             .padding(.top,10)
-             .frame(height: 60.0)
-             .background(Color("themecolor"))
-             
+                    .fullScreenCover(isPresented: $showupdateview, content: CreateEventView
+                        .init)
+                    Spacer()
+                    Text("Create New Note")
+                        .foregroundColor(Color.white)
+                        .font(.custom("Inter-Bold", size: 20))
+                    Spacer()
+                    
+                    Image("")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30, height: 30)
+                    
+                }
+                .padding()
+                //             .padding(.top,10)
+                .frame(height: 60.0)
+                .background(Color("themecolor"))
+                
                 HStack {
-                    WrappedTextView(text: $Note, textDidChange: self.textDidChange)
-                    //  .frame(height: height ?? minHeight)
+                    TextView1(text: $Note, textStyle: $textStyle)
                         .padding(.horizontal, 8.0)
                         .font(.custom("Inter-Regular", size: 14))
                         .frame(width: UIScreen.main.bounds.width-20, height: 300, alignment: .leading)
                         .cornerRadius(6.0)
-                    //.foregroundColor(Color(.black))
                         .border(Color.gray, width: 0.5)
                         .multilineTextAlignment(.leading)
                         .foregroundColor(self.Note == "Enter Note" ? .systemGray : .black)
-                    
                         .onAppear {
-                            // remove the placeholder text when keyboard appears
-                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (noti) in
+                            // Remove the placeholder text when keyboard appears
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                                 withAnimation {
                                     if self.Note == "Enter Note" {
                                         self.Note = ""
@@ -84,16 +83,16 @@ struct createNotes: View {
                                 }
                             }
                             
-                            // put back the placeholder text if the user dismisses the keyboard without adding any text
-                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (noti) in
+                            // Put back the placeholder text if the user dismisses the keyboard without adding any text
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
                                 withAnimation {
                                     if self.Note == "" {
                                         self.Note = "Enter Note"
+                                    }
                                 }
                             }
                         }
                     }
-                }
                     .font(.body)
                 
 //                TextEditor(text: Binding($Note, replacingNilWith: ""))
@@ -121,7 +120,7 @@ struct createNotes: View {
                     self.AddNote()
                 }, label: {
                     Text("Add")
-                        .font(.custom("Inter-Bold", size: 18))
+                    .font(.custom("Inter-Bold", size: 18))
                 })
                 .frame(width: UIScreen.main.bounds.width-30, height: 60)
                 .background((Color("themecolor 1")))
@@ -244,5 +243,27 @@ public extension Binding where Value: Equatable {
                     source.wrappedValue = newValue
                 }
         })
+    }
+}
+struct TextView1: UIViewRepresentable {
+ 
+    @Binding var text: String
+    @Binding var textStyle: UIFont.TextStyle
+ 
+    func makeUIView(context: Context) -> UITextView {
+        let textView = UITextView()
+ 
+        textView.font = UIFont.preferredFont(forTextStyle: textStyle)
+        textView.autocapitalizationType = .sentences
+        textView.isSelectable = true
+        textView.isUserInteractionEnabled = true
+        textView.backgroundColor = .clear
+        
+        return textView
+    }
+ 
+    func updateUIView(_ uiView: UITextView, context: Context) {
+        uiView.text = text
+        uiView.font = UIFont.preferredFont(forTextStyle: textStyle)
     }
 }

@@ -143,7 +143,7 @@ class VoiceViewModel : NSObject, ObservableObject , AVAudioPlayerDelegate{
                        "Content-Disposition" : "form-data"]
             
 //            let headers: [String : String] = [ "Authorization": "key"]
-        let baseURL = URL(string: "http://167.86.105.98:7723/api/Upload/uploadeventdiary")
+        let baseURL = URL(string: "http://mapzapp.com/api/Upload/uploadeventdiary")
         print(baseURL!)
 
             Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartFormData) in

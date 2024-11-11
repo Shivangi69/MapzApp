@@ -244,24 +244,26 @@ struct friendsProfileView: View {
                                 Image("loctio")
                                     .resizable()
                                    
-                                    .frame(width: 20, height: 32.0)
+                                    .frame(width: 15, height: 32.0)
                                 Text(Addressstr)
                                 .font(.custom("Inter-SemiBold", size: 12))
                                     .foregroundColor(Color.white)
                                 Spacer()
                                 
                             }
-                            .padding(.horizontal , 10)
+//                            .padding(.horizontal , 10)
+                            .padding()
+
                             .frame(height: 40.0)
                             //.background(Color("themecolor"))
                             .background(RoundedCorners(color: Color("themecolor"), tl: 0, tr: 0, bl: 0, br: 0))
-                         
                         
                         if (obs.show == false){
                             blankView(imageNAme: "no_found_diary",ErrorMsg : "Diary not Found")
                                 .frame(height: 125)
 
-                        }else{
+                        }
+                        else{
                             if (showcollc && obs.show){
                                 collectionview()
 //                                VStack{
@@ -282,7 +284,7 @@ struct friendsProfileView: View {
                                                 Image("loccc-2")
                                                     .resizable()
                                                     .frame(width: 20.0, height: 40.0)
-
+                                                    .padding()
                                                 
                                                 VStack(alignment: .leading){
                                                     Text(pokemon.diaryName  + pokemon.date)

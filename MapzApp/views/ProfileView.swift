@@ -156,10 +156,6 @@ struct ProfileView: View {
                             
                             Text(UserDefaults.standard.string(forKey: "dateOfBirth") ?? "")
                             
-                            
-                            
-                            
-                            
                                 .font(.custom("Inter-Regular", size: 14))
                             
                             Text(UserDefaults.standard.string(forKey: "tagLine") ?? "")
@@ -271,16 +267,16 @@ struct ProfileView: View {
                        
                         HStack(spacing : 8){
                             Image("loctio")
-                                .resizable()
-                                .frame(width: 20, height: 32.0)
+                            .resizable()
+                            .frame(width: 15, height: 32.0)
                             
                             Text(Addressstr)
-                                .font(.custom("Inter-Semibold", size: 12))
-                                .foregroundColor(Color.white)
+                           .font(.custom("Inter-Semibold", size: 12))
+                            .foregroundColor(Color.white)
                             Spacer()
                             
                         }
-                        .padding(.horizontal , 10)
+                        .padding()
                         .frame(height: 40.0)
                         .background(RoundedCorners(color: Color("themecolor"), tl: 0, tr: 0, bl: 0, br: 0))
                         
@@ -350,8 +346,6 @@ struct ProfileView: View {
                                         
                                     }
                                 }
-                                
-                                //                            listvieww()
                                 
                             }
                         }   .frame(width :UIScreen.main.bounds.width )
@@ -505,7 +499,8 @@ struct ProfileView: View {
                         
                         VStack(alignment: .leading, spacing: 5.0){
                             
-                            Text(UserDefaults.standard.string(forKey: "name") ?? "")                    .font(.custom("Inter-Bold", size: 20))
+                            Text(UserDefaults.standard.string(forKey: "name") ?? "")                  
+                                .font(.custom("Inter-Bold", size: 20))
                             HStack{
                                 Image("loccc")
                                     .resizable()
@@ -827,7 +822,7 @@ struct ProfileView: View {
                             else{
                                 //  SVGImage(svgName: "ic_note")
                                 //.frame(width: 50, height: 550)
-                                Image("note_thumbnail (2)")
+                                Image("Asset 1")
                                     .resizable()
                                     .frame(width : 125.0 , height:125.0)
                                 
@@ -861,7 +856,6 @@ struct ProfileView: View {
                         
                         .onTapGesture(count: 1) {
                             print("Single Tap!")
-                            
                             selectedTab = person.eventId
                             Addressstr = person.Addrs
                             colr = "lightBlue"
@@ -874,11 +868,10 @@ struct ProfileView: View {
                             // MapView2.updateUIView(<#T##self: MapView2##MapView2#>)
                         }
                         .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
-                        
                         .border((selectedTab == person.eventId ? Color.white : Color("")), width: 2)
-                        
                     }
-                }            .background(Color.white)
+                }
+                .background(Color.white)
                 
                 //   .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
                 
@@ -990,6 +983,7 @@ struct ProfileView: View {
         
         isClicked = true
     }
+    
     func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) -> String  {
         var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
         let lat: Double = Double("\(pdblLatitude)")!
@@ -1330,7 +1324,8 @@ struct FreshCellView2 : View {
                     
                     VStack(alignment: .leading, spacing: 5.0){
                         
-                        Text(UserDefaults.standard.string(forKey: "name") ?? "")                    .font(.custom("Inter-Bold", size: 20))
+                        Text(UserDefaults.standard.string(forKey: "name") ?? "")           
+                            .font(.custom("Inter-Bold", size: 20))
                         HStack{
                             Image("loccc")
                                 .resizable()
@@ -1630,16 +1625,16 @@ class profileinfoObserver: ObservableObject {
     //        fetchEvent()
     //    }
     
-    func loadMoreContent(currentItem item: profileeventmodalclasssss){
-        let thresholdIndex = self.eventlist.index(self.eventlist.endIndex, offsetBy: -1)
-        print(thresholdIndex)
-        if thresholdIndex == item.Id - 1, (page + 1) <= totalPages {
-            page += 1
-            print(item.Id)
-            //  print(thresholdIndex)
-            fetchEvent()
+        func loadMoreContent(currentItem item: profileeventmodalclasssss){
+            let thresholdIndex = self.eventlist.index(self.eventlist.endIndex, offsetBy: -1)
+            print(thresholdIndex)
+            if thresholdIndex == item.Id - 1, (page + 1) <= totalPages {
+                page += 1
+                print(item.Id)
+                //  print(thresholdIndex)
+                fetchEvent()
+            }
         }
-    }
     
     
     func fetchEvent(){
@@ -1683,7 +1678,7 @@ class profileinfoObserver: ObservableObject {
                     
                     let profile = userdic["profile"]
                     let events = userdic["events"]
-                    //
+          
                     let fullName : String = profile["dateOfBirth"].stringValue
                     let fullNameArr : [String] = fullName.components(separatedBy: "T")
                     let datestr: String = fullNameArr[0]
@@ -1715,7 +1710,7 @@ class profileinfoObserver: ObservableObject {
                         let filestinfor = j.1["files"]
                         let notestinfor = j.1["notes"]
                         //
-                        if (filestinfor.count > 0 || notestinfor.count > 0){
+//                        if (filestinfor.count > 0 || notestinfor.count > 0){
                             print("available")
                             self.filelist = []
                             self.notlist = []
@@ -1857,10 +1852,10 @@ class profileinfoObserver: ObservableObject {
                                     
                                 }
                             
-                        }else{
-                            print("Not available")
-                            
-                        }
+//                        }else{
+//                            print("Not available")
+//                            
+//                        }
                         
                     }
                     if (self.eventlist.count > 0){

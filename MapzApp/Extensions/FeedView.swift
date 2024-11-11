@@ -33,32 +33,63 @@ struct FeedView: View {
                     
                     Spacer()
                     
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                        
-                        // Search text field
-                        ZStack (alignment: .leading) {
-                            if searchText.isEmpty { // Separate text for placeholder to give it the proper color
-                                Text("")
-                            }
-                            TextField("", text: $searchText, onEditingChanged: { isEditing in
-                                self.showCancelButton = true
-                            }, onCommit: onCommit).foregroundColor(.primary)
-                        }
-                     
-                        // Clear button
-                        Button(action: {
-                            self.searchText = ""
-                        }) {
-                            Image(systemName: "xmark.circle.fill").opacity(searchText == "" ? 0 : 1)
-                        }
-                        
-                        
-                    }
-                    .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
-                    .foregroundColor(.secondary) // For magnifying glass and placeholder test
-                    .background(Color(.white))
-                    .overlay(RoundedRectangle(cornerRadius: (16)).stroke(lineWidth: 1.0))
+//                    HStack {
+//                        Image(systemName: "magnifyingglass")
+//                        
+//                        // Search text field
+//                        ZStack (alignment: .leading) {
+//                            if searchText.isEmpty { // Separate text for placeholder to give it the proper color
+//                                Text("")
+//                            }
+//                            TextField("", text: $searchText, onEditingChanged: { isEditing in
+//                                self.showCancelButton = true
+//                            }, onCommit: onCommit).foregroundColor(.primary)
+//                        }
+//                     
+//                        // Clear button
+//                        Button(action: {
+//                            self.searchText = ""
+//                        }) {
+//                            Image(systemName: "xmark.circle.fill").opacity(searchText == "" ? 0 : 1)
+//                        }
+//                        
+//                        
+//                    }
+//                    .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
+//                    .foregroundColor(.secondary) // For magnifying glass and placeholder test
+//                    .background(Color(.white))
+//                    .overlay(RoundedRectangle(cornerRadius: (16)).stroke(lineWidth: 1.0))
+//                    
+                    
+                    
+                              HStack {
+                                  Image(systemName: "magnifyingglass")
+                                  
+                                  // Search text field
+                                  ZStack(alignment: .leading) {
+                                      if searchText.isEmpty { // Separate text for placeholder to give it the proper color
+                                          Text("")
+                                      }
+                                      TextField("", text: $searchText)
+                                          .onChange(of: searchText) { _ in
+                                              self.showCancelButton = true
+                                          }
+                                          .foregroundColor(.primary)
+                                  }
+                                  
+                                  // Clear button
+                                  Button(action: {
+                                      self.searchText = ""
+                                  }) {
+                                      Image(systemName: "xmark.circle.fill")
+                                          .opacity(searchText == "" ? 0 : 1)
+                                  }
+                              }
+                              .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
+                              .foregroundColor(.secondary) // For magnifying glass and placeholder text
+                              .background(Color(.white))
+                              .overlay(RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1.0))
+                         
                     
                     
                 }.frame(width: UIScreen.main.bounds.width-30)
@@ -68,8 +99,8 @@ struct FeedView: View {
                 }
                 .frame(width: UIScreen.main.bounds.width-30, height: 1.0)
                 .border(Color.black, width: 1)
-                .padding(.bottom,
-                         3.0)
+                .padding(.bottom, 3.0)
+            
                 
                 
                 //   if obs.showview{
@@ -85,8 +116,9 @@ struct FeedView: View {
                 
                 //  }
             }
-            .edgesIgnoringSafeArea(.all)
-            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-60)
+            .frame(width: UIScreen.main.bounds.width)
+
+
             .onAppear(){
                 
                 if UIDevice.current.hasNotch {
@@ -98,7 +130,9 @@ struct FeedView: View {
             }
             
         }
-        
+               .edgesIgnoringSafeArea(.all)
+
+
     }
 }
 
