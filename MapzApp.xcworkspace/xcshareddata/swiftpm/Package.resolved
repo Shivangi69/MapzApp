@@ -1,4 +1,5 @@
 {
+  "originHash" : "a65e2724e1e0a3216086a1893c0b1754ddecf952465022902372596089d49dae",
   "pins" : [
     {
       "identity" : "abseil-cpp-swiftpm",
@@ -149,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftUIX/SwiftUIX.git",
       "state" : {
-        "revision" : "e1a37c6fe6c32e16598ee759b2fcf54676325825",
-        "version" : "0.1.8"
+        "revision" : "e984fd2e08140ad5a95d084be38fe02b774bc15d",
+        "version" : "0.2.3"
       }
     },
     {
@@ -163,5 +164,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

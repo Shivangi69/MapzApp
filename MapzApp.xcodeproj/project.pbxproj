@@ -175,7 +175,6 @@
 		B0D029D9293765DF00866F08 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D029D8293765DF00866F08 /* EditProfileView.swift */; };
 		B0E5E7DD26E22EB2001FF2C3 /* activityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5E7DC26E22EB2001FF2C3 /* activityList.swift */; };
 		B0E5E7E226E2579D001FF2C3 /* Verification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5E7E126E2579C001FF2C3 /* Verification.swift */; };
-		B0E5E7E826E25C4C001FF2C3 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = B0E5E7E726E25C4C001FF2C3 /* SwiftUIX */; };
 		B0EB815F26FB3A8D00F6F0BB /* friendsProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EB815E26FB3A8D00F6F0BB /* friendsProfile.swift */; };
 		B0FACA5126EB721500430CEB /* UpdatepartyDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08733B526D8D41A003A1608 /* UpdatepartyDetails.swift */; };
 		B0FACA5E26EB912F00430CEB /* userDataModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FACA5D26EB912F00430CEB /* userDataModal.swift */; };
@@ -225,6 +224,7 @@
 		087CCCB52B29B7AB002EBC09 /* Aboutus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aboutus.swift; sourceTree = "<group>"; };
 		08AABA23C12A4C25A6427783 /* Pods_MapzApp_MapzAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapzApp_MapzAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		101E145598E6664EEE6F676D /* Pods-MapzApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapzApp.release.xcconfig"; path = "Target Support Files/Pods-MapzApp/Pods-MapzApp.release.xcconfig"; sourceTree = "<group>"; };
+		1801689C2CE5C4D300EE18FA /* MapzApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapzApp.entitlements; sourceTree = "<group>"; };
 		4D83E309D180FCAE6824D689 /* Pods-MapzAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapzAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MapzAppTests/Pods-MapzAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5AF0715B70524F003526C7D1 /* Pods-MapzApp-MapzAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapzApp-MapzAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-MapzApp-MapzAppUITests/Pods-MapzApp-MapzAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		794091880BB09DB78C55CD2C /* Pods_MapzAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapzAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -400,7 +400,6 @@
 				B09A33F226C79930008ECA24 /* FacebookAEM in Frameworks */,
 				B05AD4CD26C792B400360855 /* Alamofire in Frameworks */,
 				B09A33F826C79930008ECA24 /* FacebookLogin in Frameworks */,
-				B0E5E7E826E25C4C001FF2C3 /* SwiftUIX in Frameworks */,
 				351781213FE01372D7983F24 /* Pods_MapzApp.framework in Frameworks */,
 				845350212959901A002C94EA /* Stripe in Frameworks */,
 				B06ECCFE26CBC9FB006F0169 /* MapKit.framework in Frameworks */,
@@ -562,6 +561,7 @@
 		B05AD49426C7905100360855 /* MapzApp */ = {
 			isa = PBXGroup;
 			children = (
+				1801689C2CE5C4D300EE18FA /* MapzApp.entitlements */,
 				84C85A292955B21600F7B83E /* stripePayment */,
 				B008659127228A9A00B753EA /* camera */,
 				B020FFC72706DF6000472400 /* TOASTT */,
@@ -837,7 +837,6 @@
 				B09A33F726C79930008ECA24 /* FacebookLogin */,
 				B09A33F926C79931008ECA24 /* FacebookShare */,
 				B087347B26DF520D003A1608 /* SwiftyJSON */,
-				B0E5E7E726E25C4C001FF2C3 /* SwiftUIX */,
 				B020FFB52705F4FE00472400 /* SimpleToast */,
 				845350202959901A002C94EA /* Stripe */,
 				845350222959901A002C94EA /* StripeApplePay */,
@@ -928,9 +927,9 @@
 				B05AD4CE26C7934200360855 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				B087347A26DF520C003A1608 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				B09248AA26E0BD9600D39FE7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				B0E5E7E626E25C4B001FF2C3 /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 				B020FFB42705F4FE00472400 /* XCRemoteSwiftPackageReference "SimpleToast" */,
 				8453501F2959901A002C94EA /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				18C52A382CE209CA0038276E /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 			);
 			productRefGroup = B05AD49326C7905100360855 /* Products */;
 			projectDirPath = "";
@@ -1444,6 +1443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MapzApp/MapzApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"MapzApp/Preview Content\"";
 				DEVELOPMENT_TEAM = VZNDPQUZYP;
@@ -1467,6 +1467,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MapzApp/MapzApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"MapzApp/Preview Content\"";
 				DEVELOPMENT_TEAM = VZNDPQUZYP;
@@ -1614,6 +1615,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		18C52A382CE209CA0038276E /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
+			};
+		};
 		8453501F2959901A002C94EA /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
@@ -1660,14 +1669,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 8.2.0;
-			};
-		};
-		B0E5E7E626E25C4B001FF2C3 /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.8;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1752,11 +1753,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B05AD4CE26C7934200360855 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookShare;
-		};
-		B0E5E7E726E25C4C001FF2C3 /* SwiftUIX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B0E5E7E626E25C4B001FF2C3 /* XCRemoteSwiftPackageReference "SwiftUIX" */;
-			productName = SwiftUIX;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -72,7 +72,7 @@ struct createNotes: View {
                         .cornerRadius(6.0)
                         .border(Color.gray, width: 0.5)
                         .multilineTextAlignment(.leading)
-                        .foregroundColor(self.Note == "Enter Note" ? .systemGray : .black)
+                        .foregroundColor(self.Note == "Enter Note" ? .gray : .black)
                         .onAppear {
                             // Remove the placeholder text when keyboard appears
                             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in

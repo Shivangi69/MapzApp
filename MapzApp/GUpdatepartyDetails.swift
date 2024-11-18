@@ -685,7 +685,6 @@ struct GUpdatepartyDetails: View {
             
             if $showdocPopUp.wrappedValue {
                 ZStack {
-                   
                     Color.white
                     VStack(alignment: .center, spacing: 20.0) {
                          
@@ -698,13 +697,11 @@ struct GUpdatepartyDetails: View {
                                 Image("icons8-back-24")
                                     .resizable()
                                     .frame(width: 24.0, height: 24.0)
-                                //    .padding(.top,12.0)
-                                
-                                //.cornerRadius(24)
+                        
                             }
-                            
-                            
                             Spacer()
+                            
+                            
                             Text("Add Note")
                                 .font(.custom("Inter-Bold", size: 20))
                                 .foregroundColor(Color.white)
@@ -725,7 +722,8 @@ struct GUpdatepartyDetails: View {
                         }
                         .padding(.horizontal, 10.0)
 //                        .frame(height: 50)
-                        .frame(width: UIScreen.main.bounds.width , height: 60) .background((Color("themecolor 1")))
+                        .frame(width: UIScreen.main.bounds.width , height: 60)
+                        .background((Color("themecolor 1")))
                         
                         
                         
@@ -785,9 +783,8 @@ struct GUpdatepartyDetails: View {
                         .background((Color("themecolor 1")))
                         .foregroundColor(.white)
                         .cornerRadius(10)
-                       
-                        
                         Spacer()
+                        
                     }.padding()
 
                 }
@@ -877,7 +874,7 @@ struct GUpdatepartyDetails: View {
                                 .padding(.horizontal, 8.0)
                                 .font(.custom("Inter-Regular", size: 17))
                             
-                                .foregroundColor(self.DairyDes == "Enter Dairy Description" ? .systemGray : .black)
+                                .foregroundColor(self.DairyDes == "Enter Dairy Description" ? .gray : .black)
                             
                                 .onAppear {
                                     // remove the placeholder text when keyboard appears

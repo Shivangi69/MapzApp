@@ -302,7 +302,7 @@ struct GridCellforpackages: View {
     }.background(Color.white)
           .cornerRadius(10)
           .frame(width: UIScreen.main.bounds.width/2 - 30 )
-          .shadow(color:  .gray, x: 1, y: 1, blur: 0.1)
+          .shadow(color:  .gray, radius: 10, x: 1, y: 1)
   }
 }
 

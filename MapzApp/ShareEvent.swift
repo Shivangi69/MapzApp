@@ -211,7 +211,6 @@ struct ShareEvent: View {
                                   //  self.selectedarr.re(index)
                                     print(self.selectedarr)
 
-//
                                     for i in 0..<selectedarr.count {
                                         if (selectedarr[i] == index){
                                             self.selectedarr.remove(at: i)
@@ -219,7 +218,8 @@ struct ShareEvent: View {
                                         }
                                     print(i)
                                 }
-                                }else{
+                                }
+                                else{
                                     self.selectedarr.append(index)
                                   //  self.selectedarr.add(index)
                                     print(self.selectedarr)
@@ -247,7 +247,7 @@ struct ShareEvent: View {
                                     .frame(height: height ?? minHeight)
                                     .padding(.horizontal, 8.0)
 
-                                .foregroundColor(self.comment == "Comment" ? .systemGray : .black)
+                                .foregroundColor(self.comment == "Comment" ? .gray : .black)
                                     .font(.custom("Inter-Regular", size: 17))
 
                                     .onAppear {

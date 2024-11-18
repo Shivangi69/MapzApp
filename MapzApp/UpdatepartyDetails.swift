@@ -1026,13 +1026,9 @@ struct UpdatepartyDetails: View {
 //
 //                            .aspectRatio(contentMode: .fit)
 //
-//
 //                    }
 //                    .frame(width: 32.0, height: 32.0)
 //                    .offset(x: 100)
-//
-//
-//
 //
 //                        Text("Add New Voices")
 //                            .font(.custom("Inter-Bold", size: 24))
@@ -1160,7 +1156,6 @@ struct UpdatepartyDetails: View {
                                             .border(Color.gray, width: 0.5)
                                             .multilineTextAlignment(.leading)
                                         Text(Note ?? "Enter Note")
-                                                                 // following line is a hack to create an inset similar to the TextEditor inset...
                                             .padding([.top, .leading], 10.0)
                                             .foregroundColor(Color(.lightGray))
                                             .opacity(Note == nil ? 1 : 0)
@@ -1233,7 +1228,6 @@ struct UpdatepartyDetails: View {
                         
                         VStack(spacing: 10){
                             
-                            
                             VStack{
                                 TextField("Enter Dairy Name", text: $DairyName)
                                     .padding(.all)
@@ -1241,7 +1235,6 @@ struct UpdatepartyDetails: View {
                                     .frame(width: UIScreen.main.bounds.width-30, height: 50)
                                     .border(Color.gray, width: 0.5)
                             }
-                            
                             
                             HStack{
                                 Text(Datestr)
@@ -1281,7 +1274,7 @@ struct UpdatepartyDetails: View {
                                     .frame(height: height ?? minHeight)
                                     .padding(.horizontal, 8.0)
                                     .font(.custom("Inter-Regular", size: 17))
-                                    .foregroundColor(self.DairyDes == "Enter Dairy Description" ? .systemGray : .black)
+                                    .foregroundColor(self.DairyDes == "Enter Dairy Description" ? .gray : .black)
                                 
                                     .onAppear {
                                         // remove the placeholder text when keyboard appears

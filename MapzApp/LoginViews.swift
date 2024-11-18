@@ -14,6 +14,8 @@ import Firebase
 import GoogleSignIn
 import SimpleToast
 import FirebaseAuth
+import AuthenticationServices
+
 
 struct LoginViews: View {
     //
@@ -31,6 +33,8 @@ struct LoginViews: View {
     @State private var showdocPopUp = false
     @State  var message = String()
     @State  var showverifyScreen = false
+    @State  var flagfor = ""
+
     @Environment(\.presentationMode) var presentationMode
 
     @State var showToast: Bool = false
@@ -71,13 +75,8 @@ struct LoginViews: View {
                // ScrollView{
                     VStack(spacing: 15.0 ) {
                         
-                     
-                        
-                        
-                        
                         Image("logo")
                             .resizable()
-                        //
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 60, height: 60, alignment: .center)
                         
@@ -209,11 +208,33 @@ struct LoginViews: View {
                             .frame(width: 300, height: 35, alignment: .center)
                         
                         
+                        VStack {
+                                  // Apple's native Sign in with Apple button
+                                  SignInWithAppleButton(
+                                      .signIn, // button style (sign-in or continue)
+                                      onRequest: { request in
+                                          request.requestedScopes = [.fullName, .email]
+                                      },
+                                      onCompletion: { result in
+                                          switch result {
+                                          case .success(let authResults):
+                                              handleAuthorization(authResults)
+                                        case .failure(let error):
+                                              print("Authorization failed: \(error.localizedDescription)")
+                                          }
+                                      }
+                                  )
+                                  .signInWithAppleButtonStyle(.black) // or .white, .whiteOutline
+                                  .frame(width: 280, height: 45)
+                              }
+                        
+                        
+                        
                         HStack{
                             Button(action: {
                               
                                 UIApplication.dismissKeyboard()
-                                viewModel.signOut()
+                                googleSign()
                             //    viewModel.signIn()
                                 
                             }, label: {
@@ -322,9 +343,8 @@ struct LoginViews: View {
             }
             if $showdocPopUp.wrappedValue {
                 ZStack {
-                    //
-                    Color.white
                     
+                    Color.white
                     
                     HStack {
                          Spacer()
@@ -333,37 +353,36 @@ struct LoginViews: View {
                              // Close button action to dismiss the popup
                              showdocPopUp.toggle()
                          }) {
-                             Image(systemName: "xmark.circle.fill")
+                             Image("cross")
                                  .foregroundColor(.white)
                                  .font(.system(size: 20))
                          }
                          .padding(10)
-                         .background(Color.clear)
+//                         .background(Color("bgCOlor"))
+                         .offset(y: -100)
                      }
                     VStack(alignment: .center, spacing: 20.0) {
-             
                         Spacer()
                         Text("Forgot Password")
                             .font(.custom("Inter-Bold", size: 24))
-                            .foregroundColor(Color("bgColor"))
-                        
+                            .foregroundColor(Color("bgCOlor"))
                         
                         HStack{
                             
-                            TextField("", text: $forgtmail)
-                                .padding(.leading, 10.0)
-                                .font(.custom("Inter-Regular", size: 17))
-                                .frame(width: UIScreen.main.bounds.width-100, height: 60)
-                                .foregroundColor(Color("bgColor"))
-                                .placeholder(when: forgtmail.isEmpty) {
+                    TextField("", text: $forgtmail)
+                    .padding(.leading, 10.0)
+                    .font(.custom("Inter-Regular", size: 17))
+                    .frame(width: UIScreen.main.bounds.width-100, height: 60)
+                    .foregroundColor(Color("bgCOlor"))
+                    .placeholder(when: forgtmail.isEmpty) {
                                     Text("Email Address")
-                                        .foregroundColor(Color("bgColor"))
+                                        .foregroundColor(Color("bgCOlor"))
                                         .padding(.leading, 10.0)
                                     
                                 }
                         }
                         .overlay(RoundedRectangle(cornerRadius: (25.0)).stroke(lineWidth: 1)
-                            .foregroundColor(Color("bgColor")))
+                            .foregroundColor(Color("bgCOlor")))
                         Button(action: {
                             
                             if (forgtmail == "")
@@ -386,9 +405,10 @@ struct LoginViews: View {
                                 .font(.custom("Inter-Bold", size: 18))
                         })//bgColor
                         .frame(width: UIScreen.main.bounds.width-100, height: 60)
-                        .background((Color("bgColor")))
+                        .background((Color("bgCOlor")))
                         .foregroundColor(.white)
                         .cornerRadius(25)
+                        
                         .alert(isPresented: $showingAlert, content: {
                             var alert: Alert {
                                 
@@ -396,6 +416,7 @@ struct LoginViews: View {
                             }
                             return alert
                         })
+                        
                         .fullScreenCover(isPresented: $showverifyScreen, content: {
                             Verification(emailstring:forgtmail)
                         })
@@ -421,6 +442,62 @@ struct LoginViews: View {
         }
     }
     
+    
+    private func handleAuthorization(_ authResults: ASAuthorization) {
+           if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
+               let userIdentifier = appleIDCredential.user
+               let email = appleIDCredential.email
+               let fullName = appleIDCredential.fullName
+               // Handle and store userIdentifier securely
+               print("User ID: \(userIdentifier)")
+               print("Email: \(String(describing: email))")
+               print("Full Name: \(String(describing: fullName))")
+           }
+       }
+    func googleSign() {
+        guard let presentingVC = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else { return }
+        
+        let gIdConfiguration = GIDConfiguration(clientID: "116249607533-hj8ajhebjr5ik4gvjk3g1vrqmldbfn2j.apps.googleusercontent.com")
+        
+        GIDSignIn.sharedInstance.configuration = gIdConfiguration
+        GIDSignIn.sharedInstance.signIn(withPresenting: presentingVC) { user, error in
+            if let error = error {
+                print("Google Sign-In error: \(error.localizedDescription)")
+                return
+            }
+            
+            let userId = user?.user.userID
+            let fullName = user?.user.profile?.name
+            let givenName = user?.user.profile?.givenName
+            let familyName = user?.user.profile?.familyName
+            let email = user?.user.profile?.email
+            
+            print("User Info:")
+            print("- User ID: \(userId ?? "")")
+            print("- Full Name: \(fullName ?? "")")
+            print("- Given Name: \(givenName ?? "")")
+            print("- Family Name: \(familyName ?? "")")
+            print("- Email: \(email ?? "")")
+            
+            UserDefaults.standard.set(userId, forKey: "Providerid")
+            UserDefaults.standard.set(email, forKey: "emailgoogle")
+            print("vhbvjdkh" , UserDefaults.standard.string(forKey: "emailgoogle") ?? "RFRRRRRRRRR")
+
+            
+            if let userId = userId, !userId.isEmpty, let email = email, !email.isEmpty {
+                DispatchQueue.main.async {
+//                    self.isShowingPopup = true
+                    flagfor = "G"
+                    emailstr = email
+//                    self.checkuser()
+                   
+                    self.signup()
+                    
+                    //                    statuscheck.email =   UserDefaults.standard.set(email, forKey: "emailgoogle")
+                }
+            }
+        }
+    }
     func forgotPwd() {
         
         var logInFormData: Parameters {
@@ -447,69 +524,24 @@ struct LoginViews: View {
                         UserDefaults.standard.set(forgtmail, forKey: "emailf")
                         
                         self.showverifyScreen.toggle()
-                       
-                        
                     }
                     else{
-                        //
-                        
                         self.message = json["message"].stringValue
                         self.showingAlert = true
                    
                     }
-                    
-                    
                 }
             case let .failure(error):
                 print(error)
             }
         }
-        
     }
         
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {    return GIDSignIn.sharedInstance.handle(url)
     }
 
-//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-//        // ...
-//        if let error = error {
-//            // ...
-//            print(error.localizedDescription)
-//            return
-//        }
-//
-//        guard let authentication = user.authentication else { return }
-//        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-//                                                       accessToken: authentication.accessToken)
-//        Auth.auth().signIn(with: credential){(res, err) in
-//            if err != nil {
-//                print((err?.localizedDescription)!)
-//                return
-//            }
-//            print("user=" + (res!.user.email)!)
-//        }
-//    }
     
-//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-//        if let error = error {
-//            print(error.localizedDescription)
-//            return
-//        }
-//
-//        // Access the authentication data directly from 'user' parameter.
-//        let authentication = user.authentication
-//        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-//                                                       accessToken: authentication.accessToken)
-//
-//        Auth.auth().signIn(with: credential) { (res, err) in
-//            if let err = err {
-//                print(err.localizedDescription)
-//                return
-//            }
-//            print("user=" + (res?.user.email ?? "Unknown"))
-//        }
-//    }
 
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
@@ -562,6 +594,7 @@ struct LoginViews: View {
                             UserDefaults.standard.set(dict["name"] as! String, forKey: "Sname")
                             
                             //
+                            flagfor = "F"
                             self.checkuser()
                             
                             if let dict = result as? [String : AnyObject]{
@@ -584,7 +617,6 @@ struct LoginViews: View {
             })
         }
     }
-    
     
     
    // http://grocery.swadhasoftwares.com/api/home.php
@@ -634,7 +666,7 @@ struct LoginViews: View {
                     UserDefaults.standard.set(datestr, forKey: "dateOfBirth")
                     UserDefaults.standard.set(userdic["profilePictureURL"].string, forKey: "profilePictureURL")
    
-            UserDefaults.standard.set("yes", forKey: "login")
+                       UserDefaults.standard.set("yes", forKey: "login")
                     showsignupViewafterFB.toggle()
 
                    } else {
@@ -658,13 +690,12 @@ struct LoginViews: View {
                 "profilePictureURL": "",
                 "deviceToken":UserDefaults.standard.string(forKey: "devicetoken")!,
                 "deviceType": "I",
-                "flag" : "F"
+                "flag" : flagfor
+                
                   ]
-        
         }
        
             print(logInFormData)
-
             
                     AccountAPI.signin(servciename: "Accounts/Register", logInFormData) { res in
                     switch res {
@@ -672,24 +703,23 @@ struct LoginViews: View {
                         print("resulllll",res)
                         if let json = res.value{
                            
-                           
                             print("Josn",json)
                             if (json["status"] == "true")
                             {
                                  
-                                let userdic = json["data"]
+                                 let userdic = json["data"]
                                  let fullName : String = userdic["dateOfBirth"].stringValue
                                  let fullNameArr : [String] = fullName.components(separatedBy: "T")
                                  let datestr: String = fullNameArr[0]
                              
                                  UserDefaults.standard.set(userdic["id"].int, forKey: "id")
 
-                                         UserDefaults.standard.set(userdic["email"].string, forKey: "email")
-                                        UserDefaults.standard.set(userdic["firstName"].string, forKey: "name")
-                                         UserDefaults.standard.set(userdic["password"].string, forKey: "passwordHash")
-                                         UserDefaults.standard.set(userdic["mobile"].string, forKey: "phoneNumber")
-                                         UserDefaults.standard.set(datestr, forKey: "dateOfBirth")
-                                         UserDefaults.standard.set(userdic["profilePictureURL"].string, forKey: "profilePictureURL")
+                                 UserDefaults.standard.set(userdic["email"].string, forKey: "email")
+                                 UserDefaults.standard.set(userdic["firstName"].string, forKey: "name")
+                                 UserDefaults.standard.set(userdic["password"].string, forKey: "passwordHash")
+                                 UserDefaults.standard.set(userdic["mobile"].string, forKey: "phoneNumber")
+                                 UserDefaults.standard.set(datestr, forKey: "dateOfBirth")
+                                 UserDefaults.standard.set(userdic["profilePictureURL"].string, forKey: "profilePictureURL")
                          //                UserDefaults.standard.set(userdic["status"].string, forKey: "status")
                          //                UserDefaults.standard.set(userdic["pin"].string, forKey: "pin")
                          //                UserDefaults.standard.set(userdic["wallet"].string, forKey: "wallet")
@@ -713,31 +743,15 @@ struct LoginViews: View {
                      //        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
 
                             }
-                        
-                            
                         }
                     case let .failure(error):
                       print(error)
                     }
                   }
-                
-        }
+              }
         
 }
-//struct Account1{
-//    var id: Int
-//    var email: String
-//    var name: String
-//    var imei: String
-//    var ccode: String
-//    var mobile: String
-//    var rdate: String
-//    var password: String
-//    var status: String
-//    var pin: String
-//    var wallet: String
-//
-//}
+
     
 struct LoginViews_Previews: PreviewProvider {
     static var previews: some View {
@@ -776,45 +790,6 @@ class loginObserver: ObservableObject {
         return GIDSignIn.sharedInstance.handle(url)
             }
 
-//            func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-//              // ...
-//              if let error = error {
-//                // ...
-//                print(error.localizedDescription)
-//                return
-//              }
-//
-//              guard let authentication = user.authentication else { return }
-//              let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-//                                                                accessToken: authentication.accessToken)
-//                Auth.auth().signIn(with: credential){(res, err) in
-//                    if err != nil {
-//                        print((err?.localizedDescription)!)
-//                        return
-//                    }
-//                    print("user=" + (res!.user.email)!)
-//                }
-//            }
-    
-//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-//        if let error = error {
-//            print(error.localizedDescription)
-//            return
-//        }
-//
-//        // Access the authentication data directly from 'user' parameter.
-//        let authentication = user.authentication
-//        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-//                                                       accessToken: authentication.accessToken)
-//
-//        Auth.auth().signIn(with: credential) { (res, err) in
-//            if let err = err {
-//                print(err.localizedDescription)
-//                return
-//            }
-//            print("user=" + (res?.user.email ?? "Unknown"))
-//        }
-//    }
 
             func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
                 // Perform any operations when the user disconnects from app here.
@@ -883,18 +858,8 @@ class loginObserver: ObservableObject {
         self.message = json["message"].stringValue
         self.showingAlert = true
 
-      //  @Published  var showingAlert = false
-
-//        AlertToast(displayMode: .alert, type: .regular, title: json["ResponseMsg"].stringValue )
-//        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
-
        }
-              //  presentationmode(MainView().ondis)
 
-
-////                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                           self.shouldRedirectToMAINView = true
-//                       }
 
             }
         case let .failure(error):
@@ -904,306 +869,34 @@ class loginObserver: ObservableObject {
     }
 }
 
-//class GoogleStuff: UIViewController, GIDSignInDelegate, ObservableObject {
-//    @Published var showsignupViewaftergoogle : Bool = false //UserDefaults.standard.bool(forKey: "showsignup")
-//
-//    var googleSignIn = GIDSignIn.sharedInstance
-//    var googleId = ""
-//    var googleIdToken = ""
-//    var googleFirstName = ""
-//    var googleLastName = ""
-//    var googleEmail = ""
-//    var googleProfileURL = ""
-//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//
-//        return GIDSignIn.sharedInstance.handle(url)
-//    }
-//
-//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-//        print("error",error ?? "")
-//        guard user != nil else {
-//            print("Uh oh. The user cancelled the Google login.")
-//            return
-//        }
-//
-//        print("TOKEN => \(user.authentication.idToken!)")
-//        //  print(user)
-//
-//        guard let authentication = user.authentication else { return }
-//        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-//                                                       accessToken: authentication.accessToken)
-//        print("credential",credential)
-//        Auth.auth().signIn(with: credential){(res, err) in
-//            if err != nil {
-//                print((err?.localizedDescription)!)
-//                return
-//            }
-//            print("user=", res!)
-//
-//            //
-//            print("user=" + (res!.user.email ?? ""))
-//            self.googleEmail = (res!.user.email ?? "")
-//            //  self.googleProfileURL = (res!.user.photoURL)
-//            self.googleFirstName = (res!.user.displayName ?? "")
-//            self.googleProfileURL = res!.user.photoURL!.absoluteString
-//
-//            //            do {
-//            //
-//            //                    try  self.googleProfileURL = String(contentsOf: res!.user.photoURL!)
-//            //                } catch {
-//            //                    print(error)
-//            //                }
-//
-//            UserDefaults.standard.set((res!.user.email), forKey: "Smail")
-//            UserDefaults.standard.set((res!.user.displayName), forKey: "Sname")
-//
-//            //
-//            //
-//            self.checkuser()
-//        }
-//
-//    }
-//
-//
-//    func signup() {
-//
-//        var base64String = ""
-//        do {
-//            let imgData = try NSData(contentsOf: URL.init(string: self.googleProfileURL)!, options: NSData.ReadingOptions())
-//            base64String =     String(data: imgData as Data, encoding: .utf8) ?? ""
-//
-//        } catch {
-//
-//        }
-//
-//
-//
-//        var logInFormData: Parameters {
-//            [
-//                "userName": self.googleFirstName,
-//                "email": self.googleEmail,
-//                "password": "123456",
-//                "dateOfBirth": "",
-//                "profilePictureURL" : base64String ,
-//                "deviceToken":UserDefaults.standard.string(forKey: "devicetoken")!,
-//                "deviceType": "I",
-//                "flag" : "G"
-//            ]
-//
-//        }
-//
-//        print(logInFormData)
-//
-//
-//        AccountAPI.signin(servciename: "Accounts/Register", logInFormData) { res in
-//            switch res {
-//            case .success:
-//                print("resulllll",res)
-//                if let json = res.value{
-//
-//
-//                    print("Josn",json)
-//                    if (json["status"] == "true")
-//                    {
-//
-//                        let userdic = json["data"]
-//                        let fullName : String = userdic["dateOfBirth"].stringValue
-//                        let fullNameArr : [String] = fullName.components(separatedBy: "T")
-//                        let datestr: String = fullNameArr[0]
-//
-//                        UserDefaults.standard.set(userdic["id"].int, forKey: "id")
-//
-//                        UserDefaults.standard.set(userdic["email"].string, forKey: "email")
-//                        UserDefaults.standard.set(userdic["firstName"].string, forKey: "name")
-//                        UserDefaults.standard.set(userdic["password"].string, forKey: "passwordHash")
-//                        UserDefaults.standard.set(userdic["mobile"].string, forKey: "phoneNumber")
-//                        UserDefaults.standard.set(datestr, forKey: "dateOfBirth")
-//                        UserDefaults.standard.set(userdic["profilePictureURL"].string, forKey: "profilePictureURL")
-//                        //                UserDefaults.standard.set(userdic["status"].string, forKey: "status")
-//                        //                UserDefaults.standard.set(userdic["pin"].string, forKey: "pin")
-//                        //                UserDefaults.standard.set(userdic["wallet"].string, forKey: "wallet")
-//                        UserDefaults.standard.set("yes", forKey: "login")
-//                        UserDefaults.standard.set("No", forKey: "StatusGmail")
-//                        self.showsignupViewaftergoogle   = true
-//
-//
-//
-//                        //                self.logindetails.append(acc)
-//                        //                print(self.logindetails)
-//
-//
-//                    }
-//                    else{
-//                        //
-//
-//                        //  @Published  var showingAlert = false
-//
-//                        //        AlertToast(displayMode: .alert, type: .regular, title: json["ResponseMsg"].stringValue )
-//                        //        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
-//
-//                    }
-//
-//
-//                }
-//            case let .failure(error):
-//                print(error)
-//            }
-//        }
-//
-//    }
-//
-//
-//
-//    //    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-//    //
-//    //        guard user != nil else {
-//    //            print("Uh oh. The user cancelled the Google login.")
-//    //            return
-//    //        }
-//    //
-//    //        print("TOKEN => \(user.authentication.idToken!)")
-//    //
-//    //    }
-//
-//    func checkuser(){
-//        //{"userid":"sweta.g@mishainfotech.com"}
-//
-//        var checData: Parameters {
-//            [
-//                "email": googleEmail,
-//
-//            ]
-//
-//        }
-//
-//        print(checData)
-//
-//        AccountAPI.signin(servciename: "Accounts/CheckUserExist", checData) { res in
-//            switch res {
-//            case .success:
-//                print("resulllll",res)
-//                if let json = res.value{
-//
-//
-//                    print("Josn",json)
-//                    //
-//                    if(json["message"] == "User does not exist!")
-//                    {
-//                        self.signup()
-//                        //                         existornot = "No"
-//                        //
-//                    }
-//                    else if (json["message"] == "User exist!") {
-//                        UserDefaults.standard.set("yes", forKey: "StatusGmail")
-//                        //  existornot = "Yes"
-//
-//                        let userdic = json["data"]
-//                        let fullName : String = userdic["dateOfBirth"].stringValue
-//                        let fullNameArr : [String] = fullName.components(separatedBy: "T")
-//                        let datestr: String = fullNameArr[0]
-//
-//                        UserDefaults.standard.set(userdic["id"].int, forKey: "id")
-//
-//                        UserDefaults.standard.set(userdic["email"].string, forKey: "email")
-//                        UserDefaults.standard.set(userdic["firstName"].string, forKey: "name")
-//                        UserDefaults.standard.set(userdic["password"].string, forKey: "passwordHash")
-//                        UserDefaults.standard.set(userdic["mobile"].string, forKey: "phoneNumber")
-//                        UserDefaults.standard.set(datestr, forKey: "dateOfBirth")
-//                        UserDefaults.standard.set(userdic["profilePictureURL"].string, forKey: "profilePictureURL")
-//
-//                        UserDefaults.standard.set("yes", forKey: "login")
-//                        self.showsignupViewaftergoogle = true
-//
-//                    } else {
-//
-//                    }
-//
-//                }
-//            case let .failure(error):
-//                print(error)
-//            }
-//        }
-//    }
-//
-//    //    func signup() {
-//    //        let imgData = image!.pngData()
-//    //        let strBase64 = imgData!.base64EncodedString(options: .lineLength64Characters)
-//    //
-//    //        var logInFormData: Parameters {
-//    //            [
-//    //                "userName": name,
-//    //                  "email": email,
-//    //                  "password": password,
-//    //                  "dateOfBirth": dob,
-//    //                  "profilePictureURL": strBase64,
-//    //                "deviceToken":UserDefaults.standard.string(forKey: "devicetoken")!,
-//    //                  "deviceType": "I",
-//    //                "flag" : "E"
-//    //                  ]
-//    //
-//    //        }
-//    //
-//    //            print(logInFormData)
-//    //
-//    //
-//    //                    AccountAPI.signin(servciename: "Accounts/Register", logInFormData) { res in
-//    //                    switch res {
-//    //                    case .success:
-//    //                        print("resulllll",res)
-//    //                        if let json = res.value{
-//    //
-//    //
-//    //                            print("Josn",json)
-//    //                            if (json["status"] == "true")
-//    //                            {
-//    //                                     let userdic = json["data"]
-//    //
-//    ////                                     UserDefaults.standard.set(userdic["id"].string, forKey: "id")
-//    ////
-//    ////                                     UserDefaults.standard.set(userdic["email"].string, forKey: "email")
-//    ////                                    UserDefaults.standard.set(userdic["firstName"].string, forKey: "name")
-//    ////                                     UserDefaults.standard.set(userdic["password"].string, forKey: "passwordHash")
-//    ////                                     UserDefaults.standard.set(userdic["mobile"].string, forKey: "phoneNumber")
-//    ////                                     UserDefaults.standard.set(userdic["dateOfBirth"].string, forKey: "dateOfBirth")
-//    ////                                     UserDefaults.standard.set(userdic["profilePictureURL"].string, forKey: "profilePictureURL")
-//    ////                     //                UserDefaults.standard.set(userdic["status"].string, forKey: "status")
-//    ////                     //                UserDefaults.standard.set(userdic["pin"].string, forKey: "pin")
-//    ////                     //                UserDefaults.standard.set(userdic["wallet"].string, forKey: "wallet")
-//    ////                             UserDefaults.standard.set("yes", forKey: "login")
-//    //
-//    //
-//    //                                self.showingAlert1.toggle()
-//    //                                self.message = json["message"].stringValue
-//    //
-//    //
-//    //                     //                self.logindetails.append(acc)
-//    //                     //                print(self.logindetails)
-//    //
-//    //
-//    //                            }
-//    //                            else{
-//    //                            //
-//    //                             self.showingAlert.toggle()
-//    //                             self.message = json["message"].stringValue
-//    //                           //  @Published  var showingAlert = false
-//    //
-//    //                     //        AlertToast(displayMode: .alert, type: .regular, title: json["ResponseMsg"].stringValue )
-//    //                     //        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
-//    //
-//    //                            }
-//    //
-//    //
-//    //                        }
-//    //                    case let .failure(error):
-//    //                      print(error)
-//    //                    }
-//    //                  }
-//    //
-//    //        }
-//
-//}
+
+
+
+
+class AppleSignInCoordinator: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    static let shared = AppleSignInCoordinator()
     
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let email = appleIDCredential.email
+            let fullName = appleIDCredential.fullName
+            // Save userIdentifier securely
+            print("User ID: \(userIdentifier)")
+            print("Email: \(String(describing: email))")
+            print("Full Name: \(String(describing: fullName))")
+        }
+    }
     
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("Authorization failed with error: \(error.localizedDescription)")
+    }
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return UIApplication.shared.windows.first ?? ASPresentationAnchor()
+    }
+}
+
 extension View {
     func placeholder<Content: View>(
         when shouldShow: Bool,
@@ -1627,7 +1320,7 @@ class AuthenticationViewModel: NSObject, ObservableObject {
 
   // 2
   @Published var state: SignInState = .signedOut
-    @Published var showsignupViewaftergoogle : Bool = false //UserDefaults.standard.bool(forKey: "showsignup")
+  @Published var showsignupViewaftergoogle : Bool = false //UserDefaults.standard.bool(forKey: "showsignup")
 
   // 3
   override init() {

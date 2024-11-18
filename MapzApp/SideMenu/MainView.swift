@@ -21,8 +21,8 @@ struct MainView: View {
         ZStack(alignment: Alignment(horizontal: .leading, vertical: .center)) {
             
             HomePage(x: $offsetX, isDark: $isDark)
-            
-        //    SlideOutMenu(menuWidth: $leftWidth, isDark: $isDark, offsetX: $offsetX)
+ 
+        //   SlideOutMenu(menuWidth: $leftWidth, isDark: $isDark, offsetX: $offsetX)
         }
         
         // 添加手势

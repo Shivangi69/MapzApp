@@ -18,8 +18,8 @@ struct FeedViewCell: View {
                             
                             url: NSURL(string: feedList.fileName)! as URL,
                             placeholder: {  Image(feedList.fileName)
-                                       .frame(width: 60, height: 70.0)
-                                    .aspectRatio(contentMode: .fit)
+                                  .frame(width: 60, height: 70.0)
+                                   .aspectRatio(contentMode: .fit)
                             },
                             image: { 
                                 Image(uiImage: $0).resizable()

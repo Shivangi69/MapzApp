@@ -497,7 +497,7 @@ public struct SearchBarViewNew: View {
         self.showsCancelButton = true
         self.cancelButtonLabel = { AnyView(Text("Cancel")) }
         self.showsClearSearchButton = true
-        self.clearSearchButtonLabel =  { AnyView(Image(systemName: "xmark.circle.fill").foregroundColor(Color(.systemGray3))) }
+        self.clearSearchButtonLabel =  { AnyView(Image(systemName: "xmark.circle.fill").foregroundColor(Color(.gray))) }
         self.textBackgroundView = { AnyView(RoundedRectangle(cornerRadius: 8).foregroundColor(Color(.secondarySystemBackground))) }
         self.backgroundView = { AnyView(Color(.systemBackground)) }
         self.spacing = 8
@@ -513,7 +513,7 @@ public struct SearchBarViewNew: View {
          showsCancelButton: Bool = true,
          cancelButtonLabel: @escaping () -> AnyView = { AnyView(Text("Cancel")) },
          showsClearSearchButton: Bool = true,
-         clearSearchButtonLabel: @escaping () -> AnyView = { AnyView(Image(systemName: "xmark.circle.fill").foregroundColor(Color(.systemGray3))) },
+         clearSearchButtonLabel: @escaping () -> AnyView = { AnyView(Image(systemName: "xmark.circle.fill").foregroundColor(Color(.gray))) },
          textBackgroundView: @escaping () -> AnyView = { AnyView(RoundedRectangle(cornerRadius: 8).foregroundColor(Color(.secondarySystemBackground))) },
          backgroundView: @escaping () -> AnyView = { AnyView(Color(.systemBackground)) },
          spacing: CGFloat = 8,

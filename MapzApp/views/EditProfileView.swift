@@ -203,7 +203,7 @@ struct EditProfileView: View {
                         TextField (name, text: $name)
                             .font(.custom("Inter-Regular", size: 14))
                             .placeholder(when: name.isEmpty) {
-                                Text("Name").foregroundColor(.systemGray)
+                                Text("Name").foregroundColor(.gray)
                                     .font(.custom("Inter-Regular", size: 14))
                                 
                             }
@@ -216,7 +216,7 @@ struct EditProfileView: View {
                         Text (email)
                             .font(.custom("Inter-Regular", size: 14))
                             .placeholder(when: name.isEmpty) {
-                                Text("Name").foregroundColor(.systemGray)
+                                Text("Name").foregroundColor(.gray)
                                     .font(.custom("Inter-Regular", size: 14))
                             }
                         Spacer()
@@ -271,7 +271,7 @@ struct EditProfileView: View {
                                     .padding(.horizontal, 8.0)
                                     .font(.custom("Inter-Regular", size: 14))
 
-                                .foregroundColor(self.comment == "Comment" ? .systemGray : .black)
+                                    .foregroundColor(self.comment == "Comment" ? .gray : .black)
 
                                     .onAppear {
                                         // remove the placeholder text when keyboard appears
@@ -318,7 +318,6 @@ struct EditProfileView: View {
                     .font(.custom("Inter-Medium", size: 20))
                     .frame(width:
                             UIScreen.main.bounds.width-30, height: 60.0)
-                
                     .background(Color ("themecolor"))
                     .cornerRadius(36)
                     .fullScreenCover(isPresented: $showNextView, content: MainView.init)
