@@ -37,19 +37,16 @@ public struct CameraView: UIViewControllerRepresentable {
         
         self.pinchToZoom = pinchToZoom
         self.tapToFocus = tapToFocus
-        self.doubleTapCameraSwitch = doubleTapCameraSwitch
+        self.doubleTapCameraSwitch = false
     }
     
     public func makeUIViewController(context: Context) -> CameraViewController {
         let cameraViewController = CameraViewController()
         cameraViewController.delegate = context.coordinator
-        
         cameraViewController.applicationName = applicationName
         cameraViewController.preferredStartingCameraType = preferredStartingCameraType
         cameraViewController.preferredStartingCameraPosition = preferredStartingCameraPosition
-        
         cameraViewController.focusImage = focusImage
-        
         cameraViewController.pinchToZoom = pinchToZoom
         cameraViewController.tapToFocus = tapToFocus
         cameraViewController.doubleTapCameraSwitch = doubleTapCameraSwitch
@@ -60,18 +57,22 @@ public struct CameraView: UIViewControllerRepresentable {
     public func updateUIViewController(_ cameraViewController: CameraViewController, context: Context) {
         if events.didAskToCapturePhoto {
             cameraViewController.takePhoto()
+            
         }
         
         if events.didAskToRotateCamera {
             cameraViewController.rotateCamera()
+            
         }
         
         if events.didAskToChangeFlashMode {
             cameraViewController.changeFlashMode()
+            
         }
         
         if events.didAskToRecordVideo || events.didAskToStopRecording {
             cameraViewController.toggleMovieRecording()
+            
         }
     }
     

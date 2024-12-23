@@ -216,23 +216,17 @@ Spacer()
                             return
 
                         }
-                        if (email == "")
-                        {
-
+                        if (email == ""){
+                        
                             message = "Please Enter Email!"
-
                             showingAlert.toggle()
-
                             return
 
                         }
-                        if (savedDate?.description == "Date of Birth")
-                        {
-
+                        
+                        if (savedDate?.description == "Date of Birth") {
                             message = "Please Enter Date of birth!"
-
                             showingAlert.toggle()
-
                             return
 
                         }
@@ -470,13 +464,9 @@ struct DatePickerWithButtons: View {
                 DatePicker("Test", selection: $selectedDate, displayedComponents: [.date])
                     
                     .datePickerStyle(GraphicalDatePickerStyle())
-                    //
-                   
-                    //
-                    .colorScheme(.dark) // or .light to get black text
-                    //
-                    
-                   
+               
+                    .colorScheme(.dark)
+                
                 Divider()
                 HStack {
                     Spacer()

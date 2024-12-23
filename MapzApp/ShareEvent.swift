@@ -44,7 +44,8 @@ struct ShareEvent: View {
             obs.filteredeventlist = []
             obs.filteredeventlist = obs.eventlist
 
-        }else{
+        }
+        else {
             obs.filteredeventlist = []
             obs.filteredeventlist  = obs.eventlist.filter { $0.name.contains(searchText) }
            // obs.filteredeventlist = obs.eventlist.filter($0.name.contains(searchText))

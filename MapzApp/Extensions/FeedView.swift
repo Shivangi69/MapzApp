@@ -26,7 +26,7 @@ struct FeedView: View {
                     .frame(height :heightplus)
                 
                 HStack(spacing : 10.0) {
-                    Text("Yourfeed")
+                    Text("Your Feed")
                         .foregroundColor(Color.black)
                         .font(.custom("Inter-Bold", size: 18
                                      ))

@@ -336,6 +336,7 @@ struct EditProfileView: View {
                     return alert
                 })
 
+                
                 .alert(isPresented:$showingAlert1) {
                             Alert(
                                 title: Text("Warning"),
@@ -348,7 +349,6 @@ struct EditProfileView: View {
                             )
                         }
 
-                
                 Spacer().frame( height: 15)
             }
            
@@ -365,9 +365,8 @@ struct EditProfileView: View {
 
         }
 
-    func signup()  {
+    func signup() {
         UIApplication.dismissKeyboard()
-
         var strBase64  = String()
         if image == UIImage(named: "icons8-male-user-72"){
             strBase64 = ""
@@ -377,7 +376,7 @@ struct EditProfileView: View {
             strBase64 = imgData!.base64EncodedString(options: .lineLength64Characters)
 
         }
-       
+        
         var logInFormData: Parameters {
             [
                 "name": name,

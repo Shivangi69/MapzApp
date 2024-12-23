@@ -243,8 +243,8 @@ struct HomeView: View {
                                          HStack{
                                              Image("loccc-2")
                                                  .resizable()
-                                                 .frame(width: 40.0, height: 40.0)
-                                             
+                                                 .frame(width: 20.0, height: 40.0)
+                                                 .padding()
                                              
                                              VStack(alignment: .leading){
                                                  Text(pokemon.diaryName  + pokemon.date)
@@ -377,7 +377,8 @@ struct HomeView: View {
                                      .cornerRadius(10)
                                  }
                                 
-                             }.fullScreenCover(isPresented: $showCameraPopUp, content:{
+                             }
+                             .fullScreenCover(isPresented: $showCameraPopUp, content:{
                                  if((UserDefaults.standard.string(forKey: "fromwhere")) == "notes"){
                                      createNotes()
                                  }
@@ -456,10 +457,7 @@ struct HomeView: View {
 //                         menu2
 //             //                    Color("yellowColor")
 //             //                        .ignoresSafeArea()
-//
-//                                 // Your other content here
-//                                 // Other layers will respect the safe area edges
-                         
+
                          }
                          .offset(y : UIScreen.main.bounds.height/2 - 230 )
                          
@@ -584,6 +582,7 @@ struct HomeView: View {
                 }
                 .frame(width: UIScreen.main.bounds.width-60, height: 260)
                 .cornerRadius(20)
+                
                 .shadow(color: .gray, radius: 3, x: 1, y: 1)
             }
             

@@ -56,9 +56,9 @@ struct friendsList: View {
                             List(obs.friendlist, id: \.self) { pokemon in
                                 //  List{
                                 HStack(alignment: .center, spacing: 10.0){
-                                    //                        Image("icons8-male-user-72")
-                                    //                            .frame(width: 60.0, height: 60.0)
-                                    //                            .cornerRadius(30)
+                                    //  Image("icons8-male-user-72")
+                                    //  .frame(width: 60.0, height: 60.0)
+                                    //  .cornerRadius(30)
                                     
                                     AsyncImage(
                                         url: NSURL(string: pokemon.ProfilePic)! as URL ,
@@ -101,7 +101,7 @@ struct friendsList: View {
                             }
                         }
                         else{
-                            blankView(imageNAme: "no_found_friend",ErrorMsg : "No Friends Found")
+                            blankView(imageNAme: "no_found_friend",ErrorMsg : "No friends found!")
                                 .offset(y : UIScreen.main.bounds.height/2-120)
                             Spacer()
                             
@@ -225,23 +225,26 @@ struct friendsList_Previews: PreviewProvider {
 }
 struct friendlistModal :Hashable {
     var  Id : String
-    
+
     var  name : String
     var    ProfilePic : String
     
     var  dob : String
-    
-    init(_ Id :String,_ name:String,_ ProfilePic:String,_ dob:String){
+    var  email : String
+
+    init(_ Id :String,_ name:String,_ ProfilePic:String,_ dob:String , _ email:String){
         self.Id  = Id
-        
         self.name  = name
         self.ProfilePic = ProfilePic
         self.dob = dob
-        
+        self.email = email
+
         
     }
     
 }
+
+
 class friendObserver: ObservableObject {
     
     @Published   var friendlist = [friendlistModal]()
@@ -268,7 +271,8 @@ class friendObserver: ObservableObject {
                         let fullNameArr : [String] = fullName.components(separatedBy: "T")
                         let datestr: String = fullNameArr[0]
                         
-                        let  acc  = friendlistModal(i.1["id"].stringValue,i.1["firstName"].stringValue,("https://mapzapp.swadhasoftwares.com/Uploads/ProfilePicture/" + i.1["profilePictureURL"].stringValue),datestr)
+                        let email : String = i.1["email"].stringValue
+                        let  acc  = friendlistModal(i.1["id"].stringValue,i.1["firstName"].stringValue,("https://mapzapp.swadhasoftwares.com/Uploads/ProfilePicture/" + i.1["profilePictureURL"].stringValue),datestr ,i.1["email"].stringValue)
                         
                         self.friendlist.append(acc)
                     }

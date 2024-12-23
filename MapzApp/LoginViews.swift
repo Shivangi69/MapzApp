@@ -103,7 +103,7 @@ struct LoginViews: View {
                         .overlay(RoundedRectangle(cornerRadius: (25.0)).stroke(lineWidth: 1).foregroundColor(.white))
                             
                             HStack {
-                                
+
                                 SecureField("", text: $obs.password)
                                     .foregroundColor(.white)
                                     .font(.custom("Inter-Regular", size: 17))
@@ -208,29 +208,8 @@ struct LoginViews: View {
                             .frame(width: 300, height: 35, alignment: .center)
                         
                         
-                        VStack {
-                                  // Apple's native Sign in with Apple button
-                                  SignInWithAppleButton(
-                                      .signIn, // button style (sign-in or continue)
-                                      onRequest: { request in
-                                          request.requestedScopes = [.fullName, .email]
-                                      },
-                                      onCompletion: { result in
-                                          switch result {
-                                          case .success(let authResults):
-                                              handleAuthorization(authResults)
-                                        case .failure(let error):
-                                              print("Authorization failed: \(error.localizedDescription)")
-                                          }
-                                      }
-                                  )
-                                  .signInWithAppleButtonStyle(.black) // or .white, .whiteOutline
-                                  .frame(width: 280, height: 45)
-                              }
-                        
-                        
-                        
                         HStack{
+                            
                             Button(action: {
                               
                                 UIApplication.dismissKeyboard()
@@ -299,7 +278,63 @@ struct LoginViews: View {
                             .sheet(isPresented: $twitterAPI.authorizationSheetIsPresented) {
                                 SafariView(url: $twitterAPI.authorizationURL)
                             }
+                            
+//                            VStack{
+//                                SignInWithAppleButton(
+//                                          .signIn, // button style (sign-in or continue)
+//                                          onRequest: { request in
+//                                              request.requestedScopes = [.fullName, .email]
+//                                          },
+//                                          onCompletion: { result in
+//                                              switch result {
+//                                              case .success(let authResults):
+//                                                  handleAuthorization(authResults)
+//                                            case .failure(let error):
+//                                                  print("Authorization failed: \(error.localizedDescription)")
+//                                              }
+//                                          }
+//                                      )
+//                                      .signInWithAppleButtonStyle(.white) // or .white, .whiteOutline
+//                                      .frame(width: 70 , height: 70)
+//                                      .cornerRadius(35)
+//                                      .labelsHidden() 
+//                              
+//                                  }
+//
+                            
+                            VStack {
+                                SignInWithAppleButton(
+                                    .signIn,
+                                    onRequest: { request in
+                                        request.requestedScopes = [.fullName, .email]
+                                    },
+                                    onCompletion: { result in
+                                        switch result {
+                                        case .success(let authResults):
+                                            handleAuthorization(authResults)
+                                            print("Success: \(authResults)")
+                                        case .failure(let error):
+                                            print("Authorization failed: \(error.localizedDescription)")
+                                        }
+                                    }
+                                )
+                                .signInWithAppleButtonStyle(.white)
+                                .frame(width: 70, height: 70)
+                                .cornerRadius(35)
+//                                .hidden()  // Keeps the button interactive but hidden
+                                .overlay(
+                                    Circle()
+                                        .fill(Color.white)
+                                        .overlay(
+                                            Image(systemName: "applelogo")
+                                                .foregroundColor(.blue)
+                                                .font(.system(size: 30))
+                                        )
+                                )
+                            }
                         }
+                        
+                        
                         // Spacer()
                         HStack(alignment: .center , spacing : 0 ){
                             Text("Don't have an account? ")
@@ -317,7 +352,6 @@ struct LoginViews: View {
                             }
                             .fullScreenCover(isPresented: $showsignupView, content: signuppage.init)
                             
-                       
                         }
                         .padding(.horizontal, 5.0)
                         .onAppear(){
@@ -343,9 +377,7 @@ struct LoginViews: View {
             }
             if $showdocPopUp.wrappedValue {
                 ZStack {
-                    
                     Color.white
-                    
                     HStack {
                          Spacer()
 
@@ -383,15 +415,16 @@ struct LoginViews: View {
                         }
                         .overlay(RoundedRectangle(cornerRadius: (25.0)).stroke(lineWidth: 1)
                             .foregroundColor(Color("bgCOlor")))
+                    
                         Button(action: {
                             
                             if (forgtmail == "")
                             {
                                 //
                                 obs.message = "Please Enter Email!"
-                                //
+                                
                                 //   obs.showingAlert.toggle()
-                                //
+                                
                                 obs.showingAlert = true
                                 return
                                 
@@ -679,6 +712,7 @@ struct LoginViews: View {
                }
              }
            }
+    
     func signup() {
        
         var logInFormData: Parameters {
@@ -770,7 +804,6 @@ class loginObserver: ObservableObject {
     
 //    @Published  var password = "Temp$123"
     @Published  var email =  "mipl.student@yopmail.com"
-
 //    @Published  var email =  ""
     @Published  var password = ""
 //  
@@ -792,8 +825,7 @@ class loginObserver: ObservableObject {
 
 
             func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-                // Perform any operations when the user disconnects from app here.
-                // ...
+               
             }
     
     func login() {
@@ -806,10 +838,7 @@ class loginObserver: ObservableObject {
                 "deviceType": "I"
                 
             ]
-
         }
-        print(logInFormData)
- //http://grocery.swadhasoftwares.com/api/profile.php
        
         AccountAPI.signin(servciename: "Authenticate/Login", logInFormData) { res in
         switch res {
@@ -817,13 +846,10 @@ class loginObserver: ObservableObject {
             print("resulllll",res)
             if let json = res.value{
 
-
                 print("Josn",json)
-       if (json["status"] == "true")
-       {
-                let userdic = json["data"]
-
-        
+                if (json["status"] == "true")
+                {
+                    let userdic = json["data"]
         
         let fullName : String = userdic["dateOfBirth"].stringValue
         let fullNameArr : [String] = fullName.components(separatedBy: "T")
@@ -849,8 +875,7 @@ class loginObserver: ObservableObject {
            UserDefaults.standard.set(userdic["packageId"].string, forKey: "packageId")
            UserDefaults.standard.set("yes", forKey: "login")
 
-//                self.logindetails.append(acc)
-//                print(self.logindetails)
+
         self.showNextView.toggle()
        }
        else{
@@ -859,8 +884,6 @@ class loginObserver: ObservableObject {
         self.showingAlert = true
 
        }
-
-
             }
         case let .failure(error):
           print(error)
@@ -873,29 +896,31 @@ class loginObserver: ObservableObject {
 
 
 
-class AppleSignInCoordinator: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    static let shared = AppleSignInCoordinator()
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            let userIdentifier = appleIDCredential.user
-            let email = appleIDCredential.email
-            let fullName = appleIDCredential.fullName
-            // Save userIdentifier securely
-            print("User ID: \(userIdentifier)")
-            print("Email: \(String(describing: email))")
-            print("Full Name: \(String(describing: fullName))")
-        }
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("Authorization failed with error: \(error.localizedDescription)")
-    }
-    
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return UIApplication.shared.windows.first ?? ASPresentationAnchor()
-    }
-}
+//class AppleSignInCoordinator: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+//    static let shared = AppleSignInCoordinator()
+//    
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+//        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+//            let userIdentifier = appleIDCredential.user
+//            let email = appleIDCredential.email
+//            let fullName = appleIDCredential.fullName
+//            // Save userIdentifier securely
+//            
+//            
+//            print("User ID: \(userIdentifier)")
+//            print("Email: \(String(describing: email))")
+//            print("Full Name: \(String(describing: fullName))")
+//        }
+//    }
+//    
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+//        print("Authorization failed with error: \(error.localizedDescription)")
+//    }
+//    
+//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+//        return UIApplication.shared.windows.first ?? ASPresentationAnchor()
+//    }
+//}
 
 extension View {
     func placeholder<Content: View>(

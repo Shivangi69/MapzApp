@@ -156,7 +156,7 @@ public class CameraViewController: UIViewController {
         previewView.session = session
         previewView.videoPreviewLayer.videoGravity = videoGravity
         previewView.videoPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-        previewView.frame = view.frame
+        previewView.frame = CGRect(x: 0, y: -75, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         view.addSubview(previewView)
         
         // Add Gesture Recognizers

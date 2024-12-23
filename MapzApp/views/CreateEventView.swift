@@ -100,7 +100,6 @@ struct CreateEventView: View {
                     .frame(height: 30)
                     
                     .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
-                    
                 
                 }
                 
@@ -114,9 +113,18 @@ struct CreateEventView: View {
                 }
                 
                 if $showVideoPopUp.wrappedValue {
-                    ZStack{
+                    
+//                    ZStack{
+//                        Spacer().frame(height: -75) // Push down the content
+// tried offset view change yellow color to clear color
                         CameraView(events: events, applicationName: "SwiftUICam")
-                    }
+                        .background(Color.black)
+//                            .offset(y:-75)
+//                            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 3.2)
+
+
+//                    }
+
                     
                 }
                 if $showrecdPopUp.wrappedValue {

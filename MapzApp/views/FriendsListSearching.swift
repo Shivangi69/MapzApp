@@ -11,6 +11,8 @@ import Alamofire
     @ObservedObject var obs = friendObserver1()
     @Environment(\.presentationMode) var presentationMode
     @State private var showdocPopUp = false
+        @State private var showdleete = false
+
     @State private var Note = String()
     @State private var showupdateview = false
   //  @State private var searchText = ""
@@ -35,9 +37,9 @@ import Alamofire
                            // Spacer(minLength: 12)
                             Button(action: {
                                 presentationMode.wrappedValue.dismiss()
-                                //                    withAnimation {
-                                //                        x = 0
-                                //                    }
+                                //        withAnimation {
+                                //         x = 0
+                                //    }
                             }) {
                                 Image("back")
                                     .resizable()
@@ -90,8 +92,6 @@ import Alamofire
                             }.frame(width: UIScreen.main.bounds.width-30)
                             //       }
                             
-                            
-                            
                             HStack{
                                 
                             }
@@ -104,7 +104,10 @@ import Alamofire
                     VStack{
                     if ((obs.friendlist).count > 0){
                         ScrollView{
-                        ForEach((obs.friendlist).filter{$0.name.contains(searchText) || searchText == ""}, id:\.self) { pokemon in
+//                        ForEach((obs.friendlist).filter{$0.name.contains(searchText) || searchText == ""}, id:\.self) { pokemon in
+                            
+                            ForEach(Array(obs.friendlist.filter { $0.name.contains(searchText) || searchText == "" }.enumerated()), id: \.element.self) { index, pokemon in
+
 
                         //List((obs.friendlist).filter($0.name.contains(searchText)), id: \.self) { pokemon in
               //  List{
@@ -139,12 +142,17 @@ import Alamofire
                                             .font(.custom("Inter-Bold", size: 16))
                                         
                                     }
+                                   
                                     .onTapGesture {
                                         
                                         UserDefaults.standard.set(pokemon.Id, forKey: "fid")
                                         UserDefaults.standard.set(pokemon.name, forKey: "fname")
                                         
                                         UserDefaults.standard.set(pokemon.ProfilePic, forKey: "fpic")
+                                  
+
+                                        print("Updated email: \(pokemon.email)")
+                                                            
                                         
                                         showupdateview.toggle()
                                     }
@@ -153,23 +161,36 @@ import Alamofire
                                         friendsProfileView( selectedTab: "" ,grpD: "")
                                     })
                                     
+                                    
                                     Spacer()
                                     
                                     HStack{
                                         Image("cross")
                                             .padding(.trailing, 5.0)
                                     }
+                                    
+                                    .onTapGesture(){
+                                        UserDefaults.standard.set(pokemon.email, forKey: "idd")
+
+                                        showdleete = true
+                                        
+                                    
+                                    }
                                 }
                             }
-                 
+                                
                     .padding(6.0)
                     //.padding(.vertical, 4.0)
                     .background(Color.white)
                     .cornerRadius(15.0)
 
-                    //.shadow(color: .gray, radius: 5, x: 1, y: 1)
+                            //.shadow(color: .gray, radius: 5, x: 1, y: 1)
+                        }
+                            
+                  
+                    }
                 }
-                        }   }else{
+                        else{
                         blankView(imageNAme: "no_found_friend",ErrorMsg : "No Friends Found")
                             .offset(y : UIScreen.main.bounds.height/2-120)
                         Spacer()
@@ -215,6 +236,146 @@ import Alamofire
                     .offset( y : UIScreen.main.bounds.height/2 - 60)
              
 
+                    
+                    if $showdleete.wrappedValue {
+                        
+                        ZStack {
+//                            Color.white
+                            VStack(alignment: .center, spacing: 5) {
+                                Spacer(minLength: 5)
+
+                              
+                                Button(action: {
+                                    showdleete = false
+                                    
+                                }) {
+                                    Image("icons8-macos-close-24 (1)")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                }
+                                .frame(width: 24, height: 24)
+                                .offset(x: UIScreen.main.bounds.width / 2 - 60)
+
+                                
+                                Text("Delete Alert")
+                                            .font(.custom("Inter-Bold", size: 22))
+                                            .foregroundColor(.black)
+
+                                
+                                Text("Are you sure you wish to delete?")
+                                    .padding(.horizontal, 10.0)
+                                    .font(.custom("Inter-Regular", size: 17))
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: UIScreen.main.bounds.width - 100, height: 60)
+
+                                HStack(spacing: 20) {
+                                    Button(action: {
+                                        self.showdleete = false
+                                    }, label: {
+                                        Text("Cancel")
+                                            .font(.custom("Inter-Bold", size: 18))
+                                            .frame(maxWidth: .infinity, minHeight: 60)
+                                            .background(Color("themecolor"))
+                                            .foregroundColor(.white)
+                                            .cornerRadius(36)
+                                            .shadow(color: .gray, radius: 5, x: 1, y: 1)
+                                    })
+
+                                    Button(action: {
+                                        deleteevent()
+                                    }, label: {
+                                        Text("Delete")
+                                            .font(.custom("Inter-Bold", size: 18))
+                                            .frame(maxWidth: .infinity, minHeight: 60)
+                                            .background(Color("themecolor"))
+                                            .foregroundColor(.white)
+                                            .cornerRadius(36)
+                                            .shadow(color: .gray, radius: 5, x: 1, y: 1)
+                                    })
+                                }
+
+                                Spacer()
+                            }
+                            .padding()
+                            .frame(width: UIScreen.main.bounds.width - 60, height: 200)
+                            .background(Color.white)
+                            .cornerRadius(20)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8) // Optional: Adjust the corner radius as needed
+                                    .stroke(Color.gray, lineWidth: 0.5) // Border effect
+                            )
+
+//                            .shadow(color: .gray, radius: 10, x: 2, y: 2)
+                        }
+
+                        
+                        
+                        
+//                        ZStack {
+//                          
+//                            Color.white
+//                            VStack(alignment: .center, spacing: 20.0) {
+//                                Spacer(minLength: 10)
+//                                Button(action: {
+//                                    showdleete = false
+//                                }) {
+//                                   Image("icons8-macos-close-24 (1)")
+//                                        .resizable()
+//                                        .aspectRatio(contentMode: .fit)
+//
+//                                    }
+//                                    .frame(width: 24, height: 24)
+//                                .offset(x :UIScreen.main.bounds.width/2 - 60 )
+//
+//                                Text("Are you sure you wish to delete?")
+//                                    .padding(.horizontal, 10.0)
+//                                    .font(.custom("Inter-Regular", size: 17))
+//                                    .frame(width: UIScreen.main.bounds.width-100, height: 60)
+////                                    .border(Color.gray, width: 0.5)
+//
+//                                HStack(spacing: 20) {
+//                                    // Cancel Button
+//                                    
+//                                    
+//                                    
+//                                    Button(action: {
+//                                        self.showdleete = false
+//                                    }, label: {
+//                                        Text("Cancel")
+//                                            .font(.custom("Inter-Bold", size: 18))
+//                                    })
+//                                    .frame(width: (UIScreen.main.bounds.width - 140) / 2, height: 60)
+//                                    .background(Color("themecolor"))
+//                                    .foregroundColor(.white)
+//                                    .cornerRadius(36)
+//
+//                                    // Delete Button
+//                                    Button(action: {
+//                                    // Replace with delete action
+//                                        
+//                                        deleteevent()
+//                                        
+//                                        
+//                                    }, label: {
+//                                        Text("Delete")
+//                                            .font(.custom("Inter-Bold", size: 18))
+//                                    })
+//                                    .frame(width: (UIScreen.main.bounds.width - 140) / 2, height: 60)
+//                                    .background(Color("themecolor"))
+//                                    .foregroundColor(.white)
+//                                    .cornerRadius(36)
+//                                }
+//                                
+//                                Spacer()
+//                            }.padding()
+//
+//                        }
+//                        .padding()
+//
+//                        .frame(width: UIScreen.main.bounds.width-60, height: 200)
+//                        .cornerRadius(20)
+//                        .shadow(color: .gray, radius: 5, x: 1, y: 1)
+                    }
 
                     if $showdocPopUp.wrappedValue {
                         ZStack {
@@ -268,7 +429,38 @@ import Alamofire
                
         }
 
-    
+//        ye dlt wala lgana hai cross per
+        
+        
+        
+        func deleteevent(){
+            let str = UserDefaults.standard.string(forKey: "idd") ?? ""
+            let emaildata = UserDefaults.standard.string(forKey: "email") ?? ""
+
+            
+            var checData: Parameters {
+                
+                [
+                      "userEmail" : emaildata ,
+                      "friendEmail" : str,
+                    
+                ]
+            }
+    print(checData)
+            AccountAPI.signin(servciename: "FriendInvite/DeleteFriendAsync", checData) { res in
+            switch res {
+            case .success:
+                print("resulllll",res)
+                if let json = res.value{
+
+                }
+                self.showdleete = false
+                presentationMode.wrappedValue.dismiss()
+            case let .failure(error):
+              print(error)
+            }
+          }
+        }
     
     func sendInvite() {
         
@@ -378,6 +570,7 @@ struct friendlistModal1 :Hashable {
     }
     
 }
+
 class friendObserver1: ObservableObject {
    
     @Published   var friendlist = [friendlistModal]()
@@ -396,15 +589,15 @@ class friendObserver1: ObservableObject {
             if let json = res.value{
                 self.friendlist = []
                 print("Josn",json)
-       
                 
                  let events = json["data"]
                 for i in events {
                     let fullName : String = i.1["dateOfBirth"].stringValue
                     let fullNameArr : [String] = fullName.components(separatedBy: "T")
                     let datestr: String = fullNameArr[0]
+                    let email : String = i.1["email"].stringValue
                 
-                    let  acc  = friendlistModal(i.1["id"].stringValue,i.1["firstName"].stringValue,("https://mapzapp.swadhasoftwares.com/Uploads/ProfilePicture/" + i.1["profilePictureURL"].stringValue),datestr)
+                    let  acc  = friendlistModal(i.1["id"].stringValue,i.1["firstName"].stringValue,("https://mapzapp.swadhasoftwares.com/Uploads/ProfilePicture/" + i.1["profilePictureURL"].stringValue),datestr,i.1["email"].stringValue)
                    
                     self.friendlist.append(acc)
                 }

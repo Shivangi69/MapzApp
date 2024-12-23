@@ -332,10 +332,11 @@ class FFfriendObserver1: ObservableObject {
                         let fullName : String = i.1["dateOfBirth"].stringValue
                         let fullNameArr : [String] = fullName.components(separatedBy: "T")
                         let datestr: String = fullNameArr[0]
+                        let email : String = i.1["email"].stringValue
                         
-                        let  acc  = friendlistModal(i.1["id"].stringValue,i.1["firstName"].stringValue,("https://mapzapp.swadhasoftwares.com/Uploads/ProfilePicture/" + i.1["profilePictureURL"].stringValue),datestr)
+                        let  acc  = friendlistModal(i.1["id"].stringValue,i.1["firstName"].stringValue,("https://mapzapp.swadhasoftwares.com/Uploads/ProfilePicture/" + i.1["profilePictureURL"].stringValue),datestr,i.1["email"].stringValue )
                         
-                        self.friendlist.append(acc)
+                    self.friendlist.append(acc)
                     }
                     print(self.friendlist)
                     self.showview.toggle()

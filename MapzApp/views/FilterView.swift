@@ -160,9 +160,13 @@ struct FilterView: View {
                                 UserDefaults.standard.set(savedDatestr2, forKey: "EndDate")
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "filter"), object: self)
                                 presentationMode.wrappedValue.dismiss()
-                            } else {
+                            }
+                            else  {
                                 // Dates are not selected, show the alert
-                                showAlert = true
+                                
+                                Toast(text: "Please select dates.").show()
+                                
+//                                showAlert = true
                             }
                         }) {
                             Text("Apply")
@@ -172,7 +176,7 @@ struct FilterView: View {
                                 .background(Color("themecolor-1"))
                                 .cornerRadius(25)
                         }
-                        .disabled(!areDatesSelected)
+//                        .disabled(!areDatesSelected)
                         
                     }
                     

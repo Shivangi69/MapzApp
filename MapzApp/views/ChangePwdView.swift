@@ -37,8 +37,7 @@ struct ChangePwdView: View {
                                 .resizable()
                                 .frame(width: 24.0, height: 24.0)
                             //    .padding(.top,12.0)
-                            
-                            //.cornerRadius(24)
+                           //.cornerRadius(24)
                         }
                         Text("Change password")
                             .foregroundColor(Color.black)
@@ -62,16 +61,13 @@ struct ChangePwdView: View {
                         .font(.custom("Inter-Regular", size: 14))
                         .placeholder(when: password.isEmpty) {
                             Text("Enter existing password").foregroundColor(.white)
-                            
                         }
                 }
                 .padding(.horizontal, 12.0)
                 .frame(width: UIScreen.main.bounds.width-30, height: 45.0)
                 .overlay(RoundedRectangle(cornerRadius: (6.0)).stroke(lineWidth: 1))
                 
-              
                     VStack(spacing: 20.0){
-                    
                     
                 HStack {
                     SecureField("Enter new password", text: $password)
@@ -80,8 +76,6 @@ struct ChangePwdView: View {
                             Text("Enter new password").foregroundColor(.white)
                             
                         }
-                    
-                   
                 }
                 .padding(.horizontal, 12.0)
                 .frame(width: UIScreen.main.bounds.width-30, height: 45.0)
@@ -89,14 +83,12 @@ struct ChangePwdView: View {
                 
                 
                 HStack {
-                    SecureField("Enter confirm password", text: $cpassword)
+                    SecureField("Re-enter new password", text: $cpassword)
                         .font(.custom("Inter-Regular", size: 14))
                         .placeholder(when: cpassword.isEmpty) {
                             Text("Enter confirm password").foregroundColor(.white)
                             
                         }
-                    
-                    
                 }
                 .padding(.horizontal, 12.0)
                 .frame(width: UIScreen.main.bounds.width-30, height: 45.0)
@@ -104,7 +96,6 @@ struct ChangePwdView: View {
         
                     }
                   
-                    
                Spacer()
                     
                 Button("Save"){
@@ -113,26 +104,23 @@ struct ChangePwdView: View {
                     if (opassword == "")
                     {
  //
-                    message = "Please Enter Existing Password!"
- //
+                        message = "Please Enter Existing Password!"
                         showingAlert.toggle()
- //
                         return
 
                     }
                     if (cpassword == "")
+                        
                     {
- //
                         message = "Please Enter Confirm Password!"
- //
                         showingAlert.toggle()
- //
                         return
 
                     }
-                 confirmPWD()
-
-                        }.font(.custom("Inter-Bold", size: 20))       .foregroundColor(.white)
+                    
+                        confirmPWD()
+                        }.font(.custom("Inter-Bold", size: 20))
+                        .foregroundColor(.white)
                 .font(.custom("Inter-Medium", size: 20))
                 .frame(width:
                         UIScreen.main.bounds.width-30, height: 50.0)
@@ -175,8 +163,8 @@ struct ChangePwdView: View {
                 }
                     return alert
                 })
- //
                 
+                    
                 }
                 .padding(.horizontal, 15.0)
               

@@ -37,8 +37,6 @@ struct signuppage: View {
     @State var savedDatestr : String? = nil
     @State var savedDatestrsee : String? = nil
     
-    
-    
     @State  var name: String = UserDefaults.standard.string(forKey: "Sname") ?? ""
     @State  var email: String = UserDefaults.standard.string(forKey: "Smail") ?? ""
     @State  var code: String = "+91"
@@ -748,14 +746,7 @@ struct signuppage: View {
                 .background(Color("themecolor 1") .ignoresSafeArea(.all, edges: .all))
                 
                 
-                
-                if showDatePicker {
-                    DatePickerWithButtons(showDatePicker: $showDatePicker, savedDate: $savedDate, selectedDate: savedDate ?? Date(), savedDatestr: $savedDatestr )
-                        .animation(.linear)
-                        .transition(.opacity)
-                    //                            .background(Color.black)
-                    //                            .foregroundColor(.white)
-                }
+             
                 
                 
             }
@@ -769,6 +760,15 @@ struct signuppage: View {
             //             }
             //         }
             .background(Color("themecolor 1"))
+            
+            
+            if showDatePicker {
+                DatePickerWithButtons(showDatePicker: $showDatePicker, savedDate: $savedDate, selectedDate: savedDate ?? Date(), savedDatestr: $savedDatestr )
+                    .animation(.linear)
+                    .transition(.opacity)
+                //                            .background(Color.black)
+                //                            .foregroundColor(.white)
+            }
             
         }
         
