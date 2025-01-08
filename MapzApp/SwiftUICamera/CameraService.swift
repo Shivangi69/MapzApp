@@ -174,6 +174,7 @@ public class CameraService {
             if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
                 // If a rear dual camera is not available, default to the rear wide angle camera.
                 defaultVideoDevice = backCameraDevice
+//                let supportedColorSpaces = device.activeFormat.supportedColorSpaces
             } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
                 // If the rear wide angle camera isn't available, default to the front wide angle camera.
                 defaultVideoDevice = frontCameraDevice
@@ -192,7 +193,8 @@ public class CameraService {
                 session.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
                 
-            } else {
+            }
+            else {
                 print("Couldn't add video device input to the session.")
                 setupResult = .configurationFailed
                 session.commitConfiguration()
@@ -572,10 +574,6 @@ public class CameraService {
 //            }
 //        }
 //
-//
-//
-//
-//
 //    }
     
     
@@ -619,10 +617,12 @@ public class CameraService {
 //                "Groupid1" : "12",
 //                "IsGroup1" : "true"
 //            ]
+        
+        
         var groupid = String()
         var isgroupid = String()
 //
-        var ISfromGroup =            UserDefaults.standard.string(forKey: "isGroup")
+        var ISfromGroup = UserDefaults.standard.string(forKey: "isGroup")
 //        UserDefaults.standard.set("yes", forKey: "isGroup")
 
         if ISfromGroup == "yes"{

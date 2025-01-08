@@ -75,7 +75,6 @@ struct UpdatepartyDetails: View {
                     Button(action: {
                         
                         if (eventNOE == "New"){
-                            
                             showupdateview = true
                         }else{
                             presentationMode.wrappedValue.dismiss()
@@ -87,7 +86,6 @@ struct UpdatepartyDetails: View {
                         Image("back")
                             .resizable()
                             .frame(width: 24.0, height: 24.0)
-                        
                     }
                     .fullScreenCover(isPresented: $showupdateview, content: MainView.init)
                     
@@ -102,7 +100,6 @@ struct UpdatepartyDetails: View {
                         VStack(spacing: 0.0){
                             
                             HStack(alignment: .center, spacing: 10.0){
-                                
                                 VStack{
                                     AsyncImage(
                                         url: NSURL(string: UserDefaults.standard.string(forKey: "profilePictureURL")!)! as URL ,
@@ -128,8 +125,6 @@ struct UpdatepartyDetails: View {
                                             .font(.custom("Inter-Bold", size: 15))
                                         
                                     }
-                                    
-                                    
                                     
                                     HStack(alignment: .top, spacing: 5.0){//mappin
                                         Image("loctio")

@@ -56,16 +56,18 @@ struct CreateEventView: View {
                 HStack(spacing: 20.0) {
                     Button(action: {
                         if (eventNOE == "New"){
-                            message = "If you go back to home screen current event will will be discard. You Want to Processed?"
+                            message = "If you go back to home screen current event will be discard. You Want to Processed?"
                             showingAlert = true
                             // self.deleteevent()
                         }else{
                             showMaimPopUp = true
                         }
-                    }) {
+                    })
+                    
+                    {
                         Image("icons8-back-24")
                             .resizable()
-                        .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fit)
                         
                     }
                     .frame(width: 40.0, height: 40.0)
@@ -80,9 +82,9 @@ struct CreateEventView: View {
                         Text(UserDefaults.standard.string(forKey: "datestr") ?? "")
                             .foregroundColor(Color.white)
                             .font(.custom("Inter-Regular", size: 15))
-                        
                     }
                     Spacer()
+                    
                     Button(action: {
                         showupdateview.toggle()
                     }) {
@@ -92,13 +94,10 @@ struct CreateEventView: View {
                         
                         Image("icons8-plus-+-24 (1)")
                             .resizable()
-                        
                             .aspectRatio(contentMode: .fit)
-                        
                         
                     }
                     .frame(height: 30)
-                    
                     .fullScreenCover(isPresented: $showupdateview, content: UpdatepartyDetails.init)
                 
                 }
@@ -121,19 +120,11 @@ struct CreateEventView: View {
                         .background(Color.black)
 //                            .offset(y:-75)
 //                            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 3.2)
-
-
 //                    }
-
-                    
                 }
                 if $showrecdPopUp.wrappedValue {
-                    
                     VStack{
-                        
                         Spacer()
-                       
-                        
                         VStack(alignment : .leading , spacing : -5){
                             HStack (spacing : 3) {
                                 Image(systemName: vm.isRecording && vm.toggleColor ? "circle.fill" : "circle")
@@ -143,18 +134,14 @@ struct CreateEventView: View {
                                     .font(.system(size:20))
                                     .foregroundColor(.red)
                             }
+                            
                             Text(vm.timer)
                                 .font(.system(size:60))
                                 .foregroundColor(.white)
                         }.frame(width: UIScreen.main.bounds.width)
-                        
-                        
                         Spacer()
-                        
-                        
                     }
                     .padding(.all)
-                    
                     .background(Color.black)
                     .frame(width: UIScreen.main.bounds.width)
                     
@@ -171,7 +158,7 @@ struct CreateEventView: View {
                     }, label: {
                         HStack {
                             Text("Camera")
-                                .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.white)
                         }
                         
                     })
@@ -185,7 +172,7 @@ struct CreateEventView: View {
                     }, label: {
                         HStack {
                             Text("Video")
-                                .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.white)
                         }
                     })
                     Spacer()
@@ -266,7 +253,6 @@ struct CreateEventView: View {
             }
             .simpleToast(isPresented: $service.shouldShowtoastView, options: toastOptions) {
                 HStack {
-                    
                     Text("Upload Successfully")
                 }
                 .padding()
@@ -293,16 +279,14 @@ struct CreateEventView: View {
                 message: Text(message),
                 primaryButton: .destructive(Text("Ok")) {
                     print("Deleting...")
-                    
                     deleteevent()
-                    
                 },
                 secondaryButton: .cancel()
             )
         }
         
+     
         .onAppear(){
-            
             if (fromwhere == "camera"){
                 yoff = -70
                 showCameraPopUp = true
@@ -314,19 +298,18 @@ struct CreateEventView: View {
             else if (fromwhere == "audio"){
                 yoff = 0
                 showrecdPopUp = true
-            } else
+            }
+            else
             if (fromwhere == "notes"){
                 yoff = 0
                 showdocPopUp = true
-            }else{
+            }
+            else{
                 yoff = -70
-                
                 showCameraPopUp = true
-                
             }
         }
     }
-    
     
     func deleteevent(){
         let str = UserDefaults.standard.string(forKey: "eventID") ?? ""
@@ -336,7 +319,6 @@ struct CreateEventView: View {
                 "id": str,
                 
             ]
-            
         }
         print(checData)
         AccountAPI.signin(servciename: "EventDiary/DeleteEventDiary", checData) { res in

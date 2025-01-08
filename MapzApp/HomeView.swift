@@ -117,9 +117,8 @@ struct HomeView: View {
                              .stroke(Color.black, lineWidth: 2) // You can customize the color and lineWidth
                      )
                      .clipShape(Circle())
-                  
-                    
                         }
+                        
                         VStack(alignment: .leading, spacing: 5.0){
                 Text(UserDefaults.standard.string(forKey: "name") ?? "")
                     .font(.custom("Inter-Bold", size: 19))
@@ -165,7 +164,7 @@ struct HomeView: View {
                           // showcollc = false
                        }
                             HStack(alignment: .center){
-                                
+                       
                             }
                             //.padding(.horizontal, 15.0)
                             
@@ -289,10 +288,6 @@ struct HomeView: View {
                              .background(Color.white)
                      }else{
                          VStack{
-                             
-                             
-                             
-                             
                              VStack(spacing : 15){
                                  HStack(spacing : 20){
                                      Button(action: {
@@ -382,7 +377,7 @@ struct HomeView: View {
                                  if((UserDefaults.standard.string(forKey: "fromwhere")) == "notes"){
                                      createNotes()
                                  }
-                                 else{
+                                 else {
                                      CreateEventView()
                                  }
                              })
@@ -554,7 +549,6 @@ struct HomeView: View {
                             .foregroundColor(Color("themecolor"))
                         Spacer()
                         Button(action: {
-                            //
                             self.showVideoPopUp = false
                         }, label: {
                             Text("Click Using Camera")
@@ -622,7 +616,6 @@ struct HomeView: View {
                         Spacer()
                     }.padding()
                    
-
                 }
                 .frame(width: UIScreen.main.bounds.width-60, height: 400)
                 .cornerRadius(20)
@@ -686,7 +679,6 @@ struct HomeView: View {
         var logInFormData: Parameters {
             [
                 
-                
                 "latitude": UserDefaults.standard.double(forKey: "lat"), //Double(UserDefaults.standard.string(forKey: "lat")!)!,
                 "longitude":  UserDefaults.standard.double(forKey: "long"),
                 "createdAt": "2021-09-23T14:07:41",
@@ -721,33 +713,28 @@ struct HomeView: View {
                                 
                               
                                 
-                           UserDefaults.standard.set(userdic["id"].int, forKey: "eventID")
+                                UserDefaults.standard.set(userdic["id"].int, forKey: "eventID")
                                 UserDefaults.standard.set(dateString, forKey: "datestr")
-
                                 UserDefaults.standard.set("New", forKey: "eventNOE")
                                 UserDefaults.standard.set("no", forKey: "isGroup")
-
                                 showCameraPopUp.toggle()
 
+                                
 //                                if (UserDefaults.standard.string(forKey: "fromwhere") == "notes"){
 //                                    showdocPopUp = true
 //                                }
 //                                else{
-//
-//
-//
 //                                }
-                       
+                                
                             }
-                            else{
-                            //
                             
+                            else{
+                          
                      //        AlertToast(displayMode: .alert, type: .regular, title: json["ResponseMsg"].stringValue )
                      //        AlertToast(displayMode: .alert, type: .regular, title:json["ResponseMsg"].stringValue )
 
                             }
                         
-                            
                         }
                     case let .failure(error):
                       print(error)
